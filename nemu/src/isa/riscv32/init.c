@@ -41,5 +41,5 @@ void init_isa() {
 //	while(1){};
   /* Initialize this virtual computer system. */
   restart();
-	while(1){};
+//	while(1){};
 }
