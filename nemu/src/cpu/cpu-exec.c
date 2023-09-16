@@ -115,7 +115,7 @@ void cpu_exec(uint64_t n) {
 
   switch (nemu_state.state) {
     case NEMU_RUNNING:
-		 //	nemu_state.state = NEMU_STOP;
+		 nemu_state.state = NEMU_STOP;
 		 break;
 
     case NEMU_END: case NEMU_ABORT:
