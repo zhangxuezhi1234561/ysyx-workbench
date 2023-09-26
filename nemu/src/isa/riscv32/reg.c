@@ -26,10 +26,17 @@ const char *regs[] = {
 };
 
 void isa_reg_display() {
-//	printf("zxz:%s\n",regs[1]);
-	printf("Pro:zxz\n");
 }
 
 word_t isa_reg_str2val(const char *s, bool *success) {
-  return 0;
+	int reg_id = 0;
+	for(int i = 0;i < 32;i++)
+	{
+		if(regs[i] == s)
+		{
+			reg_id = i;
+		}
+	}
+	return cpu.gpr[check_reg_idx(reg_id)];
+  //return 0;
 }

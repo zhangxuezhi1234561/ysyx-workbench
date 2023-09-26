@@ -20,6 +20,8 @@
 #include "sdb.h"
 
 static int is_batch_mode = false;
+static word_t old_value;
+static char* old_args;
 
 void init_regex();
 void init_wp_pool();
@@ -52,6 +54,23 @@ static int cmd_q(char *args) {
   return -1;
 }
 
+static int cmd_w(char *args) {
+	bool *success = NULL;
+	old_args = args;
+	new_wp();
+	old_value = expr(args,success);
+	return 0;
+}
+void wp_scan()
+{
+	static word_t value;
+	bool *success = NULL;
+	value = expr(old_args,success);
+	if(value != old_value)
+	{
+		nemu_state.state = NEMU_STOP;
+	}
+}
 static int cmd_help(char *args);
 
 static struct {
@@ -64,7 +83,7 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
 
   /* TODO: Add more commands */
-
+	{"w","Set Watchpoint", cmd_w},
 };
 
 #define NR_CMD ARRLEN(cmd_table)
