@@ -44,7 +44,7 @@ static struct rule {
   {"\\+", '+'},         // plus
 	{"\\(",BRACKET_LEFT},// bracket
 	{"\\)",BRACKET_RIGHT},
-	{"\\d+",INTEGER},
+	{"\\d",INTEGER},
   {"==", TK_EQ},        // equal
 	{"0x[a-f0-9]+",HEX},	//HEX
 	{"\\$[\\d\\w]+",DOLLAR}, //DOLLAR
