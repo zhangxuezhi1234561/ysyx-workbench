@@ -55,15 +55,18 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_w(char *args) {
+	Log("Now in cmd_w() function\n");
+	/*
 	bool *success = NULL;
 	old_args = args;
 	new_wp();
 	old_value = expr(args,success);
+	*/
 	return 0;
 }
 void wp_scan()
 {
-	Log("Now in wp_scan() function/n");
+	Log("Now in wp_scan() function\n");
 	/*
 	static word_t value;
 	bool *success = NULL;
