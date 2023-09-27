@@ -44,7 +44,7 @@ static struct rule {
   {"\\+", '+'},         // plus
 	{"\\(",BRACKET_LEFT},// bracket
 	{"\\)",BRACKET_RIGHT},
-	{"\\d",INTEGER},
+	{"\\d+",INTEGER},
   {"==", TK_EQ},        // equal
 	{"0x[a-f0-9]+",HEX},	//HEX
 	{"\\$[\\d\\w]+",DOLLAR}, //DOLLAR
@@ -114,6 +114,7 @@ static bool make_token(char *e) {
 					case INTEGER				: tokens[nr_token].type = INTEGER					; memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
 					case HEX						:	tokens[nr_token].type = HEX							;	memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
 					case DOLLAR					:	tokens[nr_token].type = DOLLAR					;	memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
+					case TK_EQ					:	tokens[nr_token].type = TK_EQ						;	memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
 
 
           default: TODO(); break;
