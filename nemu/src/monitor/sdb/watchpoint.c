@@ -42,6 +42,8 @@ WP* new_wp()
 {
 	int i = 0;
 	int j = 0;
+	head_num++;
+	head = malloc(sizeof(WP) * NR_WP);
 //	WP *node = calloc(1, sizeof(WP));
 	for(i = NR_WP-1;i >= 0;i--)
 	{
@@ -58,10 +60,10 @@ WP* new_wp()
 		//	head[j].next = &free_[i];
 			//head[j].state = 1;
 			//head[j].NO = free_[i].NO;
-			head[head_num].NO = free_[i].NO;
-			head[head_num].state = 1;
-			head[head_num].next = &free_[i];
-			head_num++;
+			head[head_num-1].NO = free_[i].NO;
+			head[head_num-1].state = 1;
+			head[head_num-1].next = &free_[i];
+		//	head_num++;
 		}
 	}
 	return &free_[i];
