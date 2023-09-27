@@ -64,7 +64,7 @@ WP* new_wp()
 			head_num++;
 		}
 	}
-	return free_;
+	return &free_[i];
 }
 
 void free_wp(WP *wp)
