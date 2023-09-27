@@ -63,6 +63,8 @@ static int cmd_w(char *args) {
 }
 void wp_scan()
 {
+	Log("Now in wp_scan() function/n");
+	/*
 	static word_t value;
 	bool *success = NULL;
 	value = expr(old_args,success);
@@ -70,6 +72,7 @@ void wp_scan()
 	{
 		nemu_state.state = NEMU_STOP;
 	}
+	*/
 }
 static int cmd_help(char *args);
 
