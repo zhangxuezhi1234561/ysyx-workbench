@@ -62,6 +62,7 @@ static int cmd_w(char *args) {
 	*success = false;
 	old_args = args;
 	new_wp(args);
+	info_wp();
 	old_value = expr(args,success);
 	return 0;
 }
