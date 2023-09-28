@@ -167,7 +167,7 @@ bool check_parentheses(int p, int q)//Needed First and End Test
 	}
 	else
 		bracket_matched = true;
-	if(bracket_matched == true && tokens[0].type == BRACKET_LEFT && tokens[nr_token-1].type == BRACKET_RIGHT)
+	if(bracket_matched == true && tokens[0].type == BRACKET_LEFT && tokens[q].type == BRACKET_RIGHT)
 	{
 		return true;
 	}
@@ -257,7 +257,7 @@ int eval(int p, int q)
 			}
 		}
 		val1 = eval(p, op-1);
-		val2 = eval(op+1, p);
+		val2 = eval(op+1, q);
 
 		switch(main_token)
 		{
@@ -278,9 +278,9 @@ word_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
-	int len = strlen(e);
+//	int len = strlen(e);
 	int value;
-	value = eval(0,len-1);
+	value = eval(0,nr_token-1);
 
 
   /* TODO: Insert codes to evaluate the expression. */
