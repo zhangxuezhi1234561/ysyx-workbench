@@ -141,7 +141,7 @@ bool check_parentheses(int p, int q)//Needed First and End Test
 	int i = 0;
   int nr_bracket = 0;
 	bool bracket_matched = false;
-	for(i = 0; i < nr_token; i++)
+	for(i = 0; i < q; i++)
 	{
 		if(tokens[i].type == BRACKET_RIGHT)
 		{
@@ -222,7 +222,7 @@ int eval(int p, int q)
 	{
 		int i = 0;
 		int op = 0;
-		int temp_op = 0;
+//		int temp_op = 0;
 		int main_token = 0;
 		int temp_token = 0;
 		int token_map = 0;
@@ -237,17 +237,17 @@ int eval(int p, int q)
 			token_map_last = token_map;
 			switch(tokens[i].type)
 			{
-				case '+': temp_token = '+'; temp_op += strlen(tokens[i].str); token_map = 2;break;
-				case '-': temp_token = '-'; temp_op += strlen(tokens[i].str); token_map = 2;break;
-				case '*': temp_token = '*'; temp_op += strlen(tokens[i].str); token_map = 1;break;
-				case '/': temp_token = '/'; temp_op += strlen(tokens[i].str); token_map = 1;break;
+				case '+': temp_token = '+'; token_map = 2;break;
+				case '-': temp_token = '-'; token_map = 2;break;
+				case '*': temp_token = '*'; token_map = 1;break;
+				case '/': temp_token = '/'; token_map = 1;break;
 				case BRACKET_LEFT: flag_test = false; break;
 				case BRACKET_RIGHT:	flag_test = true;	break;
 			}
 			if(token_map >=  token_map_last && flag_test == true)//忽略了两边都有括号的情况？
 			{
 				main_token = temp_token;
-				op				 = temp_op;
+				op				 = i;
 			}
 			else
 			{
