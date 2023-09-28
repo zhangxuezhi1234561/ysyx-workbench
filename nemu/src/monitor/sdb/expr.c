@@ -287,7 +287,7 @@ word_t expr(char *e, bool *success) {
 
 
   /* TODO: Insert codes to evaluate the expression. */
-  TODO();
+ // TODO();
 	
 	//Indicate Position p,q  eval(p,q)
 
