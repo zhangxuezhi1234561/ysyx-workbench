@@ -38,7 +38,7 @@ void init_wp_pool() {
 
 /* TODO: Implement the functionality of watchpoint */
 
-WP* new_wp()
+WP* new_wp(char* args)
 {
 	int i = 0;
 	int j = 0;
@@ -63,6 +63,7 @@ WP* new_wp()
 			head[head_num-1].NO = free_[i].NO;
 			head[head_num-1].state = 1;
 			head[head_num-1].next = &free_[i];
+			head[head_num-1].what = args;
 		//	head_num++;
 			break;
 		}
@@ -88,5 +89,16 @@ void free_wp(WP *wp)
 	if(head_num == 1)
 	{
 		head = NULL;
+	}
+}
+
+void info_wp()
+{
+	int i = 0;
+	while(head[i].next != NULL)
+	{
+		panic("Num       Type          Disp     Enb      Address    What");
+		panic("%d        watchpoint    keep                         %s",head[i].NO,head[i].what);
+		i++;
 	}
 }

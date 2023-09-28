@@ -61,7 +61,7 @@ static int cmd_w(char *args) {
 	bool *success =(bool *)malloc(sizeof(bool));
 	*success = false;
 	old_args = args;
-	new_wp();
+	new_wp(args);
 	old_value = expr(args,success);
 	return 0;
 }
