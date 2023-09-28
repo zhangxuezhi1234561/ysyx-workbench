@@ -280,7 +280,7 @@ word_t expr(char *e, bool *success) {
     return 0;
   }
 //	int len = strlen(e);
-	int value;
+	word_t value;
 	value = eval(0,nr_token-1);
 
 
