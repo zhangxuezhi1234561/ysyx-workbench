@@ -273,6 +273,8 @@ int eval(int p, int q)
 }
 
 
+#pragma GCC push_options
+#pragma GCC optimize(0)
 
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
@@ -294,4 +296,7 @@ word_t expr(char *e, bool *success) {
 
   return value;
 }
+#pragma GCC pop_options
+
+
 
