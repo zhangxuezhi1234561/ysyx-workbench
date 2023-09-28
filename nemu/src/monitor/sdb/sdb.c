@@ -20,8 +20,8 @@
 #include "sdb.h"
 
 static int is_batch_mode = false;
-static word_t old_value;
-static char* old_args;
+//static word_t old_value;
+//static char* old_args;
 
 void init_regex();
 void init_wp_pool();
