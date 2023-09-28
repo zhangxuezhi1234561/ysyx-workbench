@@ -20,8 +20,8 @@
 #include "sdb.h"
 
 static int is_batch_mode = false;
-//static word_t old_value;
-//static char* old_args;
+static word_t old_value;
+static char* old_args;
 
 void init_regex();
 void init_wp_pool();
@@ -57,11 +57,11 @@ static int cmd_q(char *args) {
 static int cmd_w(char *args) {
 	Log("Now in cmd_w() function\n");
 	/*
+	*/
 	bool *success = NULL;
 	old_args = args;
 	new_wp();
 	old_value = expr(args,success);
-	*/
 	return 0;
 }
 void wp_scan()
