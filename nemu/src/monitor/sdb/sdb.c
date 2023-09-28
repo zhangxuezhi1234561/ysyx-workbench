@@ -58,7 +58,7 @@ static int cmd_w(char *args) {
 	Log("Now in cmd_w() function\n");
 	/*
 	*/
-	bool *success = NULL;
+	bool *success = false;
 	old_args = args;
 	new_wp();
 	old_value = expr(args,success);
