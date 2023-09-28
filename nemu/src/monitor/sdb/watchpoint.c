@@ -98,7 +98,7 @@ void info_wp()
 	int i = 0;
 	while(head[i].next != NULL)
 	{
-		panic("Num       Type          Disp     Enb      Address    What");
+//		panic("Num       Type          Disp     Enb      Address    What");
 		panic("%d        watchpoint    keep                         %s",head[i].NO,head[i].what);
 		i++;
 	}
