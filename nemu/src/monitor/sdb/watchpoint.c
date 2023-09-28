@@ -64,6 +64,7 @@ WP* new_wp()
 			head[head_num-1].state = 1;
 			head[head_num-1].next = &free_[i];
 		//	head_num++;
+			break;
 		}
 	}
 	return &free_[i];
