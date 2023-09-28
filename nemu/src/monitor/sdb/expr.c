@@ -140,6 +140,7 @@ bool check_parentheses(int p, int q)//Needed First and End Test
 //	make_token();//Needed?
 	int i = 0;
   int nr_bracket = 0;
+	bool bracket_matched = false;
 	for(i = 0; i < nr_token; i++)
 	{
 		if(tokens[i].type == BRACKET_RIGHT)
@@ -161,10 +162,18 @@ bool check_parentheses(int p, int q)//Needed First and End Test
 	}
 	if(nr_bracket != 0)
 	{
-		return false;
+		bracket_matched = false;
+//		return false;
 	}
 	else
+		bracket_matched = true;
+	if(bracket_matched == true && tokens[0].type == BRACKET_LEFT && tokens[nr_token-1].type == BRACKET_RIGHT)
+	{
 		return true;
+	}
+	else
+		return false;
+	//	return true;
 
 /*
 	if(e+p == BRACKET_LEFT && e+q == BRACKET_RIGHT)
