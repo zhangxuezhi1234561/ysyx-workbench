@@ -14,14 +14,15 @@
 ***************************************************************************************/
 
 #include <isa.h>
-
+#include <time.h>
+#include <regex.h>
 /* We use the POSIX regex functions to process regular expressions.
  * Type 'man regex' for more information about POSIX regex functions.
  */
-#include <regex.h>
+
 
 enum {
-  TK_NOTYPE = 256, TK_EQ,
+  TK_NOTYPE = 256, TK_EQ,BRACKET_LEFT,BRACKET_RIGHT,INTEGER,HEX,DOLLAR,
 
   /* TODO: Add more token types */
 
@@ -37,8 +38,16 @@ static struct rule {
    */
 
   {" +", TK_NOTYPE},    // spaces
+	{"\\*", '*'},					// times
+	{"-",'-'},						// subtractS
+	{"\\/",'/'},					// divide
   {"\\+", '+'},         // plus
+	{"\\(",BRACKET_LEFT},// bracket
+	{"\\)",BRACKET_RIGHT},
+	{"[0-9]+",INTEGER},
   {"==", TK_EQ},        // equal
+	{"0x[a-f0-9]+",HEX},	//HEX
+	{"\\$[0-9\\w]+",DOLLAR}, //DOLLAR
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -95,7 +104,20 @@ static bool make_token(char *e) {
          */
 
         switch (rules[i].token_type) {
-          default: TODO();
+					case TK_NOTYPE: tokens[nr_token].type = TK_NOTYPE ; memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
+					case '+'			: tokens[nr_token].type = '+'				; memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
+					case '-'			: tokens[nr_token].type = '-'				; memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
+					case '*'			: tokens[nr_token].type = '*'				; memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
+					case '/'			: tokens[nr_token].type = '/'				; memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
+					case BRACKET_RIGHT	: tokens[nr_token].type = BRACKET_RIGHT		; memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
+					case BRACKET_LEFT		: tokens[nr_token].type = BRACKET_LEFT		; memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
+					case INTEGER				: tokens[nr_token].type = INTEGER					; memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
+					case HEX						:	tokens[nr_token].type = HEX							;	memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
+					case DOLLAR					:	tokens[nr_token].type = DOLLAR					;	memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
+					case TK_EQ					:	tokens[nr_token].type = TK_EQ						;	memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
+
+
+          default: TODO(); break;
         }
 
         break;
@@ -111,15 +133,170 @@ static bool make_token(char *e) {
   return true;
 }
 
+//Define The check_parentheses Function
+//Note: e NOT Define!!!!!!!
+bool check_parentheses(int p, int q)//Needed First and End Test
+{
+//	make_token();//Needed?
+	int i = 0;
+  int nr_bracket = 0;
+	bool bracket_matched = false;
+	for(i = 0; i < q; i++)
+	{
+		if(tokens[i].type == BRACKET_RIGHT)
+		{
+			nr_bracket++;
+		}
+		else if(tokens[i].type == BRACKET_LEFT)
+		{
+			nr_bracket--;
+		}
+		if(nr_bracket < 0)
+		{
+			return false;
+		}
+		else
+		{
+			continue;
+		}
+	}
+	if(nr_bracket != 0)
+	{
+		bracket_matched = false;
+//		return false;
+	}
+	else
+		bracket_matched = true;
+	if(bracket_matched == true && tokens[0].type == BRACKET_LEFT && tokens[q].type == BRACKET_RIGHT)
+	{
+		return true;
+	}
+	else
+		return false;
+	//	return true;
+
+/*
+	if(e+p == BRACKET_LEFT && e+q == BRACKET_RIGHT)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+*/
+}
+
+int eval(int p, int q)
+{
+	int num = 0;
+	bool *success = NULL;
+	word_t reg_value = 0;
+	//Indicate Position p,q  eval(p,q)
+	if(p > q)
+	{
+		/* Bad expression */
+		return 0;
+	}
+	else if(p == q)
+	{
+		switch(tokens[p].type)
+		{
+			case INTEGER: sscanf(tokens[p].str,"%d",&num);break;
+			case HEX		: sscanf(tokens[p].str,"%x",&num);break;
+			case DOLLAR	: 
+				reg_value = isa_reg_str2val(tokens[p].str+1, success);
+				num = reg_value;
+				break;										
+		}
+		sscanf(tokens[p].str,"%d",&num);
+		return num;
+		/* Return the single number */
+	}
+	else if(check_parentheses(p,q) == true)
+	{
+		
+		return eval(p+1, q-1);
+	}
+	else
+	{
+		int i = 0;
+		int op = 0;
+//		int temp_op = 0;
+		int main_token = 0;
+		int temp_token = 0;
+		int token_map = 0;
+		int token_map_last = 0;
+		bool flag_test = true;
+
+		int val1;
+		int val2;
+		for(i = p; i <= q; i++)
+		{
+			//temp_token_last = temp_token;
+			token_map_last = token_map;
+			switch(tokens[i].type)
+			{
+				case '+': temp_token = '+'; token_map = 2;break;
+				case '-': temp_token = '-'; token_map = 2;break;
+				case '*': temp_token = '*'; token_map = 1;break;
+				case '/': temp_token = '/'; token_map = 1;break;
+				case BRACKET_LEFT: flag_test = false; break;
+				case BRACKET_RIGHT:	flag_test = true;	break;
+				default: token_map = 0; break;
+			}
+			if(token_map >=  token_map_last && flag_test == true)//忽略了两边都有括号的情况？
+			{
+				main_token = temp_token;
+				op				 = i;
+			}
+			else
+			{
+				continue;
+				//main_token = temp_token_last;
+				
+			}
+		}
+		val1 = eval(p, op-1);
+		val2 = eval(op+1, q);
+
+		switch(main_token)
+		{
+			case '+': return val1 + val2; break;
+			case '-': return val1 - val2; break;
+			case '*': return val1 * val2; break;
+			case '/': return val1 / val2; break;
+			default : assert(0);
+		}
+	}
+
+}
+
+
+#pragma GCC push_options
+#pragma GCC optimize(0)
 
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
     return 0;
   }
+//	int len = strlen(e);
+	word_t value;
+	value = eval(0,nr_token-1);
+
 
   /* TODO: Insert codes to evaluate the expression. */
-  TODO();
+ // TODO();
+	
+	//Indicate Position p,q  eval(p,q)
 
-  return 0;
+
+	
+
+  return value;
 }
+#pragma GCC pop_options
+
+
+
