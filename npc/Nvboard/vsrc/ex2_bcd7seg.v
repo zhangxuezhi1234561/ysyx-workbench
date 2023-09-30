@@ -1,4 +1,4 @@
-module ex2_bcd8seg(
+module ex2_bcd7seg(
 	input	[2:0]	b,
 	output	[7:0]	h
 );
@@ -14,7 +14,7 @@ assign segs[7]	=	8'b1110_0000;
 //assign segs[8]	=	8'b1111_1110;
 //assign segs[9]	=	8'b1111_0110;
 
-assign h	=	~segs[b	+	3'd0];
+assign h	=	~segs[b + 3'd0];
 
 
 
