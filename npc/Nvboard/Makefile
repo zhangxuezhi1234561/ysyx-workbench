@@ -1,6 +1,6 @@
-export TargetV = ./vsrc/ex2_top.v
-export TargetC = ./csrc/ex2_top.cpp
-export TOPNAME = ex2_top
+export TargetV = ./vsrc/ex3_ALU.v
+export TargetC = ./csrc/ex3_ALU.cpp
+export TOPNAME = ex3_ALU
 
 #-------------------Related Nvboard-------------------#
 NXDC_FILES = constr/$(TOPNAME).nxdc
