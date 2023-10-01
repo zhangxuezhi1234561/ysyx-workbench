@@ -18,7 +18,7 @@ always @(a or b or cin or alu_sel) begin
 	case(alu_sel)
 		3'b000:	begin {carry_temp,result} <=	a	+	b + {3'b000,cin};																overflow_temp = (a[3]==b[3])&&(result[3]!=a[3]); end					//add
 		// verilator lint_off WIDTHCONCAT
-		3'b001:	begin t_cin <= ({4{1}}^b) + 1; {carry_temp,result} <=	a	+	(t_cin) - {3'b000,cin}; overflow_temp = (a[3]==t_cin[3])&&(result[3]!=a[3]); end							//sub
+		3'b001:	begin t_cin <= (4'b1111^b) + 1; {carry_temp,result} <=	a	+	(t_cin) - {3'b000,cin}; overflow_temp = (a[3]==t_cin[3])&&(result[3]!=a[3]); end							//sub
 		// verilator lint_on WIDTHCONCAT
 		3'b010: begin	result	<=	~a;	end								//Not  取了相反数	有问题
 		3'b011:	begin result	<=	a & b; end							//and
