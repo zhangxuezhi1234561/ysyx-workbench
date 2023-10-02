@@ -14,7 +14,7 @@ reg	[9:0]	buffer;
 reg [7:0] ps2_ascii_rom[511:0];
 
 initial begin
-	$readmemh("resource/ex7_rom.txt",ps2_ascii_rom);
+	$readmemh("vsrc/ex7_rom.txt",ps2_ascii_rom);
 end
 
 always @(posedge clk) begin
@@ -33,7 +33,7 @@ always @(posedge clk) begin
 				if((buffer[0]	==	0) &&
 					(ps2_data)					&&
 					(^buffer[9:1]))	begin
-					$display("receive %x ", buffer[8:1]);
+					$display("receive %x , it's ASCII %x", buffer[8:1], ps2_ascii_rom[40]);
 				end
 				count	<= 0;
 			end
