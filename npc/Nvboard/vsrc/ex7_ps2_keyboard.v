@@ -5,7 +5,7 @@ module ex7_ps2_keyboard(
 	input ps2_data
 );
 
-parameter FILE_PATH = "../resource/ex7_rom.txt";
+parameter FILE_PATH = "ex7_rom.txt";
 
 reg	[2:0]	ps2_clk_sync;
 reg	[3:0]	count;
