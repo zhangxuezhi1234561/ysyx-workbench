@@ -33,7 +33,7 @@ always @(posedge clk) begin
 				if((buffer[0]	==	0) &&
 					(ps2_data)					&&
 					(^buffer[9:1]))	begin
-					$display("receive %x , it's ASCII %x", buffer[8:1], ps2_ascii_rom[40]);
+					$display("receive %x , it's ASCII %x", buffer[8:1], ps2_ascii_rom[1]);
 				end
 				count	<= 0;
 			end
