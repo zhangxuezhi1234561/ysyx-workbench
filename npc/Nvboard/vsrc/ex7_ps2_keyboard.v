@@ -21,7 +21,7 @@ always @(posedge clk) begin
 	ps2_clk_sync	<=	{ps2_clk_sync[1:0],ps2_clk};
 end
 
-wire	sampling	=	ps2_clk_sync[2] & ps2_clk_sync[1];
+wire	sampling	=	ps2_clk_sync[2] & ~ps2_clk_sync[1];
 
 always @(posedge clk) begin
 	if(!resetn) begin
