@@ -11,12 +11,12 @@ reg	[2:0]	ps2_clk_sync;
 reg	[3:0]	count;
 reg	[9:0]	buffer;
 
-reg [7:0] ps2_ascii_rom[511:0];
-
+//reg [7:0] ps2_ascii_rom[511:0];
+/*
 initial begin
 	$readmemh("/home/pro/ysyx/ysyx-workbench/npc/Nvboard/vsrc/ex7_rom.txt",ps2_ascii_rom);
 end
-
+*/
 always @(posedge clk) begin
 	ps2_clk_sync	<=	{ps2_clk_sync[1:0],ps2_clk};
 end
@@ -33,11 +33,7 @@ always @(posedge clk) begin
 				if((buffer[0]	==	0) &&
 					(ps2_data)					&&
 					(^buffer[9:1]))	begin
-					/* verilator lint_off WIDTHTRUNC */
-					/* verilator lint_off WIDTHEXPAND */
 					$display("receive %x ", buffer[8:1]);
-					/* verilator lint_on WIDTHEXPAND */
-					/* verilator lint_on WIDTHTRUNC */
 				end
 				count	<= 0;
 			end
