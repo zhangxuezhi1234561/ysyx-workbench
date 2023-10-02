@@ -14,7 +14,7 @@ reg	[9:0]	buffer;
 reg [7:0] ps2_ascii_rom[100:0];
 
 initial begin
-	$readmemh("ex7_rom.txt",ps2_ascii_rom);
+	$readmemh("/home/pro/ysyx/ysyx-workbench/npc/Nvboard/vsrc/ex7_rom.txt",ps2_ascii_rom);
 end
 
 always @(posedge clk) begin
