@@ -34,7 +34,7 @@ always @(posedge clk) begin
 					(ps2_data)					&&
 					(^buffer[9:1]))	begin
 					/* verilator lint_off WIDTHTRUNC */
-					$display("receive %x , it's ASCLL %x", buffer[8:1],ps2_ascii_rom[buffer[8:1]]);
+					$display("receive %x , it's ASCLL %x", buffer[8:1],ps2_ascii_rom[1]);
 					/* verilator lint_on WIDTHTRUNC */
 				end
 				count	<= 0;
