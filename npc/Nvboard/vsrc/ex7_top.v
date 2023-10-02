@@ -8,7 +8,7 @@ module ex7_top(
 
 ex7_ps2_keyboard my_keyboard(
 	.clk (clk),
-	.resetn (rst),
+	.resetn (~rst),
 	.ps2_clk (ps2_clk),
 	.ps2_data (ps2_data)
 );
