@@ -18,6 +18,8 @@
 
 // this is not consistent with uint8_t
 // but it is ok since we do not access the array directly
+#pragma GCC push_options
+#pragma GCC optimize (0)
 static const uint32_t img [] = {
   0x00000297,  // auipc t0,0
   0x00028823,  // sb  zero,16(t0)
@@ -38,6 +40,9 @@ void init_isa() {
   /* Load built-in image. */
   memcpy(guest_to_host(RESET_VECTOR), img, sizeof(img));
 
+#pragma GCC pop_options
+//	while(1){};
   /* Initialize this virtual computer system. */
   restart();
+//	while(1){};
 }

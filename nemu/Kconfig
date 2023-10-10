@@ -118,6 +118,10 @@ config CC_DEBUG
   bool "Enable debug information"
   default n
 
+config WATCHPOINT
+	bool "Enable watchpoint"
+	default n
+
 config CC_ASAN
   depends on MODE_SYSTEM
   bool "Enable address sanitizer"
