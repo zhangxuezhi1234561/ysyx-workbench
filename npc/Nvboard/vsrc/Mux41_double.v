@@ -17,8 +17,9 @@ always @(X0 or X1 or X2 or X3 or Y) begin
 		default: F <= 2'b0;
 	endcase
 end
-assign F_Wire = 2'd3;
+assign F_Wire = F;
 /*
+* test
 initial begin
 	if($test$plusargs("trace")!=0) begin
 		$display("[%0t] Tracing to logs/vlt_dump.vcd...\n",$time);

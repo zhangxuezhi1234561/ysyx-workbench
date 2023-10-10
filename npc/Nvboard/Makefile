@@ -1,13 +1,13 @@
-export TargetV = ./vsrc/Mux41_double.v
-export TargetC = ./csrc/Mux41_double.cpp
-export TOPNAME = Mux41_double
+export TargetV = ./vsrc/$(NAME).v
+export TargetC = ./csrc/$(NAME).cpp
+export TOPNAME = $(NAME)
 
 #-------------------Related Nvboard-------------------#
 NXDC_FILES = constr/$(TOPNAME).nxdc
 INC_PATH ?=
 
 VERILATOR_CFLAGS += -MMD --build -cc \
-										-O3 --x-assign fast --x-initial fast --noassert
+										-O3 --x-assign fast --x-initial fast --noassert -Wno-CASEX
 BUILD_DIR = ./build
 OBJ_DIR = $(BUILD_DIR)/obj_dir
 BIN = $(BUILD_DIR)/$(TOPNAME)
@@ -20,7 +20,7 @@ SRC_AUTO_BIND = $(abspath $(BUILD_DIR)/auto_bind.cpp)
 $(SRC_AUTO_BIND): $(NXDC_FILES)
 	python3 $(NVBOARD_HOME)/scripts/auto_pin_bind.py $^ $@
 
-VSRCS = $(shell find $(abspath ./vsrc) -name "$(TOPNAME).v")
+VSRCS = $(shell find $(abspath ./vsrc) -name "*.v")
 CSRCS = $(shell find $(abspath ./csrc) -name "$(TOPNAME).cpp")
 CSRCS += $(SRC_AUTO_BIND)
 
@@ -38,6 +38,7 @@ $(BIN): $(VSRCS) $(CSRCS) $(NVBOARD_ARCHIVE)
 		--Mdir $(OBJ_DIR) --exe -o $(abspath $(BIN))
 
 Nvboard: $(BIN)
+	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	@$^
 	
 ifneq ($(words $(CURDIR)),1)
@@ -55,7 +56,7 @@ endif
 
 VERILATOR_FLAGS += -cc --exe
 VERILATOR_FLAGS += -x-assign fast
-VERILATOR_FLAGS += -Wall
+VERILATOR_FLAGS += -Wall -Wno-CASEX
 VERILATOR_FLAGS += --trace
 VERILATOR_FLAGS += --assert
 VERILATOR_FLAGS += --coverage
@@ -92,8 +93,9 @@ run:
 	@echo "-- DONE --------------------"
 	@echo "To see waveforms, open vlt_dump.vcd in a waveform viewer"
 	@echo
+	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 
-
+include ../../Makefile
 
 show-config:
 	$(VERILATOR) -V
