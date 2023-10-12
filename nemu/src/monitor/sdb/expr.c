@@ -151,7 +151,7 @@ bool check_parentheses(int p, int q)//Needed First and End Test
 	int i = 0;
   int nr_bracket = 0;
 	bool bracket_matched = false;
-	for(i = 0; i < q; i++)
+	for(i = p; i <= q; i++)
 	{
 		if(tokens[i].type == BRACKET_RIGHT)
 		{
@@ -177,7 +177,7 @@ bool check_parentheses(int p, int q)//Needed First and End Test
 	}
 	else
 		bracket_matched = true;
-	if(bracket_matched == true && tokens[0].type == BRACKET_LEFT && tokens[q].type == BRACKET_RIGHT)
+	if(bracket_matched == true && tokens[p].type == BRACKET_LEFT && tokens[q].type == BRACKET_RIGHT)
 	{
 		return true;
 	}
