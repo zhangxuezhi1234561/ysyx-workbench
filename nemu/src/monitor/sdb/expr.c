@@ -256,7 +256,7 @@ int eval(int p, int q)
 				case BRACKET_RIGHT: token_map = 0;	flag_test = true;	break;
 				default: token_map = 0; break;
 			}
-			if(token_map >=  token_map_last && flag_test == true)//忽略了两边都有括号的情况？
+			if(((token_map >  token_map_last) || token_map == token_map_last) && flag_test == true)//忽略了两边都有括号的情况？
 			{
 				main_token = temp_token;
 				op				 = i;
