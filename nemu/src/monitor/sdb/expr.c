@@ -276,7 +276,7 @@ int eval(int p, int q)
 			case '-': return val1 - val2; break;
 			case '*': return val1 * val2; break;
 			case '/': return val1 / val2; break;
-//			case DEREF: return pmem[val2-0x80000000]; break;
+			case DEREF: return *guest_to_host(val2); break;
 			default : assert(0);
 		}
 	}
