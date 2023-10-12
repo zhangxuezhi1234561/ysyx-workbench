@@ -67,6 +67,17 @@ static int cmd_w(char *args) {
 	old_value = expr(args,success);
 	return 0;
 }
+static int cmd_si(char *args) {
+	int n = 0;
+	if(args == NULL)
+	{
+		n = 1;
+	}
+	else
+		sscanf(args,"%d",&n);
+	cpu_exec(n);
+	return 0;
+}
 void wp_scan()
 {
 	Log("Now in wp_scan() function\n");
@@ -93,6 +104,7 @@ static struct {
 
   /* TODO: Add more commands */
 	{"w","Set Watchpoint", cmd_w},
+	{"si","Step Execute",cmd_si},
 };
 
 #define NR_CMD ARRLEN(cmd_table)
