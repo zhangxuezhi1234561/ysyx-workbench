@@ -275,6 +275,7 @@ int eval(int p, int q)
 			case '-': return val1 - val2; break;
 			case '*': return val1 * val2; break;
 			case '/': return val1 / val2; break;
+			//case DEREF: return *(val2); break;
 			default : assert(0);
 		}
 	}
