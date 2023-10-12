@@ -16,6 +16,7 @@
 #include <isa.h>
 #include <time.h>
 #include <regex.h>
+#include <memory/paddr.h>
 /* We use the POSIX regex functions to process regular expressions.
  * Type 'man regex' for more information about POSIX regex functions.
  */
@@ -275,7 +276,7 @@ int eval(int p, int q)
 			case '-': return val1 - val2; break;
 			case '*': return val1 * val2; break;
 			case '/': return val1 / val2; break;
-			//case DEREF: return *(val2); break;
+//			case DEREF: return pmem[val2-0x80000000]; break;
 			default : assert(0);
 		}
 	}
