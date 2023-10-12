@@ -22,7 +22,7 @@
 
 
 enum {
-  TK_NOTYPE = 256, TK_EQ,BRACKET_LEFT,BRACKET_RIGHT,INTEGER,HEX,DOLLAR,
+  TK_NOTYPE = 256, TK_EQ,BRACKET_LEFT,BRACKET_RIGHT,INTEGER,HEX,DOLLAR,DEREF,
 
   /* TODO: Add more token types */
 
@@ -44,9 +44,9 @@ static struct rule {
   {"\\+", '+'},         // plus
 	{"\\(",BRACKET_LEFT},// bracket
 	{"\\)",BRACKET_RIGHT},
+	{"0x[a-f0-9]+",HEX},	//HEX
 	{"[0-9]+",INTEGER},
   {"==", TK_EQ},        // equal
-	{"0x[a-f0-9]+",HEX},	//HEX
 	{"\\$[0-9\\w]+",DOLLAR}, //DOLLAR
 };
 
@@ -107,7 +107,16 @@ static bool make_token(char *e) {
 					case TK_NOTYPE: tokens[nr_token].type = TK_NOTYPE ; memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
 					case '+'			: tokens[nr_token].type = '+'				; memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
 					case '-'			: tokens[nr_token].type = '-'				; memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
-					case '*'			: tokens[nr_token].type = '*'				; memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
+					case '*'			: 
+												  if(i == 0 || tokens[i-1].type == '+' || tokens[i-1].type == '-' || tokens[i-1].type == '*' || tokens[i-1].type == '/')
+													{
+														tokens[nr_token].type = DEREF;
+													}
+													else
+													{
+														tokens[nr_token].type = '*';
+													}
+													memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
 					case '/'			: tokens[nr_token].type = '/'				; memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
 					case BRACKET_RIGHT	: tokens[nr_token].type = BRACKET_RIGHT		; memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
 					case BRACKET_LEFT		: tokens[nr_token].type = BRACKET_LEFT		; memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
