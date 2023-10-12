@@ -251,8 +251,8 @@ int eval(int p, int q)
 				case '-': temp_token = '-'; token_map = 2;break;
 				case '*': temp_token = '*'; token_map = 1;break;
 				case '/': temp_token = '/'; token_map = 1;break;
-				case BRACKET_LEFT: flag_test = false; break;
-				case BRACKET_RIGHT:	flag_test = true;	break;
+				case BRACKET_LEFT: token_map = 0; flag_test = false; break;
+				case BRACKET_RIGHT: token_map = 0;	flag_test = true;	break;
 				default: token_map = 0; break;
 			}
 			if(token_map >=  token_map_last && flag_test == true)//忽略了两边都有括号的情况？
