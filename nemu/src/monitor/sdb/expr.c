@@ -247,8 +247,9 @@ int eval(int p, int q)
 			token_map_last = main_token;
 			switch(tokens[i].type)
 			{
-				case '+': temp_token = '+'; token_map = 2;break;
-				case '-': temp_token = '-'; token_map = 2;break;
+				case '+': temp_token = '+'; token_map = 3;break;
+				case '-': temp_token = '-'; token_map = 3;break;
+				case DEREF: temp_token = DEREF; token_map = 2;break;
 				case '*': temp_token = '*'; token_map = 1;break;
 				case '/': temp_token = '/'; token_map = 1;break;
 				case BRACKET_LEFT: token_map = 0; flag_test = false; break;
