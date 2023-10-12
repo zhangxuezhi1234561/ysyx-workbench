@@ -241,7 +241,7 @@ int eval(int p, int q)
 
 		int val1;
 		int val2;
-		for(i = p; i < q+1; i++)
+		for(i = p; i <= q; i++)
 		{
 			//temp_token_last = temp_token;
 			token_map_last = main_token;
@@ -261,12 +261,13 @@ int eval(int p, int q)
 				main_token = temp_token;
 				op				 = i;
 			}
+			/*
 			else
 			{
 				continue;
 				//main_token = temp_token_last;
 				
-			}
+			}*/
 		}
 		val1 = eval(p, op-1);
 		val2 = eval(op+1, q);
