@@ -98,7 +98,7 @@ static int cmd_x(char *args) {
 	char *address_char = NULL;
 	num_char = strtok(NULL," ");
 	address_char = strtok(NULL," ");
-	sscanf(num_char,"%d",&num)
+	sscanf(num_char,"%d",&num);
 	sscanf(address_char,"%x",&address);
 	for(int i = 0;i < num;i++)
 	{
