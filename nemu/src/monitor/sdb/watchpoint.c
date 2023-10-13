@@ -62,7 +62,7 @@ WP* new_wp(char* args)
 			head[head_num-1].NO = free_[i].NO;
 			head[head_num-1].state = 1;
 			head[head_num-1].next = &free_[i];
-			head[head_num-1].what = args;
+			head[head_num-1].what = &args;
 			head[head_num].next = NULL;
 		//	head_num++;
 			break;
@@ -100,7 +100,7 @@ void info_wp()
 	Log("Num       Type          Disp     Enb      Address    What");
 	while(head[i].next != NULL)
 	{
-		Log("%2d        watchpoint    keep                         %s",head[i].NO,head[i].what);
+		Log("%2d        watchpoint    keep                         %s",head[i].NO,*head[i].what);
 		i++;
 	}
 }
