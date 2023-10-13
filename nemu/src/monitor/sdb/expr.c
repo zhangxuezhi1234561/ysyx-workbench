@@ -197,6 +197,8 @@ bool check_parentheses(int p, int q)//Needed First and End Test
 */
 }
 
+#pragma GCC push_options
+#pragma GCC optimize(0)
 int eval(int p, int q)
 {
 	int num = 0;
@@ -287,8 +289,6 @@ int eval(int p, int q)
 }
 
 
-#pragma GCC push_options
-#pragma GCC optimize(0)
 
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
