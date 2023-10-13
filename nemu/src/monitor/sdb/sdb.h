@@ -31,5 +31,6 @@ void free_wp(WP *wp);
 WP* new_wp();
 void wp_scan();
 void info_wp();
+void wp_destroy();
 
 #endif

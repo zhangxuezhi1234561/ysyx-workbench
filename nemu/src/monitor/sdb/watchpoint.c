@@ -104,3 +104,7 @@ void info_wp()
 		i++;
 	}
 }
+void wp_destroy()
+{
+	free(head);
+}
