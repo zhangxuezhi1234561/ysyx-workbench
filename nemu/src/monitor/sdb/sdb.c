@@ -19,6 +19,7 @@
 #include <readline/history.h>
 #include "sdb.h"
 #include <stdio.h>
+#include <memory/paddr.h>
 
 static int is_batch_mode = false;
 static word_t old_value;
