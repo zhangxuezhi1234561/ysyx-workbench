@@ -41,7 +41,6 @@ void init_wp_pool() {
 WP* new_wp(char* args)
 {
 	int i = 0;
-	int j = 0;
 	head_num++;
 	head = malloc(sizeof(WP) * NR_WP);
 //	WP *node = calloc(1, sizeof(WP));
@@ -53,10 +52,11 @@ WP* new_wp(char* args)
 			free_[i].state = 1;
 //			node->NO = free_[i].No;
 //			node->state = free_[i].state;
+/*
 			while(head[j].next != NULL)
 			{
 				j++;
-			}
+			}*/
 		//	head[j].next = &free_[i];
 			//head[j].state = 1;
 			//head[j].NO = free_[i].NO;
@@ -75,6 +75,7 @@ WP* new_wp(char* args)
 void free_wp(WP *wp)
 {
 	int i = 0;
+	head_num--;
 	for(i = NR_WP-1;i >= 0;i--)
 	{
 		if(free_[i-1].state == 0)
@@ -86,6 +87,7 @@ void free_wp(WP *wp)
 	if(head_num > 1)
 	{
 		head[head_num-2].next = NULL;
+		head[head_num-1].state = 0;
 	}
 	if(head_num == 1)
 	{
@@ -99,7 +101,7 @@ void info_wp()
 	while(head[i].next != NULL)
 	{
 		Log("Num       Type          Disp     Enb      Address    What");
-		Log("%d        watchpoint    keep                         %s",head[i].NO,head[i].what);
+		Log("%2d        watchpoint    keep                         %s",head[i].NO,head[i].what);
 		i++;
 	}
 }
