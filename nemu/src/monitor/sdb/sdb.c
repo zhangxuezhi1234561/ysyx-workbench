@@ -92,7 +92,7 @@ static int cmd_info(char *args) {
 
 static int cmd_x(char *args) {
 	int value = 0;
-	sccanf(args,"%d",&value)
+	sscanf(args,"%d",&value)
 	printf("%s:         %x",args,*guest_to_host(value));
 	return 0;
 }
