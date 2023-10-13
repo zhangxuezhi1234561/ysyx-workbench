@@ -102,7 +102,7 @@ static int cmd_x(char *args) {
 	sscanf(address_char,"%x",&address);
 	for(int i = 0;i < num;i++)
 	{
-		printf("%s:         %x\n",args,*guest_to_host(address+i*4);
+		printf("%s:         %x\n",args,*guest_to_host(address+i*4));
 	}
 	return 0;
 }
