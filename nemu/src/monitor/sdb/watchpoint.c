@@ -38,7 +38,8 @@ void init_wp_pool() {
 }
 
 /* TODO: Implement the functionality of watchpoint */
-
+#pragma GCC push_options
+#pragma GCC optimize(0)
 WP* new_wp(char* args)
 {
 	int i = 0;
@@ -109,3 +110,5 @@ void wp_destroy()
 {
 	free(head);
 }
+
+#pragma GCC pop_options
