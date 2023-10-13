@@ -81,6 +81,14 @@ static int cmd_si(char *args) {
 	return 0;
 }
 
+static int cmd_info(char *args) {
+	if(strcmp(args,"r") == 0)
+	{
+		isa_reg_display();
+	}
+	return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -95,6 +103,7 @@ static struct {
   /* TODO: Add more commands */
 	{"w","Set Watchpoint", cmd_w},
 	{"si","Step Execute",cmd_si},
+	{"info","Print Information",cmd_info}
 };
 
 #define NR_CMD ARRLEN(cmd_table)
