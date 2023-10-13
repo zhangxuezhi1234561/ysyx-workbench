@@ -247,7 +247,7 @@ int eval(int p, int q)
 		for(i = p; i <= q; i++)
 		{
 			//temp_token_last = temp_token;
-			token_map_last = main_token;
+		//	token_map_last = main_token;
 			switch(tokens[i].type)
 			{
 				case '+': temp_token = '+'; token_map = 3;break;
@@ -262,6 +262,7 @@ int eval(int p, int q)
 			count++;
 			if(((token_map >  token_map_last) || token_map == token_map_last) && flag_test == true)//忽略了两边都有括号的情况？
 			{
+				token_map_last = token_map;
 				main_token = temp_token;
 				op				 = i;
 			}
