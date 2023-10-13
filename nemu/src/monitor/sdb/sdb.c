@@ -66,6 +66,7 @@ static int cmd_w(char *args) {
 	new_wp(args);
 	info_wp();
 	old_value = expr(args,success);
+	free(success);
 	return 0;
 }
 static int cmd_si(char *args) {
