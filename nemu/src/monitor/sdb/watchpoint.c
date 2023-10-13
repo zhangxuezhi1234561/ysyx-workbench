@@ -35,6 +35,7 @@ void init_wp_pool() {
 
 	head = (WP*)malloc(sizeof(WP) * NR_WP);
   free_ = wp_pool;
+	head[0].next = NULL;
 }
 
 /* TODO: Implement the functionality of watchpoint */
