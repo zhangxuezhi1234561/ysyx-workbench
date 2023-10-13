@@ -89,6 +89,12 @@ static int cmd_info(char *args) {
 	return 0;
 }
 
+static int cmd_x(char *args) {
+	int value = 0;
+	sccanf(args,"%d",&value)
+	printf("%s:         %x",args,*guest_to_host(value));
+	return 0;
+}
 static int cmd_help(char *args);
 
 static struct {
@@ -103,7 +109,8 @@ static struct {
   /* TODO: Add more commands */
 	{"w","Set Watchpoint", cmd_w},
 	{"si","Step Execute",cmd_si},
-	{"info","Print Information",cmd_info}
+	{"info","Print Information",cmd_info},
+	{"x","Scan Memory",cmd_x},
 };
 
 #define NR_CMD ARRLEN(cmd_table)
