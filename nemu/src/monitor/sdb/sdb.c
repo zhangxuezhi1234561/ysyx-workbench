@@ -92,9 +92,18 @@ static int cmd_info(char *args) {
 }
 
 static int cmd_x(char *args) {
-	int value = 0;
-	sscanf(args,"%x",&value);
-	printf("%s:         %x\n",args,*guest_to_host(value));
+	int num = 0;
+	int address = 0;
+	char *num_char = NULL;
+	char *address_char = NULL;
+	num_char = strtok(NULL," ");
+	address_char = strtok(NULL," ");
+	sscanf(num_char,"%d",&num)
+	sscanf(address_char,"%x",&address);
+	for(int i = 0;i < num;i++)
+	{
+		printf("%s:         %x\n",args,*guest_to_host(address+i*4);
+	}
 	return 0;
 }
 static int cmd_help(char *args);
