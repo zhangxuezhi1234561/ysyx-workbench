@@ -32,7 +32,7 @@ void init_wp_pool() {
 		wp_pool[i].state = 0;
   }
 
-	head = malloc(sizeof(WP) * NR_WP);
+	head = (WP*)malloc(sizeof(WP) * NR_WP);
   free_ = wp_pool;
 }
 
