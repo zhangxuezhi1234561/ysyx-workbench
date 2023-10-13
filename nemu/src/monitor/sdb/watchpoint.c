@@ -100,7 +100,7 @@ void info_wp()
 	Log("Num       Type          Disp     Enb      Address    What");
 	while(head[i].next != NULL)
 	{
-		Log("%2d        watchpoint    keep                         %s",head[i].NO,*head[i].what);
+		Log("%2d        watchpoint    keep                         %s",head[i].NO,*(head[i].what));
 		i++;
 	}
 }
