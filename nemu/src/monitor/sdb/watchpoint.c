@@ -62,7 +62,7 @@ WP* new_wp(char* args)
 			head[head_num-1].NO = free_[i].NO;
 			head[head_num-1].state = 1;
 			head[head_num-1].next = &free_[i];
-			head[head_num-1].what = &args;
+			*head[head_num-1].what = args;
 			head[head_num].next = NULL;
 		//	head_num++;
 			break;
