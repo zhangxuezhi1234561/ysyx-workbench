@@ -46,9 +46,9 @@ static struct rule {
 	{"\\(",BRACKET_LEFT},// bracket
 	{"\\)",BRACKET_RIGHT},
 	{"0x[a-f0-9]+",HEX},	//HEX
+	{"\\$[0-9\\w]+",DOLLAR}, //DOLLAR
 	{"[0-9]+",INTEGER},
   {"==", TK_EQ},        // equal
-	{"\\$[0-9\\w]+",DOLLAR}, //DOLLAR
 };
 
 #define NR_REGEX ARRLEN(rules)
