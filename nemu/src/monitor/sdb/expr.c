@@ -232,6 +232,7 @@ int eval(int p, int q)
 	{
 		int i = 0;
 		int op = 0;
+		int count = 0;
 //		int temp_op = 0;
 		int main_token = 0;
 		int temp_token = 0;
@@ -256,18 +257,18 @@ int eval(int p, int q)
 				case BRACKET_RIGHT: token_map = 0;	flag_test = true;	break;
 				default: token_map = 0; break;
 			}
+			count++;
 			if(((token_map >  token_map_last) || token_map == token_map_last) && flag_test == true)//忽略了两边都有括号的情况？
 			{
 				main_token = temp_token;
 				op				 = i;
 			}
-			/*
 			else
 			{
 				continue;
 				//main_token = temp_token_last;
 				
-			}*/
+			}
 		}
 		val1 = eval(p, op-1);
 		val2 = eval(op+1, q);

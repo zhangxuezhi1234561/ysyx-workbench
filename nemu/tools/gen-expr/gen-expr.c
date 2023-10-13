@@ -42,7 +42,7 @@ int gen_num(char *str)
 	j = strlen(str);
 	if(str[strlen(str)-1] == '/')
 		zero_judge = 1;
-	while(str[j-1] == '(')
+	while(str[j-1] == '(')//有问题！
 	{
 		if(str[j-1] == '/')
 		{
