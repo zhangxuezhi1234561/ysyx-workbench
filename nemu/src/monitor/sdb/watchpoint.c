@@ -18,7 +18,8 @@
 #define NR_WP 32
 
 static WP wp_pool[NR_WP] = {};
-static WP *head = NULL, *free_ = NULL;
+static WP *free_ = NULL;
+WP *head = NULL;
 
 static int head_num = 0;
 
