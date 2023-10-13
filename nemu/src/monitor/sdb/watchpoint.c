@@ -44,6 +44,7 @@ WP* new_wp(char* args)
 {
 	int i = 0;
 	head_num++;
+	bool *success = (bool *)malloc(sizeof(bool));
 //	WP *node = calloc(1, sizeof(WP));
 	for(i = NR_WP-1;i >= 0;i--)
 	{
@@ -68,7 +69,9 @@ WP* new_wp(char* args)
 			{
 				head[head_num-1].what[j] = args[j];
 			}
+			head[head_num-1].value = expr(head[head_num-1].what,success);
 			head[head_num].next = NULL;
+			free(success);
 		//	head_num++;
 			break;
 		}
@@ -112,6 +115,22 @@ void info_wp()
 void wp_destroy()
 {
 	free(head);
+}
+void wp_scan()
+{
+	int i = 0;
+	bool *success = (bool *)malloc(sizeof(bool));
+	Log("Now in watchpoint.c wp_scan function\n");
+	while(head[i].next != NULL)
+	{
+		if(expr(head[i].what,success) != head[i].value)
+		{
+			head[i].value = expr(head[i].what,success);
+			nemu_state.state = NEMU_STOP;
+		}
+		i++;
+	}
+	free(success);
 }
 
 #pragma GCC pop_options
