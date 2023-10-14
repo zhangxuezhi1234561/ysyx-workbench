@@ -20,11 +20,8 @@
 #include <assert.h>
 #include <string.h>
 
-
 // this should be enough
 static char buf[65536] = {};
-static int k = 0;
-//static char op[] = "+-*/";
 static char code_buf[65536 + 128] = {}; // a little larger than `buf`
 static char *code_format =
 "#include <stdio.h>\n"
@@ -34,81 +31,8 @@ static char *code_format =
 "  return 0; "
 "}";
 
-int gen_num(char *str)
-{
-//	srand(time(NULL));
-	int j = 0;
-	int zero_judge = 0;
-	j = strlen(str);
-	if(str[strlen(str)-1] == '/')
-		zero_judge = 1;
-	while(str[j-1] == '(')//有问题！
-	{
-		if(str[j-1] == '/')
-		{
-			zero_judge = 1;
-			break;
-		}
-		j--;
-	}
-	int i = 0;
-	i = rand()%10;
-	if(i == 0 && strlen(str) != 0 && zero_judge)
-		return gen_num(str);
-	else
-		return rand()%10;
-}
-
-
-char gen_rand_op()
-{
-	int i = 0;
-	char a[]="+-*/";
-	
-//	srand(time(NULL));
-	i = rand()%4;
-	return a[i];
-}
-
-int choose(int num)
-{
-//	srand(time(NULL));
-	return rand()%num;
-}
-char gen(char c, char *str)
-{
-	if(strlen(str) == 0 || (c == '(' && (str[strlen(str)-1] == '+' || str[strlen(str)-1] == '-' || str[strlen(str)-1] == '*' || str[strlen(str)-1] == '/' || str[strlen(str)-1] == '(')))
-	{
-		return c;
-	}
-	else if(c == '(')
-	{
-		return gen_rand_op();
-	}
-	else
-	{
-		return c;
-	}
-}
-
 static void gen_rand_expr() {
-//	static int k = 0;
-//	int data;
-//	char *data_str;
-	switch(choose(3))
-	{
-		case 0: buf[k++] = gen_num(buf) + '0'; break;
-		case 1: buf[k++] = gen('(',buf); 
-						if(buf[k-1] != '(')
-						{
-							buf[k++] = '(';
-						}
-						gen_rand_expr();	buf[k++] = gen(')',buf); break;
-		default: gen_rand_expr();	buf[k++] = gen_rand_op();	gen_rand_expr(); break;	
-	}
-//	buf[k] = '\0';
-//	k = 0;
-//  buf[0] = '\0';
+  buf[0] = '\0';
 }
 
 int main(int argc, char *argv[]) {
@@ -121,7 +45,7 @@ int main(int argc, char *argv[]) {
   int i;
   for (i = 0; i < loop; i ++) {
     gen_rand_expr();
-		k = 0;
+
     sprintf(code_buf, code_format, buf);
 
     FILE *fp = fopen("/tmp/.code.c", "w");
