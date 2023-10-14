@@ -18,6 +18,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
+#include <stdio.h>
+#include <memory/paddr.h>
 
 static int is_batch_mode = false;
 static word_t old_value;
@@ -51,6 +53,7 @@ static int cmd_c(char *args) {
 
 
 static int cmd_q(char *args) {
+	wp_destroy();
 	nemu_state.state = NEMU_QUIT;
   return -1;
 }
@@ -65,20 +68,43 @@ static int cmd_w(char *args) {
 	new_wp(args);
 	info_wp();
 	old_value = expr(args,success);
+	free(success);
 	return 0;
 }
-void wp_scan()
-{
-	Log("Now in wp_scan() function\n");
-	/*
-	static word_t value;
-	bool *success = NULL;
-	value = expr(old_args,success);
-	if(value != old_value)
+static int cmd_si(char *args) {
+	int n = 0;
+	if(args == NULL)
 	{
-		nemu_state.state = NEMU_STOP;
+		n = 1;
 	}
-	*/
+	else
+		sscanf(args,"%d",&n);
+	cpu_exec(n);
+	return 0;
+}
+
+static int cmd_info(char *args) {
+	if(strcmp(args,"r") == 0)
+	{
+		isa_reg_display();
+	}
+	return 0;
+}
+
+static int cmd_x(char *args) {
+	int num = 0;
+	int address = 0;
+	char *num_char = NULL;
+	char *address_char = NULL;
+	num_char = strtok(NULL," ");
+	address_char = strtok(NULL," ");
+	sscanf(num_char,"%d",&num);
+	sscanf(address_char,"%x",&address);
+	for(int i = 0;i < num;i++)
+	{
+		printf("0x%x:         %x\n",address+i*4,*guest_to_host(address+i*4));
+	}
+	return 0;
 }
 static int cmd_help(char *args);
 
@@ -93,6 +119,9 @@ static struct {
 
   /* TODO: Add more commands */
 	{"w","Set Watchpoint", cmd_w},
+	{"si","Step Execute",cmd_si},
+	{"info","Print Information",cmd_info},
+	{"x","Scan Memory",cmd_x},
 };
 
 #define NR_CMD ARRLEN(cmd_table)
