@@ -54,12 +54,6 @@ always @(posedge clk) begin
 							cts_sel		 <= 0;
 							seg_en_reg <= 0;
 						end
-						else if(buffer[8:1] == Re_his_reg && cts_sel == 0) begin
-							Receive_reg_0	<=	buffer[8:1];
-							Ascii_reg_0		<=	ps2_ascii_rom[buffer[8:1]];
-//							cts_sel	<= 0;
-							PST <= no_cts;
-						end
 						else begin
 							seg_en_reg <= 1;
 							Receive_reg_0	<=	buffer[8:1];
@@ -67,6 +61,12 @@ always @(posedge clk) begin
 							cts_sel	<= 1;
 							PST <= no_cts;
 						end
+					end
+					else if(buffer[8:1] == Re_his_reg && cts_sel == 0) begin
+						Receive_reg_0	<=	buffer[8:1];
+						Ascii_reg_0		<=	ps2_ascii_rom[buffer[8:1]];
+//					cts_sel	<= 0;
+						PST <= no_cts;
 					end
 					else begin
 						cts_sel <= 0;
