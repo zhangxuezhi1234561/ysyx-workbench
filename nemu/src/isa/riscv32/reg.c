@@ -36,7 +36,7 @@ word_t isa_reg_str2val(const char *s, bool *success) {
 	int reg_id = 0;
 	for(int i = 0;i < 32;i++)
 	{
-		if(regs[i] == s)
+		if(strcmp(s, regs[i]) == 0)
 		{
 			reg_id = i;
 		}
