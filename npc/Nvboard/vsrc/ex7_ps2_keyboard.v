@@ -45,6 +45,7 @@ always @(posedge clk) begin
 		count	<=	0;
 		Re_his_reg	<=	0;
 		num	<=	0;
+		PST <= no_cts;
 	end
 	else begin
 		if(sampling)	begin
