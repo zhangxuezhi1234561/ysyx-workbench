@@ -80,7 +80,7 @@ always @(posedge clk) begin
 							Receive_reg_0	<=	buffer[8:1];
 							Ascii_reg_0		<=	ps2_ascii_rom[buffer[8:1]];
 //						cts_sel	<= 0;
-							PST <= cts;
+							PST <= no_cts;
 							seg_en_reg <= 1;
 						//	num <= 0;
 						end
@@ -113,7 +113,11 @@ always @(PST) begin
 	else begin
 		case(PST)
 			cts : begin Num_reg <= Num_reg + 1;end
-			no_cts : begin Num_reg <= Num_reg; Receive_reg_1 <= Receive_reg_0; Ascii_reg_1 <= Ascii_reg_0; end
+			no_cts : begin 
+										 Num_reg <= Num_reg; 
+										 Receive_reg_1 <= Receive_reg_0;
+										 Ascii_reg_1 <= Ascii_reg_0;
+							 end
 		endcase
 		$display("PST is %d", PST);
 	end
