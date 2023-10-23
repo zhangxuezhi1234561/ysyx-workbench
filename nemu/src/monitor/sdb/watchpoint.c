@@ -106,10 +106,10 @@ void free_wp(WP *wp)
 void info_wp()
 {
 	int i = 0;
-	Log("Num       Type          Disp     Enb      Address    What");
+	Log("Num       Type          Disp     Enb      Address    What    Value");
 	while(head[i].next != NULL)
 	{
-		Log("%2d        watchpoint    keep                         %s",head[i].NO,(head[i].what));
+		Log("%2d        watchpoint    keep                         %s       %d",head[i].NO,(head[i].what),head[i].value);
 		i++;
 	}
 }
