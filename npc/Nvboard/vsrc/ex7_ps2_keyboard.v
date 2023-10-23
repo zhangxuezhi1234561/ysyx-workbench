@@ -68,7 +68,7 @@ end
 assign Receive = Receive_reg;
 assign Ascii	 = Ascii_reg;
 
-always @(resetn) begin
+always @(posedge clk or negedge resetn) begin
 	if(!resetn) begin
 		Num_reg <= 0;
 	end
@@ -77,8 +77,8 @@ always @(resetn) begin
 			cts : begin Num_reg <= Num_reg + 1; end
 			no_cts : begin Num_reg <= Num_reg; end
 		endcase
-	end
 		$display("PST is %d", PST);
+	end
 end
 
 assign	Num = Num_reg;
