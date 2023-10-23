@@ -60,6 +60,7 @@ always @(posedge clk) begin
 						if(buffer[8:1] == 8'hf0) begin
 							cts_sel		 <= 0;	//松开
 							num				 <= 1;
+							PST				 <= no_cts;
 							seg_en_reg <= 0;
 						end
 						else begin
