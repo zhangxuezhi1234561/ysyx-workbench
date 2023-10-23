@@ -58,11 +58,12 @@ always @(posedge clk) begin
 							seg_en_reg <= 1;
 							Receive_reg_0	<=	buffer[8:1];
 							Ascii_reg_0		<=	ps2_ascii_rom[buffer[8:1]];
+							cts_sel	<= 1;
 							PST <= no_cts;
 						end
 					end
 					else begin
-						cts_sel <= 1;
+						cts_sel <= 0;
 						PST <= cts;
 					end
 //					$display("receive %x , it's ASCII %x", buffer[8:1], ps2_ascii_rom[buffer[8:1]]);
