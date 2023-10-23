@@ -44,6 +44,7 @@ void init_wp_pool() {
 WP* new_wp(char* args)
 {
 	int i = 0;
+	int j = 0;
 	head_num++;
 	bool *success = (bool *)malloc(sizeof(bool));
 //	WP *node = calloc(1, sizeof(WP));
@@ -66,10 +67,11 @@ WP* new_wp(char* args)
 			head[head_num-1].NO = free_[i].NO;
 			head[head_num-1].state = 1;
 			head[head_num-1].next = &free_[i];
-			for(int j = 0;j < strlen(args);j++)
+			for(j = 0;j < strlen(args);j++)
 			{
 				head[head_num-1].what[j] = args[j];
 			}
+			head[head_num-1].what[j] = '\0';
 			head[head_num-1].value = expr(head[head_num-1].what,success);
 			head[head_num].next = NULL;
 			free(success);
