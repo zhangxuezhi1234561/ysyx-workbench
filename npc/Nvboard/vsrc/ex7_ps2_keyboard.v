@@ -16,9 +16,12 @@ reg	[3:0]	count;
 reg	[9:0]	buffer;
 
 reg [7:0] ps2_ascii_rom[255:0];
-reg	[7:0]	Receive_reg;
-reg	[7:0]	Ascii_reg;
+reg	[7:0]	Receive_reg_0;
+reg	[7:0]	Ascii_reg_0;
 reg	[7:0]	Num_reg;
+
+reg	[7:0]	Receive_reg_1;
+reg	[7:0]	Ascii_reg_1;
 
 reg [2:0] PST;
 localparam cts = 0, no_cts = 1, push = 2, pop = 3;
@@ -51,8 +54,8 @@ always @(posedge clk) begin
 						end
 						else begin
 							seg_en_reg <= 1;
-							Receive_reg	<=	buffer[8:1];
-							Ascii_reg		<=	ps2_ascii_rom[buffer[8:1]];
+							Receive_reg_0	<=	buffer[8:1];
+							Ascii_reg_0		<=	ps2_ascii_rom[buffer[8:1]];
 							PST <= no_cts;
 						end
 					end
@@ -61,7 +64,7 @@ always @(posedge clk) begin
 					end
 //					$display("receive %x , it's ASCII %x", buffer[8:1], ps2_ascii_rom[buffer[8:1]]);
 				end
-				Re_his_reg <= Receive_reg;
+				Re_his_reg <= Receive_reg_0;
 				count	<= 0;
 			end
 			else begin
@@ -73,8 +76,8 @@ always @(posedge clk) begin
 end
 
 assign seg_en	 = seg_en_reg;
-assign Receive = Receive_reg;
-assign Ascii	 = Ascii_reg;
+assign Receive = Receive_reg_1;
+assign Ascii	 = Ascii_reg_1;
 
 always @(PST) begin
 	if(!resetn) begin
@@ -82,8 +85,8 @@ always @(PST) begin
 	end
 	else begin
 		case(PST)
-			cts : begin Num_reg <= Num_reg + 1; end
-			no_cts : begin Num_reg <= Num_reg; end
+			cts : begin Num_reg <= Num_reg + 1;end
+			no_cts : begin Num_reg <= Num_reg; Receive_reg_1 <= Receive_reg_0; Ascii_reg_1 <= Ascii_reg_0; end
 		endcase
 		$display("PST is %d", PST);
 	end
