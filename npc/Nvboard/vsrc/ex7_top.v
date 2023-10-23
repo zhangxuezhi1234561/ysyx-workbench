@@ -15,6 +15,7 @@ module ex7_top(
 wire [7:0] Receive;
 wire [7:0] Ascii;
 wire [7:0] Num;
+wire			 seg_en;
 
 ex7_ps2_keyboard my_keyboard(
 	.clk (clk),
@@ -23,36 +24,43 @@ ex7_ps2_keyboard my_keyboard(
 	.ps2_data (ps2_data),
 	.Receive	(Receive),
 	.Ascii		(Ascii),
-	.Num			(Num)
+	.Num			(Num),
+	.seg_en		(seg_en)
 );
 
 ex7_bcd7seg seg0(
 	.b	(Receive[3:0]),
+	.seg_en (seg_en),
 	.h	(seg_0)
 );
 
 ex7_bcd7seg seg1(
 	.b	(Receive[7:4]),
+	.seg_en (seg_en),
 	.h	(seg_1)
 );
 
 ex7_bcd7seg seg2(
 	.b	(Receive[3:0]),
+	.seg_en (seg_en),
 	.h	(seg_2)
 );
 
 ex7_bcd7seg seg3(
 	.b	(Receive[7:4]),
+	.seg_en (seg_en),
 	.h	(seg_3)
 );
 
 ex7_bcd7seg seg6(
 	.b	(Num[3:0]),
+	.seg_en (1'b1),
 	.h	(seg_6)
 );
 
 ex7_bcd7seg seg7(
 	.b	(Num[7:4]),
+	.seg_en (1'b1),
 	.h	(seg_7)
 );
 

@@ -5,8 +5,8 @@ module ex7_ps2_keyboard(
 	input ps2_data,
 	output	[7:0] Receive,
 	output	[7:0]	Ascii,
-	output	[7:0]	Num
-
+	output	[7:0]	Num,
+	output				seg_en
 );
 
 parameter FILE_PATH = "resource/ex7_rom.txt";
@@ -21,7 +21,7 @@ reg	[7:0]	Ascii_reg;
 reg	[7:0]	Num_reg;
 
 reg [2:0] PST;
-localparam cts = 0, no_cts = 1;
+localparam cts = 0, no_cts = 1, push = 2, pop = 3;
 
 initial begin
 	$readmemh(FILE_PATH,ps2_ascii_rom);
@@ -33,6 +33,7 @@ end
 
 wire	sampling	=	ps2_clk_sync[2] & ~ps2_clk_sync[1];
 reg	[7:0] Re_his_reg;
+reg				seg_en_reg;
 
 always @(posedge clk) begin
 	if(!resetn) begin
@@ -45,9 +46,15 @@ always @(posedge clk) begin
 					(ps2_data)					&&
 					(^buffer[9:1]))	begin
 					if(buffer[8:1] != Re_his_reg) begin
+						if(buffer[8:1] == 8'hf0) begin
+							seg_en_reg <= 0;
+						end
+						else begin
+							seg_en_reg <= 1;
+							Receive_reg	<=	buffer[8:1];
+							Ascii_reg		<=	ps2_ascii_rom[buffer[8:1]];
+						end
 						PST <= no_cts;
-						Receive_reg	<=	buffer[8:1];
-						Ascii_reg		<=	ps2_ascii_rom[buffer[8:1]];
 					end
 					else begin
 						PST <= cts;
@@ -65,6 +72,7 @@ always @(posedge clk) begin
 	end
 end
 
+assign seg_en	 = seg_en_reg;
 assign Receive = Receive_reg;
 assign Ascii	 = Ascii_reg;
 
