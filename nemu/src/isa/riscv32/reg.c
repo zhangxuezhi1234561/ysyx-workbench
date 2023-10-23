@@ -42,6 +42,6 @@ word_t isa_reg_str2val(const char *s, bool *success) {
 			break;
 		}
 	}
-	return cpu.gpr[check_reg_idx(reg_id)];
+	return gpr(reg_id);
   //return 0;
 }
