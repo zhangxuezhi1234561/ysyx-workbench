@@ -37,6 +37,7 @@ end
 wire	sampling	=	ps2_clk_sync[2] & ~ps2_clk_sync[1];
 reg	[7:0] Re_his_reg;
 reg				seg_en_reg;
+reg				cts_sel;
 
 always @(posedge clk) begin
 	if(!resetn) begin
@@ -48,8 +49,9 @@ always @(posedge clk) begin
 				if((buffer[0]	==	0) &&
 					(ps2_data)					&&
 					(^buffer[9:1]))	begin
-					if(buffer[8:1] != Re_his_reg) begin
+					if(buffer[8:1] != Re_his_reg && cts_sel == 0) begin
 						if(buffer[8:1] == 8'hf0) begin
+							cts_sel		 <= 0;
 							seg_en_reg <= 0;
 						end
 						else begin
@@ -60,6 +62,7 @@ always @(posedge clk) begin
 						end
 					end
 					else begin
+						cts_sel <= 1;
 						PST <= cts;
 					end
 //					$display("receive %x , it's ASCII %x", buffer[8:1], ps2_ascii_rom[buffer[8:1]]);
