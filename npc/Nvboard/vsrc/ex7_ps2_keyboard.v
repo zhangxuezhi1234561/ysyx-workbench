@@ -53,8 +53,8 @@ always @(posedge clk) begin
 							seg_en_reg <= 1;
 							Receive_reg	<=	buffer[8:1];
 							Ascii_reg		<=	ps2_ascii_rom[buffer[8:1]];
+							PST <= no_cts;
 						end
-						PST <= no_cts;
 					end
 					else begin
 						PST <= cts;
