@@ -39,6 +39,7 @@ word_t isa_reg_str2val(const char *s, bool *success) {
 		if(strcmp(s, regs[i]) == 0)
 		{
 			reg_id = i;
+			break;
 		}
 	}
 	return cpu.gpr[check_reg_idx(reg_id)];
