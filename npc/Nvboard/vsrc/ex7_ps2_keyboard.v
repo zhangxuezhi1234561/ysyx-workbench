@@ -5,7 +5,7 @@ module ex7_ps2_keyboard(
 	input ps2_data
 );
 
-//parameter FILE_PATH = "ex7_rom.txt";
+parameter FILE_PATH = "resource/ex7_rom.txt";
 
 reg	[2:0]	ps2_clk_sync;
 reg	[3:0]	count;
@@ -14,7 +14,7 @@ reg	[9:0]	buffer;
 reg [7:0] ps2_ascii_rom[255:0];
 
 initial begin
-	$readmemh("vsrc/ex7_rom.txt",ps2_ascii_rom);
+	$readmemh(FILE_PATH,ps2_ascii_rom);
 end
 
 always @(posedge clk) begin

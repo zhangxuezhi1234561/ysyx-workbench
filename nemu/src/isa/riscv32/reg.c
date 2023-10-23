@@ -36,12 +36,11 @@ word_t isa_reg_str2val(const char *s, bool *success) {
 	int reg_id = 0;
 	for(int i = 0;i < 32;i++)
 	{
-		if(strcmp(s, regs[i]) == 0)
+		if(regs[i] == s)
 		{
 			reg_id = i;
-			break;
 		}
 	}
-	return gpr(reg_id);
+	return cpu.gpr[check_reg_idx(reg_id)];
   //return 0;
 }
