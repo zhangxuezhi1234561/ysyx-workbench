@@ -122,6 +122,7 @@ void wp_scan()
 	int i = 0;
 	bool *success = (bool *)malloc(sizeof(bool));
 	Log("Now in watchpoint.c wp_scan function\n");
+	Log("The value is %d\n",expr(head[0].what,success));
 	while(head[i].next != NULL)
 	{
 		if(expr(head[i].what,success) != head[i].value)
