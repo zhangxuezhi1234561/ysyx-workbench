@@ -77,8 +77,8 @@ always @(resetn) begin
 			cts : begin Num_reg <= Num_reg + 1; end
 			no_cts : begin Num_reg <= Num_reg; end
 		endcase
-		$display("PST is %d", PST);
 	end
+		$display("PST is %d", PST);
 end
 
 assign	Num = Num_reg;
