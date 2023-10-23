@@ -68,7 +68,7 @@ end
 assign Receive = Receive_reg;
 assign Ascii	 = Ascii_reg;
 
-always @(posedge clk or negedge resetn) begin
+always @(PST) begin
 	if(!resetn) begin
 		Num_reg <= 0;
 	end
