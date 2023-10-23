@@ -38,10 +38,13 @@ wire	sampling	=	ps2_clk_sync[2] & ~ps2_clk_sync[1];
 reg	[7:0] Re_his_reg;
 reg				seg_en_reg;
 reg				cts_sel;
+reg				num;
 
 always @(posedge clk) begin
 	if(!resetn) begin
 		count	<=	0;
+		Re_his_reg	<=	0;
+		num	<=	0;
 	end
 	else begin
 		if(sampling)	begin
@@ -49,13 +52,17 @@ always @(posedge clk) begin
 				if((buffer[0]	==	0) &&
 					(ps2_data)					&&
 					(^buffer[9:1]))	begin
+//					Receive_reg_0	<=	
+
+
 					if(buffer[8:1] != Re_his_reg) begin
 						if(buffer[8:1] == 8'hf0) begin
-							cts_sel		 <= 0;
+							cts_sel		 <= 0;	//松开
+							num				 <= 1;
 							seg_en_reg <= 0;
 						end
 						else begin
-							seg_en_reg <= 0;
+							seg_en_reg <= 1;
 							Receive_reg_0	<=	buffer[8:1];
 							Ascii_reg_0		<=	ps2_ascii_rom[buffer[8:1]];
 							cts_sel	<= 1;
@@ -63,11 +70,18 @@ always @(posedge clk) begin
 						end
 					end
 					else if(buffer[8:1] == Re_his_reg && cts_sel == 0) begin
-						Receive_reg_0	<=	buffer[8:1];
-						Ascii_reg_0		<=	ps2_ascii_rom[buffer[8:1]];
-//					cts_sel	<= 0;
-						PST <= no_cts;
-						seg_en_reg <= 1;
+						if(num == 1) begin
+							seg_en_reg <= 0;
+							num <= 0;
+						end
+						else begin
+							Receive_reg_0	<=	buffer[8:1];
+							Ascii_reg_0		<=	ps2_ascii_rom[buffer[8:1]];
+//						cts_sel	<= 0;
+							PST <= no_cts;
+							seg_en_reg <= 1;
+						//	num <= 0;
+						end
 					end
 					else begin
 						cts_sel <= 0;
