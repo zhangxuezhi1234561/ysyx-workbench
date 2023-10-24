@@ -90,6 +90,7 @@ always @(Re_cnt) begin
 				PST	<=	A;
 			end
 			else begin
+				cnt	<= 2'd2;
 				seg_en_reg	<= 1'd1;
 				PST	<=	C;
 			end
