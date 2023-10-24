@@ -44,7 +44,6 @@ void init_wp_pool() {
 WP* new_wp(char* args)
 {
 	int i = 0;
-	int j = 0;
 	head_num++;
 	bool *success = (bool *)malloc(sizeof(bool));
 //	WP *node = calloc(1, sizeof(WP));
@@ -67,11 +66,10 @@ WP* new_wp(char* args)
 			head[head_num-1].NO = free_[i].NO;
 			head[head_num-1].state = 1;
 			head[head_num-1].next = &free_[i];
-			for(j = 0;j < strlen(args);j++)
+			for(int j = 0;j < strlen(args);j++)
 			{
 				head[head_num-1].what[j] = args[j];
 			}
-			head[head_num-1].what[j] = '\0';
 			head[head_num-1].value = expr(head[head_num-1].what,success);
 			head[head_num].next = NULL;
 			free(success);
@@ -108,10 +106,10 @@ void free_wp(WP *wp)
 void info_wp()
 {
 	int i = 0;
-	Log("Num       Type          Disp     Enb      Address    What            Value");
+	Log("Num       Type          Disp     Enb      Address    What");
 	while(head[i].next != NULL)
 	{
-		Log("%2d        watchpoint    keep                         %-9s       %-6d",head[i].NO,(head[i].what),head[i].value);
+		Log("%2d        watchpoint    keep                         %s",head[i].NO,(head[i].what));
 		i++;
 	}
 }
@@ -123,8 +121,7 @@ void wp_scan()
 {
 	int i = 0;
 	bool *success = (bool *)malloc(sizeof(bool));
-//	Log("Now in watchpoint.c wp_scan function\n");
-//	Log("The value is %d\n",expr(head[0].what,success));
+	Log("Now in watchpoint.c wp_scan function\n");
 	while(head[i].next != NULL)
 	{
 		if(expr(head[i].what,success) != head[i].value)
