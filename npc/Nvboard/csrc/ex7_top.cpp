@@ -29,5 +29,4 @@ int main()
 		nvboard_update();
 		single_cycle();
 	}
-	return 0;
 }
