@@ -70,7 +70,7 @@ reg	[1:0]	num;
 always @(Re_cnt) begin
 	case(PST)
 		A : begin
-					if(Receive_reg[0] != 0 && num != 1) begin
+					if(Receive_reg[0] != Receive_reg[2] && num != 1) begin
 						seg_en_reg	<= 1'd1;
 						Re_reg_1		<=	Receive_reg[0];
 						Ascii_reg_1	<=	Ascii_reg[0];
