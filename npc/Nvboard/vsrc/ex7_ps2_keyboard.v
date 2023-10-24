@@ -74,6 +74,7 @@ always @(Re_cnt) begin
 						seg_en_reg	<= 1'd1;
 						Re_reg_1		<=	Receive_reg[0];
 						Ascii_reg_1	<=	Ascii_reg[0];
+						$display("receive %x, it's ASCII %x", Re_reg_1, Ascii_reg_1);
 						cnt			<=	2'd1;
 						PST <= B;
 					end
