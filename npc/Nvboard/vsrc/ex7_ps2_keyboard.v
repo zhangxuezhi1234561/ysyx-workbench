@@ -78,6 +78,7 @@ always @(Re_cnt) begin
 						PST <= B;
 					end
 					else begin
+						cnt <= 0;
 						num <= 0;
 				end
 			end
