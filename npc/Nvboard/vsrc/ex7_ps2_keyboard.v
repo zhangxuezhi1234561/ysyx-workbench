@@ -70,7 +70,7 @@ reg	[1:0]	num;
 always @(Re_cnt) begin
 	case(PST)
 		A : begin
-					if(Receive_reg[0] != Receive_reg[2] && num != 1) begin
+					if(Receive_reg[0] != Receive_reg[1] && num != 1) begin
 						seg_en_reg	<= 1'd1;
 						Re_reg_1		<=	Receive_reg[0];
 						Ascii_reg_1	<=	Ascii_reg[0];
@@ -97,11 +97,12 @@ always @(Re_cnt) begin
 		end
 		C : begin
 			if(Receive_reg[2] == Receive_reg[1])begin
-				cnt <= 2'd2;
+				cnt <= 2'd1;
 				seg_en_reg <= 1'd1;
 				PST <= C;
 			end
 			else begin
+				cnt	<= 2;
 				PST <= A;
 			end
 		end
