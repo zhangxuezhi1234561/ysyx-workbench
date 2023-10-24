@@ -59,14 +59,14 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_w(char *args) {
-	Log("Now in cmd_w() function\n");
+//	Log("Now in cmd_w() function\n");
 	/*
 	*/
 	bool *success =(bool *)malloc(sizeof(bool));
 	*success = false;
 	old_args = args;
 	new_wp(args);
-	info_wp();
+//	info_wp();
 	old_value = expr(args,success);
 	free(success);
 	return 0;
@@ -87,6 +87,13 @@ static int cmd_info(char *args) {
 	if(strcmp(args,"r") == 0)
 	{
 		isa_reg_display();
+	}
+	else if(strcmp(args,"wp") == 0)
+	{
+		info_wp();
+	}
+	else {
+		printf("Unknow command %s\n",args);
 	}
 	return 0;
 }

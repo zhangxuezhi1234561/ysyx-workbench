@@ -221,7 +221,7 @@ int eval(int p, int q)
 				num = reg_value;
 				break;										
 		}
-		sscanf(tokens[p].str,"%*2d%d",&num);
+	//	sscanf(tokens[p].str,"%*2d%d",&num);
 		return num;
 		/* Return the single number */
 	}
