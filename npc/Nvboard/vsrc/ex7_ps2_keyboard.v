@@ -86,6 +86,7 @@ always @(Re_cnt) begin
 			Num_reg <=	Num_reg + 1;
 			if(Receive_reg[1] == 8'hf0) begin
 				cnt <= 2'd2;
+				num <= 1;
 				seg_en_reg	<=	0;
 				PST	<=	A;
 			end
