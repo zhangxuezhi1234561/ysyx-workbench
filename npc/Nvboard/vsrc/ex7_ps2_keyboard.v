@@ -80,6 +80,7 @@ always @(Re_cnt) begin
 					else begin
 						cnt <= 0;
 						num <= 0;
+						PST	<= A;
 				end
 			end
 		B : begin
@@ -104,6 +105,7 @@ always @(Re_cnt) begin
 			end
 			else begin
 				cnt	<= 2;
+				num	<= 1;
 				PST <= A;
 			end
 		end
