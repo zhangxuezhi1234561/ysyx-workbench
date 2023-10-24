@@ -79,6 +79,7 @@ always @(Re_cnt) begin
 					end
 					else begin
 						cnt <= 0;
+						seg_en_reg	<=	0;
 						num <= 0;
 						PST	<= A;
 				end
