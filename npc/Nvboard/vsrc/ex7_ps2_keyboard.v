@@ -109,5 +109,6 @@ end
 assign seg_en	=	seg_en_reg;
 assign Receive	=	Re_reg_1;
 assign Ascii		=	Ascii_reg_1;
+assign Num			=	Num_reg;
 
 endmodule
