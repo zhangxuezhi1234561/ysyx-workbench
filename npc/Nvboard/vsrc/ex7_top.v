@@ -41,13 +41,13 @@ ex7_bcd7seg seg1(
 );
 
 ex7_bcd7seg seg2(
-	.b	(Receive[3:0]),
+	.b	(Ascii[3:0]),
 	.seg_en (seg_en),
 	.h	(seg_2)
 );
 
 ex7_bcd7seg seg3(
-	.b	(Receive[7:4]),
+	.b	(Ascii[7:4]),
 	.seg_en (seg_en),
 	.h	(seg_3)
 );
