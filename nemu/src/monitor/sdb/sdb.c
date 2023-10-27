@@ -71,6 +71,16 @@ static int cmd_w(char *args) {
 	free(success);
 	return 0;
 }
+
+static int cmd_p(char *args) {	
+	bool *success =(bool *)malloc(sizeof(bool));
+	*success = false;
+//	Log("%d\n",expr(args,success));
+	printf("%d\n",expr(args,success));
+	free(success);
+	return 0;
+}
+
 static int cmd_si(char *args) {
 	int n = 0;
 	if(args == NULL)
@@ -129,6 +139,7 @@ static struct {
 	{"si","Step Execute",cmd_si},
 	{"info","Print Information",cmd_info},
 	{"x","Scan Memory",cmd_x},
+	{"p","Print Expression Value",cmd_p},
 };
 
 #define NR_CMD ARRLEN(cmd_table)
