@@ -14,6 +14,8 @@
 ***************************************************************************************/
 
 #include <common.h>
+#include "monitor/sdb/sdb.h"
+#include <stdio.h>
 
 void init_monitor(int, char *[]);
 void am_init_monitor();
@@ -27,8 +29,37 @@ int main(int argc, char *argv[]) {
 #else
   init_monitor(argc, argv);
 #endif
+/*
+  char filename[] = "/home/pro/ysyx/ysyx-workbench/nemu/tools/gen-expr/input";
+  FILE *fp;
+  char *temp_p;
+  char StrLine[1024];
+  // char ff[1024];
+  // int i = 0;
+  //char* ags;
+  bool *success = (bool *)malloc(sizeof(bool));
+  if((fp = fopen(filename, "r")) == NULL)
+  {
+    return -1;
+  }
+  while(!feof(fp))
+  {
+    temp_p = fgets(StrLine,1024,fp);
+    if(temp_p == NULL){}
+    char *str_e = StrLine + strlen(StrLine);
+    char *ss = strtok(StrLine, " ");
+    if(ss == NULL) {continue;}
+    char *ags = ss + strlen(ss) + 1;
+    if(ags >= str_e){ags = NULL;}
+    // for(i = 0;i < strlen(ags);i++){
+    //   ff[i] = ags[i];
+    // }
+    // ff[i] = '\0';
+    printf("%d\n",expr(ags,success));
+  }
 
+  */
   /* Start engine. */
-  engine_start();
-  return is_exit_status_bad();
+ engine_start();
+ return is_exit_status_bad();
 }

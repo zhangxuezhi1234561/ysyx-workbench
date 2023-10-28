@@ -34,9 +34,20 @@ int printf(const char *fmt, ...) {
 										 len++;
 										 temp /= 10;
 									 }
-									 for
-
+									 for(int i = len - 1;i >= 0;i-- ){
+										 putch('0' + num / power(10,i) % 10);
+									 }
+										break;
 								 }
+				case 's':{
+									 char *str = va_arg(args, char*);
+									 putch(*str);
+									 str++;
+									 break;
+								 }
+				default:{
+									putch('%');
+								}
 			}
 		}
 		else{
@@ -53,7 +64,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 }
 
 int sprintf(char *out, const char *fmt, ...) {
-  panic("Not implemented");
+//  panic("Not implemented");
 }
 
 int snprintf(char *out, size_t n, const char *fmt, ...) {
