@@ -34,9 +34,8 @@ int main(int argc, char *argv[]) {
   FILE *fp;
   char *temp_p;
   char StrLine[1024];
-  // char ff[1024];
-  // int i = 0;
-  //char* ags;
+  char ff[1024];
+  int i = 0;
   bool *success = (bool *)malloc(sizeof(bool));
   if((fp = fopen(filename, "r")) == NULL)
   {
@@ -51,14 +50,14 @@ int main(int argc, char *argv[]) {
     if(ss == NULL) {continue;}
     char *ags = ss + strlen(ss) + 1;
     if(ags >= str_e){ags = NULL;}
-    // for(i = 0;i < strlen(ags);i++){
-    //   ff[i] = ags[i];
-    // }
-    // ff[i] = '\0';
-    printf("%d\n",expr(ags,success));
+    for(i = 0;i < strlen(ags)-1;i++){
+      ff[i] = ags[i];
+    }
+    ff[i] = '\0';
+    printf("%d\n",expr(ff,success));
   }
-
-  */
+*/
+  
   /* Start engine. */
  engine_start();
  return is_exit_status_bad();
