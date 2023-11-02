@@ -76,7 +76,7 @@ static int cmd_p(char *args) {
 	bool *success =(bool *)malloc(sizeof(bool));
 	*success = false;
 //	Log("%d\n",expr(args,success));
-	printf("%d\n",expr(args,success));
+	printf("%d    0x%x\n",expr(args,success),expr(args,success));
 	free(success);
 	return 0;
 }

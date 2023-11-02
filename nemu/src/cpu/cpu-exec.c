@@ -35,7 +35,7 @@ void device_update();
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
-  if (ITRACE_COND) { log_write("%s\n", _this->logbuf); }
+  if (ITRACE_COND) { log_write("%s\n", _this->logbuf);/**/ RingBuffer_write(ringbuffer, _this->logbuf, sizeof(_this->logbuf)); }
 #endif
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
@@ -111,6 +111,9 @@ void cpu_exec(uint64_t n) {
   uint64_t timer_start = get_time();
 
   execute(n);
+
+  RingBuffer_read(ringbuffer, ItraceLength);
+  //RingBuffer_destroy(ringbuffer);
 
   uint64_t timer_end = get_time();
   g_timer += timer_end - timer_start;

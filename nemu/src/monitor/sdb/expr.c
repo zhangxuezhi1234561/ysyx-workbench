@@ -48,7 +48,7 @@ static struct rule {
 	{"0x[a-f0-9]+",HEX},	//HEX
 	{"\\$[0-9a-z]+",DOLLAR}, //DOLLAR
 	{"[0-9]+",INTEGER},
-  {"==", TK_EQ},        // equal
+ 	{"==", TK_EQ},        // equal
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -105,7 +105,8 @@ static bool make_token(char *e) {
          */
 
         switch (rules[i].token_type) {
-					case TK_NOTYPE: tokens[nr_token].type = TK_NOTYPE ; memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
+					//case TK_NOTYPE: tokens[nr_token].type = TK_NOTYPE ; memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
+					case TK_NOTYPE: break;
 					case '+'			: tokens[nr_token].type = '+'				; memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
 					case '-'			: tokens[nr_token].type = '-'				; memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
 					case '*'			: 
@@ -217,7 +218,11 @@ int eval(int p, int q)
 			case INTEGER: sscanf(tokens[p].str,"%d",&num);break;
 			case HEX		: sscanf(tokens[p].str,"%x",&num);break;
 			case DOLLAR	: 
-				reg_value = isa_reg_str2val(tokens[p].str+1, success);
+				if(strcmp(tokens[p].str+1, "pc") == 0){
+					reg_value = cpu.pc;
+				}
+				else
+					reg_value = isa_reg_str2val(tokens[p].str+1, success);
 				num = reg_value;
 				break;										
 		}
@@ -254,6 +259,7 @@ int eval(int p, int q)
 				case '/': temp_token = '/'; token_map = 1;break;
 				case BRACKET_LEFT: token_map = 0; flag_test = false; break;
 				case BRACKET_RIGHT: token_map = 0;	flag_test = true;	break;
+				case TK_EQ:	temp_token = TK_EQ; token_map = 3; break;
 				default: token_map = 0; break;
 			}
 			if(token_map >=  token_map_last && flag_test == true)//忽略了两边都有括号的情况？
@@ -279,6 +285,7 @@ int eval(int p, int q)
 			case '*': return val1 * val2; break;
 			case '/': return val1 / val2; break;
 			case DEREF: return *guest_to_host(val2); break;
+			case TK_EQ:	return val1==val2 ? 1 : -1; break;
 			default : assert(0);
 		}
 	}

@@ -17,6 +17,7 @@
 #define __UTILS_H__
 
 #include <common.h>
+#include <elf.h>
 
 // ----------- state -----------
 
@@ -33,6 +34,45 @@ extern NEMUState nemu_state;
 // ----------- timer -----------
 
 uint64_t get_time();
+
+// ----------- itrace -----------
+#define ItraceLength 10
+
+typedef struct{
+  char **buffer;
+  int length;
+  int start;
+  int end;
+}RingBuffer;
+
+extern RingBuffer *ringbuffer;
+
+#define RingBuffer_available_data(B) (\
+  (B)->end % (B)->length - (B)->start)
+
+#define RingBuffer_ends_at(B) (\
+  *((B)->buffer + (B)->end))
+
+#define RingBuffer_commit_write(B,A) (\
+  (B)->end = ((B)->end + (A)) % (B)->length)
+
+#define RingBuffer_starts_at(B) (\
+  *((B)->buffer + (B)->start))
+
+#define RingBuffer_commit_read(B,A) (\
+  (B)->start = ((B)->start + (A)) % (B)->length) 
+
+RingBuffer *RringBuffer_creat(int length);
+void RingBuffer_destroy(RingBuffer *buffer);
+int RingBuffer_write(RingBuffer *buffer, char *data, int length);
+int RingBuffer_read(RingBuffer *buffer, int amount);
+
+
+// ----------- ftrace -------------
+extern Elf32_Sym *Symbol;
+extern Elf32_Shdr *shdr;
+void init_elf(const char *elf_file);
+
 
 // ----------- log -----------
 
@@ -72,6 +112,8 @@ uint64_t get_time();
     printf(__VA_ARGS__); \
     log_write(__VA_ARGS__); \
   } while (0)
+
+
 
 
 #endif
