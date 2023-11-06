@@ -28,7 +28,7 @@ $(BINARY): compile_git
 
 override ARGS ?= --log=$(BUILD_DIR)/nemu-log.txt
 override ARGS += $(ARGS_DIFF)
-#override ARGS += --batch
+override ARGS += --batch
 override ARGS += --elf=$(AM_TEST_DIR)/recursion-riscv32-nemu.elf
 
 

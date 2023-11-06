@@ -176,6 +176,7 @@ char *fun_pcparse(vaddr_t pc){
       funstr = strtab + Symbol[i].st_name;
     }
   }
+  assert(funstr != NULL)
   return funstr;
 }
 

@@ -23,7 +23,7 @@
 
 
 enum {
-  TK_NOTYPE = 256, TK_EQ,BRACKET_LEFT,BRACKET_RIGHT,INTEGER,HEX,DOLLAR,DEREF,
+  TK_NOTYPE = 256, TK_EQ,BRACKET_LEFT,BRACKET_RIGHT,INTEGER,HEX,DOLLAR,DEREF, TK_AND,
 
   /* TODO: Add more token types */
 
@@ -48,6 +48,7 @@ static struct rule {
 	{"0x[a-f0-9]+",HEX},	//HEX
 	{"\\$[0-9a-z]+",DOLLAR}, //DOLLAR
 	{"[0-9]+",INTEGER},
+	{"&&", TK_AND},
  	{"==", TK_EQ},        // equal
 };
 
@@ -107,8 +108,8 @@ static bool make_token(char *e) {
         switch (rules[i].token_type) {
 					//case TK_NOTYPE: tokens[nr_token].type = TK_NOTYPE ; memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
 					case TK_NOTYPE: break;
-					case '+'			: tokens[nr_token].type = '+'				; memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
-					case '-'			: tokens[nr_token].type = '-'				; memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
+					case '+'			: tokens[nr_token].type = '+'				; memcpy(tokens[nr_token].str,substr_start,substr_len); tokens[nr_token].str[substr_len] = '\0'; nr_token++; break;
+					case '-'			: tokens[nr_token].type = '-'				; memcpy(tokens[nr_token].str,substr_start,substr_len); tokens[nr_token].str[substr_len] = '\0'; nr_token++; break;
 					case '*'			: 
 												  if(nr_token == 0 || (tokens[i-1].type == '+' || tokens[i-1].type == '-' || tokens[i-1].type == '*' || tokens[i-1].type == '/'))
 													{
@@ -118,15 +119,15 @@ static bool make_token(char *e) {
 													{
 														tokens[nr_token].type = '*';
 													}
-													memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
-					case '/'			: tokens[nr_token].type = '/'				; memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
-					case BRACKET_RIGHT	: tokens[nr_token].type = BRACKET_RIGHT		; memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
-					case BRACKET_LEFT		: tokens[nr_token].type = BRACKET_LEFT		; memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
-					case INTEGER				: tokens[nr_token].type = INTEGER					; memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
-					case HEX						:	tokens[nr_token].type = HEX							;	memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
-					case DOLLAR					:	tokens[nr_token].type = DOLLAR					;	memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
-					case TK_EQ					:	tokens[nr_token].type = TK_EQ						;	memcpy(tokens[nr_token].str,substr_start,substr_len); nr_token++; break;
-
+													memcpy(tokens[nr_token].str,substr_start,substr_len); tokens[nr_token].str[substr_len] = '\0'; nr_token++; break;
+					case '/'			: tokens[nr_token].type = '/'				; memcpy(tokens[nr_token].str,substr_start,substr_len); tokens[nr_token].str[substr_len] = '\0'; nr_token++; break;
+					case BRACKET_RIGHT	: tokens[nr_token].type = BRACKET_RIGHT		; memcpy(tokens[nr_token].str,substr_start,substr_len); tokens[nr_token].str[substr_len] = '\0'; nr_token++; break;
+					case BRACKET_LEFT		: tokens[nr_token].type = BRACKET_LEFT		; memcpy(tokens[nr_token].str,substr_start,substr_len); tokens[nr_token].str[substr_len] = '\0'; nr_token++; break;
+					case INTEGER				: tokens[nr_token].type = INTEGER					; memcpy(tokens[nr_token].str,substr_start,substr_len); tokens[nr_token].str[substr_len] = '\0'; nr_token++; break;
+					case HEX						:	tokens[nr_token].type = HEX							;	memcpy(tokens[nr_token].str,substr_start,substr_len); tokens[nr_token].str[substr_len] = '\0'; nr_token++; break;
+					case DOLLAR					:	tokens[nr_token].type = DOLLAR					;	memcpy(tokens[nr_token].str,substr_start,substr_len); tokens[nr_token].str[substr_len] = '\0'; nr_token++; break;
+					case TK_EQ					:	tokens[nr_token].type = TK_EQ						;	memcpy(tokens[nr_token].str,substr_start,substr_len); tokens[nr_token].str[substr_len] = '\0'; nr_token++; break;
+					case TK_AND					:	tokens[nr_token].type = TK_AND						;	memcpy(tokens[nr_token].str,substr_start,substr_len); tokens[nr_token].str[substr_len] = '\0'; nr_token++; break;
 
           default: TODO(); break;
         }
@@ -259,7 +260,8 @@ int eval(int p, int q)
 				case '/': temp_token = '/'; token_map = 1;break;
 				case BRACKET_LEFT: token_map = 0; flag_test = false; break;
 				case BRACKET_RIGHT: token_map = 0;	flag_test = true;	break;
-				case TK_EQ:	temp_token = TK_EQ; token_map = 3; break;
+				case TK_EQ:	temp_token = TK_EQ; token_map = 1; break;
+				case TK_AND: temp_token = TK_AND; token_map = 2; break;
 				default: token_map = 0; break;
 			}
 			if(token_map >=  token_map_last && flag_test == true)//忽略了两边都有括号的情况？
@@ -284,8 +286,9 @@ int eval(int p, int q)
 			case '-': return val1 - val2; break;
 			case '*': return val1 * val2; break;
 			case '/': return val1 / val2; break;
-			case DEREF: return *guest_to_host(val2); break;
-			case TK_EQ:	return val1==val2 ? 1 : -1; break;
+			case DEREF: return paddr_read(val2, 4); break;
+			case TK_EQ:	return val1==val2 ? 1 : 0; break;
+			case TK_AND: return val1&&val2 ? 1 : 0; break;
 			default : assert(0);
 		}
 	}

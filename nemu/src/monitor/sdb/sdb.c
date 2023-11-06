@@ -119,9 +119,16 @@ static int cmd_x(char *args) {
 	sscanf(address_char,"%x",&address);
 	for(int i = 0;i < num;i++)
 	{
-		printf("0x%x:         %x\n",address+i*4,*guest_to_host(address+i*4));
+		printf("0x%x:%x\n",address+i*4,paddr_read(address+i*4, 4));
 	}
 	return 0;
+}
+
+static int cmd_d(char *args) {
+  int num = 0;
+  sscanf(args, "%d", &num);
+  free_wp(num);
+  return 0;
 }
 static int cmd_help(char *args);
 
@@ -140,6 +147,7 @@ static struct {
 	{"info","Print Information",cmd_info},
 	{"x","Scan Memory",cmd_x},
 	{"p","Print Expression Value",cmd_p},
+  {"d","Delete Watchpoint",cmd_d},
 };
 
 #define NR_CMD ARRLEN(cmd_table)
