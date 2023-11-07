@@ -33,27 +33,19 @@ static char *code_format =
 "#pragma GCC diagnostic push\n"
 "#pragma GCC diagnostic ignored \"-Wdiv-by-zero\"\n"
 
-//"jmp_buf recovery;"
 "int flag;"
 "void my_handler(int param){"
 "   signal(SIGFPE,my_handler);"
 "	flag = -1;"
 "  	printf(\"%%d\", flag);"
-//"   assert(0);"
-//"   longjmp(recovery,-1);"
+
 "}"
 "int main() { "
 "  signal(SIGFPE,my_handler); "
 "  unsigned result = %s; "
-
-//"  flag = setjmp(recovery);"
 "  if(flag != -1){"
 "     printf(\"%%u\", result); "
-// "  printf(\"%%d\", flag);"
 "  }"
-// "  else{"
-// "     printf(\"%%u\", result); "
-// "  }"
 
 "  return 0; "
 "}\n"
@@ -128,7 +120,7 @@ int main(int argc, char *argv[]) {
     pclose(fp);
 	if(result == -1)
 	{
-		printf("!!!!!!\n");
+		//printf("!!!!!!\n");
 	}
 	else {
 		printf("%u %s\n", result, buf);

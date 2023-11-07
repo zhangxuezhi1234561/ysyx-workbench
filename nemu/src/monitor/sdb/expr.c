@@ -75,10 +75,10 @@ void init_regex() {
 
 typedef struct token {
   int type;
-  char str[32];
+  char str[100];
 } Token;
 
-static Token tokens[32] __attribute__((used)) = {};
+static Token tokens[100] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
 
 static bool make_token(char *e) {
@@ -111,7 +111,7 @@ static bool make_token(char *e) {
 					case '+'			: tokens[nr_token].type = '+'				; memcpy(tokens[nr_token].str,substr_start,substr_len); tokens[nr_token].str[substr_len] = '\0'; nr_token++; break;
 					case '-'			: tokens[nr_token].type = '-'				; memcpy(tokens[nr_token].str,substr_start,substr_len); tokens[nr_token].str[substr_len] = '\0'; nr_token++; break;
 					case '*'			: 
-												  if(nr_token == 0 || (tokens[i-1].type == '+' || tokens[i-1].type == '-' || tokens[i-1].type == '*' || tokens[i-1].type == '/'))
+												  if(nr_token == 0 || (tokens[nr_token-1].type == '+' || tokens[nr_token-1].type == BRACKET_LEFT || tokens[nr_token-1].type == BRACKET_RIGHT || tokens[nr_token-1].type == '-' || tokens[nr_token-1].type == '*' || tokens[nr_token-1].type == '/'))
 													{
 														tokens[nr_token].type = DEREF;
 													}
@@ -151,9 +151,9 @@ bool check_parentheses(int p, int q)//Needed First and End Test
 {
 //	make_token();//Needed?
 	int i = 0;
-  int nr_bracket = 0;
+  	int nr_bracket = 0;
 	bool bracket_matched = false;
-	for(i = p; i <= q; i++)
+	for(i = p + 1; i <= q - 1; i++)
 	{
 		if(tokens[i].type == BRACKET_LEFT)
 		{
@@ -175,7 +175,6 @@ bool check_parentheses(int p, int q)//Needed First and End Test
 	if(nr_bracket != 0)
 	{
 		bracket_matched = false;
-//		return false;
 	}
 	else
 		bracket_matched = true;
@@ -185,18 +184,6 @@ bool check_parentheses(int p, int q)//Needed First and End Test
 	}
 	else
 		return false;
-	//	return true;
-
-/*
-	if(e+p == BRACKET_LEFT && e+q == BRACKET_RIGHT)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-*/
 }
 
 #pragma GCC push_options
@@ -240,12 +227,12 @@ int eval(int p, int q)
 	{
 		int i = 0;
 		int op = 0;
-//		int temp_op = 0;
 		int main_token = 0;
 		int temp_token = 0;
 		int token_map = 0;
 		int token_map_last = 0;
 		bool flag_test = true;
+		int bra_ff = 0;
 
 		int val1;
 		int val2;
@@ -253,17 +240,19 @@ int eval(int p, int q)
 		{
 			switch(tokens[i].type)
 			{
-				case '+': temp_token = '+'; token_map = 3;break;
-				case '-': temp_token = '-'; token_map = 3;break;
-				case DEREF: temp_token = DEREF; token_map = 2;break;
-				case '*': temp_token = '*'; token_map = 1;break;
-				case '/': temp_token = '/'; token_map = 1;break;
-				case BRACKET_LEFT: token_map = 0; flag_test = false; break;
-				case BRACKET_RIGHT: token_map = 0;	flag_test = true;	break;
-				case TK_EQ:	temp_token = TK_EQ; token_map = 1; break;
-				case TK_AND: temp_token = TK_AND; token_map = 2; break;
+				case '+': temp_token = '+'; token_map = 4;break;
+				case '-': temp_token = '-'; token_map = 4;break;
+				case DEREF: temp_token = DEREF; token_map = 1;break;
+				case '*': temp_token = '*'; token_map = 2;break;
+				case '/': temp_token = '/'; token_map = 2;break;
+				case BRACKET_LEFT: token_map = 0; bra_ff++; break;
+				case BRACKET_RIGHT: token_map = 0;	bra_ff--; break;
+				case TK_EQ:	temp_token = TK_EQ; token_map = 5; break;
+				case TK_AND: temp_token = TK_AND; token_map = 6; break;
 				default: token_map = 0; break;
 			}
+			if(bra_ff == 0) flag_test = true;
+			else flag_test = false; 
 			if(token_map >=  token_map_last && flag_test == true)//忽略了两边都有括号的情况？
 			{
 				token_map_last = token_map;

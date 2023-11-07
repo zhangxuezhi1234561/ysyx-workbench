@@ -107,45 +107,11 @@ static char *number(char *str, long num, int base, int size, int precision, int 
 int printf(const char *fmt, ...) {
 	va_list args;
 	va_start(args, fmt);
-
-	while(*fmt != '\0'){
-		if(*fmt == '%'){
-			fmt++;
-			switch(*fmt){
-				case 'd':{
-									 int num = va_arg(args, int);
-									 if(num < 0){
-										 putch('-');
-										 num = -num;
-									 }
-									 int len = 0;
-									 int temp = num;
-									 while(temp > 0){
-										 len++;
-										 temp /= 10;
-									 }
-									 for(int i = len - 1;i >= 0;i-- ){
-										 putch('0' + num / power(10,i) % 10);
-									 }
-										break;
-								 }
-				case 's':{
-									 char *str = va_arg(args, char*);
-									 while(*str != '\0'){
-										putch(*str);
-										str++;
-									 }
-									 break;
-								 }
-				default:{
-									putch('%');
-								}
-			}
-		}
-		else{
-			putch(*fmt);
-		}
-		fmt++;
+	char out[100];
+	vsprintf(out, fmt, args);
+	int len = strlen(out);
+	for(int i = 0; i < len; i++){
+		putch(out[i]);
 	}
 	va_end(args);
 	return 0;
@@ -219,15 +185,16 @@ repeat:
 		switch (*fmt) {
 			case 's':
 				s = va_arg(ap, char*);
-//				if(!s) s = "<NULL>";
+				if(!s) s = "<NULL>";
 				len = strnlen(s, precision);
 				if(!(flags & LEFT)) while(len < field_width--) *str++ = ' ';
 				for(i = 0; i < len; ++i) *str++ = *s++;
 				while(len < field_width--) *str++ = ' ';
 				continue;
-			case 'd':	break;
+			case 'd':	
 			case 'i':
 				flags |= SIGN;
+				break;
 			default:
 				if(*fmt != '%') *str++ = '%';
 				if(*fmt) {
