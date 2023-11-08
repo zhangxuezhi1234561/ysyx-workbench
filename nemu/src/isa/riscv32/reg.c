@@ -26,7 +26,7 @@ const char *regs[] = {
 };
 
 void isa_reg_display() {
-	for(int i = 0;i < 32;i++)
+	for(int i = 0;i < NR_GPR;i++)
 	{
 		printf("%-3s        %-8x            %d\n",regs[i],gpr(i),gpr(i));
 	}
@@ -34,7 +34,7 @@ void isa_reg_display() {
 
 word_t isa_reg_str2val(const char *s, bool *success) {
 	int reg_id = 0;
-	for(int i = 0;i < 32;i++)
+	for(int i = 0;i < NR_GPR;i++)
 	{
 		if(strcmp(s, regs[i]) == 0)
 		{
