@@ -61,55 +61,31 @@ always @(posedge clk) begin
 	end
 end
 
+//------------     reg      --------------//
 reg seg_en_reg;
 reg	[7:0] Re_reg_1;
 reg [7:0] Ascii_reg_1;
 reg	[7:0]	Num_reg;
 reg	[1:0]	num;
 
+//------------ State Machine ---------------//
 always @(Re_cnt) begin
 	case(PST)
 		A : begin
 					if(Receive_reg[0] != Receive_reg[1] && num != 1) begin
-						seg_en_reg	<= 1'd1;
-						Re_reg_1		<=	Receive_reg[0];
-						Ascii_reg_1	<=	Ascii_reg[0];
+					 	cnt = 2'd1; seg_en_reg	= 1'd1; Re_reg_1 =	Receive_reg[0];	Ascii_reg_1	=	Ascii_reg[0]; PST = B;
 						$display("receive %x, it's ASCII %x", Re_reg_1, Ascii_reg_1);
-						cnt			<=	2'd1;
-						PST <= B;
 					end
-					else begin
-						cnt <= 0;
-						seg_en_reg	<=	0;
-						num <= 0;
-						PST	<= A;
-				end
+					else begin cnt = 0;	seg_en_reg	=	0; num = 0;	PST	= A; end
 			end
 		B : begin
-			Num_reg <=	Num_reg + 1;
-			if(Receive_reg[1] == 8'hf0) begin
-				cnt <= 2'd2;
-				num <= 1;
-				seg_en_reg	<=	0;
-				PST	<=	A;
-			end
-			else begin
-				cnt	<= 2'd2;
-				seg_en_reg	<= 1'd1;
-				PST	<=	C;
-			end
+			Num_reg =	Num_reg + 1;
+			if(Receive_reg[1] == 8'hf0) begin	cnt = 2'd2; num = 2'd1; seg_en_reg = 0; PST = A; end
+			else												begin	cnt = 2'd2; seg_en_reg = 1'd1;					PST = C; end
 		end
 		C : begin
-			if(Receive_reg[2] == Receive_reg[1])begin
-				cnt <= 2'd1;
-				seg_en_reg <= 1'd1;
-				PST <= C;
-			end
-			else begin
-				cnt	<= 2;
-				num	<= 1;
-				PST <= A;
-			end
+			if(Receive_reg[2] == Receive_reg[1])	begin cnt = 2'd1; seg_en_reg = 1'd1; PST = C; end
+			else																	begin cnt = 2'd2;		num      = 2'd1; PST = A; end
 		end
 	endcase
 end
