@@ -33,6 +33,7 @@ void init_wp_pool() {
 	head = (WP*)calloc(1, sizeof(WP));
   	free_ = wp_pool;
 	free_->first = &free_[0];
+	free_->last	 = &free_[NR_WP-1];
 }
 
 /* TODO: Implement the functionality of watchpoint */
@@ -66,10 +67,18 @@ void free_wp(int num)//WP *wp
 		if(cur->NO == num){
 			head->first = cur->next;
 			cur->next = NULL;
+			
+			free_->last->next = cur;
+			free_->last		  = cur;
+			break;
 		}
 		else if(cur->next->NO == num){
 			if(cur->next->next == NULL){head->last = cur;}
+			free_->last->next = cur->next;
+			free_->last		  = cur->next;
+
 			cur->next = cur->next->next;
+			break;
 		}
 	}
 	return;

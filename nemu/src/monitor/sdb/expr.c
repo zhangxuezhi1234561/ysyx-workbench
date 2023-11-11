@@ -111,7 +111,7 @@ static bool make_token(char *e) {
 					case '+'			: tokens[nr_token].type = '+'				; memcpy(tokens[nr_token].str,substr_start,substr_len); tokens[nr_token].str[substr_len] = '\0'; nr_token++; break;
 					case '-'			: tokens[nr_token].type = '-'				; memcpy(tokens[nr_token].str,substr_start,substr_len); tokens[nr_token].str[substr_len] = '\0'; nr_token++; break;
 					case '*'			: 
-												  if(nr_token == 0 || (tokens[nr_token-1].type == '+' || tokens[nr_token-1].type == BRACKET_LEFT || tokens[nr_token-1].type == BRACKET_RIGHT || tokens[nr_token-1].type == '-' || tokens[nr_token-1].type == '*' || tokens[nr_token-1].type == '/'))
+												  if(nr_token == 0 || (tokens[nr_token-1].type == '+' || tokens[nr_token-1].type == BRACKET_LEFT /*|| tokens[nr_token-1].type == BRACKET_RIGHT */|| tokens[nr_token-1].type == '-' || tokens[nr_token-1].type == '*' || tokens[nr_token-1].type == '/'))
 													{
 														tokens[nr_token].type = DEREF;
 													}
