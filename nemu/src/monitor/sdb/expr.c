@@ -291,18 +291,8 @@ word_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
-//	int len = strlen(e);
 	word_t value;
 	value = eval(0,nr_token-1);
-
-
-  /* TODO: Insert codes to evaluate the expression. */
- // TODO();
-	
-	//Indicate Position p,q  eval(p,q)
-
-
-	
 
   return value;
 }

@@ -17,6 +17,8 @@
 #include <utils.h>
 #include <stdlib.h>
 #include <string.h>
+#include <cpu/cpu.h>
+#include <cpu/decode.h>
 
 
 
@@ -26,11 +28,16 @@ FILE *log_fp = NULL;
 RingBuffer *ringbuffer;
 
 // ---------- ftrace -----------
+#ifdef CONFIG_FTRACE
 Elf32_Sym *Symbol = NULL;
 Elf32_Shdr *shdr = NULL;
 char *strtab = NULL;
 int fun_state = 0;
 int Sym_num = 0;
+static int space_num = 0;
+static int ret_space_num = 0;
+#endif
+vaddr_t ftrace_pc;
 
 void init_log(const char *log_file) {
   log_fp = stdout;
@@ -106,6 +113,8 @@ int RingBuffer_read(RingBuffer *buffer, int amount){
 
 // -----------------ftrace -----------------
 
+#ifdef CONFIG_FTRACE
+
 int is_elf(Elf32_Ehdr elf_ehdr){
   if((strncmp((char *)elf_ehdr.e_ident, ELFMAG, SELFMAG)) != 0)
     return 0;
@@ -180,3 +189,31 @@ char *fun_pcparse(vaddr_t pc){
   return funstr;
 }
 
+#endif
+
+void ftrace_display(){
+
+  #ifdef CONFIG_FTRACE
+
+  if(fun_state != 0){
+    log_write("0x%x:", ftrace_pc);
+    if(fun_state == CALL) {
+      space_num = space_num >= 0 ? space_num : 0;
+      int temp_num = space_num;
+      while(temp_num > 0){log_write("\t"); temp_num--;}
+      space_num++;
+      ret_space_num = space_num - 1;
+      log_write("call [%s@0x%x]\n", fun_pcparse(cpu.pc),cpu.pc);
+    }    
+    if(fun_state == RET) {
+      ret_space_num = ret_space_num >= 0 ? ret_space_num : 0;
+      int ret_temp_num = ret_space_num;
+      while(ret_temp_num > 0){log_write("\t"); ret_temp_num--;}
+      ret_space_num--;
+      space_num = ret_space_num + 1;
+      log_write("ret [%s]\n", fun_pcparse(cpu.pc));
+    }
+    fun_state = 0;
+  }
+  #endif
+}

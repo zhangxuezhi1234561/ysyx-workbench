@@ -195,6 +195,8 @@ repeat:
 			case 'i':
 				flags |= SIGN;
 				break;
+			case 'u':
+				break;
 			default:
 				if(*fmt != '%') *str++ = '%';
 				if(*fmt) {

@@ -31,8 +31,7 @@ uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
 /*
-static int space_num = 0;
-static int ret_space_num = 0;*/
+*/
 
 void device_update();
 
@@ -47,34 +46,12 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 }
 
 static void exec_once(Decode *s, vaddr_t pc) {
+  ftrace_pc = pc;
   s->pc = pc;
   s->snpc = pc;
   isa_exec_once(s);
   cpu.pc = s->dnpc;
-  
-  /*
-  if(fun_state != 0){
-    log_write("0x%x:", pc);
-    if(fun_state == CALL) {
-      space_num = space_num >= 0 ? space_num : 0;
-      int temp_num = space_num;
-      while(temp_num > 0){log_write("\t"); temp_num--;}
-      space_num++;
-      ret_space_num = space_num - 1;
-      log_write("call [%s@0x%x]\n", fun_pcparse(cpu.pc),cpu.pc);
-    }
-    
-    if(fun_state == RET) {
-      ret_space_num = ret_space_num >= 0 ? ret_space_num : 0;
-      int ret_temp_num = ret_space_num;
-      while(ret_temp_num > 0){log_write("\t"); ret_temp_num--;}
-      ret_space_num--;
-      space_num = ret_space_num + 1;
-      log_write("ret [%s]\n", fun_pcparse(cpu.pc));
-    }
-    fun_state = 0;
-  }
-  */
+  ftrace_display();
 #ifdef CONFIG_ITRACE
   char *p = s->logbuf;
   p += snprintf(p, sizeof(s->logbuf), FMT_WORD ":", s->pc);
@@ -122,6 +99,7 @@ static void statistic() {
 }
 
 void assert_fail_msg() {
+  RingBuffer_read(ringbuffer, ItraceLength);
   isa_reg_display();
   statistic();
 }
@@ -140,7 +118,7 @@ void cpu_exec(uint64_t n) {
 
   execute(n);
 
-  RingBuffer_read(ringbuffer, ItraceLength);
+  
   //RingBuffer_destroy(ringbuffer);
 
   uint64_t timer_end = get_time();

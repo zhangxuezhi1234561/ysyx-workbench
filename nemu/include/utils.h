@@ -69,6 +69,7 @@ int RingBuffer_read(RingBuffer *buffer, int amount);
 
 
 // ----------- ftrace -------------
+#ifdef CONFIG_FTRACE
 extern Elf32_Sym *Symbol;
 extern Elf32_Shdr *shdr;
 extern char *strtab;
@@ -76,6 +77,9 @@ void init_elf(const char *elf_file);
 enum  {CALL=1, RET};
 extern int fun_state;
 char *fun_pcparse(vaddr_t pc);
+#endif
+void ftrace_display();
+extern vaddr_t ftrace_pc;
 
 
 
