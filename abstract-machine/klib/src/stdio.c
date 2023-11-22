@@ -107,14 +107,11 @@ static char *number(char *str, long num, int base, int size, int precision, int 
 int printf(const char *fmt, ...) {
 	va_list args;
 	va_start(args, fmt);
-	char out[100];
-	vsprintf(out, fmt, args);
-	int len = strlen(out);
-	for(int i = 0; i < len; i++){
-		putch(out[i]);
-	}
+	char out[500];
+	int ret = vsprintf(out, fmt, args);
+	putstr(out);
 	va_end(args);
-	return 0;
+	return ret;
 	//  panic("Not implemented");
 }
 
@@ -143,6 +140,7 @@ repeat:
 			case '-': flags |= LEFT; goto repeat;
 			case '+': flags |= PLUS; goto repeat;
 			case ' ': flags |= SPACE; goto repeat;
+			case '#': flags |= SPECIAL; goto repeat;
 			case '0': flags |= ZEROPAD; goto repeat;
 		}
 
@@ -183,6 +181,12 @@ repeat:
 		base = 10;
 
 		switch (*fmt) {
+			case 'c':
+				if(!(flags & LEFT)) while(--field_width > 0) *str++ = ' ';
+				*str++ = (unsigned char)va_arg(ap, int);
+				while(--field_width > 0) *str++ = ' ';
+				continue;
+				
 			case 's':
 				s = va_arg(ap, char*);
 				if(!s) s = "<NULL>";
@@ -191,10 +195,22 @@ repeat:
 				for(i = 0; i < len; ++i) *str++ = *s++;
 				while(len < field_width--) *str++ = ' ';
 				continue;
+
+			case 'p':
+				if(field_width == -1) {
+					field_width = 2 * sizeof(void *);
+					flags |= ZEROPAD;
+				}
+				str = number(str, (unsigned long)va_arg(ap, void *), 16, field_width, precision, flags);
+				continue;
+			case 'X':
+				flags |= LARGE;
+			case 'x':
+				base = 16;
+				break;
 			case 'd':	
 			case 'i':
 				flags |= SIGN;
-				break;
 			case 'u':
 				break;
 			default:
@@ -211,9 +227,9 @@ repeat:
 			num = va_arg(ap,unsigned long);
 		}else if(qualifier == 'h'){
 			if(flags & SIGN){
-				num = va_arg(ap, int);
+				num = va_arg(ap, int);  //////////////////short
 			}else {
-				num = va_arg(ap, unsigned int);
+				num = va_arg(ap, unsigned int);///////////unsigned short
 			}
 		}else if(flags & SIGN) {
 			num = va_arg(ap, int);

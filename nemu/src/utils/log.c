@@ -93,6 +93,7 @@ int RingBuffer_read(RingBuffer *buffer, int amount){
   //char *target = malloc(sizeof(char*));
   //int len = 0;
  // char *s = "dataghjg";
+  printf("\n");
   while(amount--){
     char *s = RingBuffer_starts_at(buffer);
     //while(*s++ != '\0'){len++;}

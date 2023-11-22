@@ -172,6 +172,10 @@ config FTRACE
   bool "Enable ftrace"
   default y
 
+config DTRACE
+  bool "Enable dtrace"
+  default y
+
 
 choice
   prompt "Reference design"
