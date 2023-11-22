@@ -23,15 +23,19 @@ typedef struct watchpoint {
 	struct watchpoint *next;
 	
 	/* TODO: Add more members if necessary */
+	struct watchpoint *first;
+	struct watchpoint *last;
 	int state;//0-Unused;1-Used
 	char what[20];
 	int value;
 } WP;
 word_t expr(char *e, bool *success);
-void free_wp(WP *wp);
+void free_wp(int num);
 WP* new_wp();
 void wp_scan();
 void info_wp();
 void wp_destroy();
-
+#define LIST_FOREACH(L,S,M,V) WP *_node = NULL; \
+	WP *V = NULL; \
+	for(V = _node = L->S; _node != NULL; V = _node = _node->M)
 #endif

@@ -21,21 +21,18 @@ static WP wp_pool[NR_WP] = {};
 static WP *free_ = NULL;
 WP *head = NULL;
 
-static int head_num = 0;
-
 void init_wp_pool() {
   int i;
   for (i = 0; i < NR_WP; i ++) {
     wp_pool[i].NO = i;
     wp_pool[i].next = (i == NR_WP - 1 ? NULL : &wp_pool[i + 1]);
-
-		//------------------//
-		wp_pool[i].state = 0;
+	wp_pool[i].state = 0;
   }
 
-	head = (WP*)malloc(sizeof(WP) * NR_WP);
-  free_ = wp_pool;
-	head[0].next = NULL;
+	head = (WP*)calloc(1, sizeof(WP));
+  	free_ = wp_pool;
+	free_->first = &free_[0];
+	free_->last	 = &free_[NR_WP-1];
 }
 
 /* TODO: Implement the functionality of watchpoint */
@@ -43,76 +40,54 @@ void init_wp_pool() {
 #pragma GCC optimize(0)
 WP* new_wp(char* args)
 {
-	int i = 0;
-	int j = 0;
-	head_num++;
+//	int j = 0;
 	bool *success = (bool *)malloc(sizeof(bool));
-//	WP *node = calloc(1, sizeof(WP));
-	for(i = NR_WP-1;i >= 0;i--)
-	{
-		if(free_[i].state == 0)
-		{
-			free_[i-1].next = NULL;
-			free_[i].state = 1;
-//			node->NO = free_[i].No;
-//			node->state = free_[i].state;
-/*
-			while(head[j].next != NULL)
-			{
-				j++;
-			}*/
-		//	head[j].next = &free_[i];
-			//head[j].state = 1;
-			//head[j].NO = free_[i].NO;
-			head[head_num-1].NO = free_[i].NO;
-			head[head_num-1].state = 1;
-			head[head_num-1].next = &free_[i];
-			for(j = 0;j < strlen(args);j++)
-			{
-				head[head_num-1].what[j] = args[j];
-			}
-			head[head_num-1].what[j] = '\0';
-			head[head_num-1].value = expr(head[head_num-1].what,success);
-			head[head_num].next = NULL;
-			free(success);
-		//	head_num++;
+	free_->first->state = 1;
+	WP* cur = calloc(1, sizeof(WP));
+	//WP* cur = free_->first;
+	cur->NO = free_->first->NO;
+
+	free_->first = free_->first->next;	
+
+	strcpy(cur->what, args);
+	cur->value = expr(cur->what, success);
+	if(head->first == NULL){head->first = cur; head->last = cur;}
+	else{
+		head->last->next = cur;
+		head->last = cur;
+	}
+	free(success);
+	return cur;
+}
+
+void free_wp(int num)//WP *wp
+{
+	LIST_FOREACH(head, first, next, cur){
+		if(cur->NO == num){
+			head->first = cur->next;
+			cur->next = NULL;
+			
+			free_->last->next = cur;
+			free_->last		  = cur;
+			break;
+		}
+		else if(cur->next->NO == num){
+			if(cur->next->next == NULL){head->last = cur;}
+			free_->last->next = cur->next;
+			free_->last		  = cur->next;
+
+			cur->next = cur->next->next;
 			break;
 		}
 	}
-	return &free_[i];
-}
-
-void free_wp(WP *wp)
-{
-	int i = 0;
-	head_num--;
-	for(i = NR_WP-1;i >= 0;i--)
-	{
-		if(free_[i-1].state == 0)
-		{
-			free_[i-1].next = &free_[i];
-			free_[i].state = 0;
-		}
-	}
-	if(head_num > 1)
-	{
-		head[head_num-2].next = NULL;
-		head[head_num-1].state = 0;
-	}
-	if(head_num == 1)
-	{
-		head = NULL;
-	}
+	return;
 }
 
 void info_wp()
 {
-	int i = 0;
-	Log("Num       Type          Disp     Enb      Address    What            Value");
-	while(head[i].next != NULL)
-	{
-		Log("%2d        watchpoint    keep                         %-9s       %-6d",head[i].NO,(head[i].what),head[i].value);
-		i++;
+	Log("Num       Type          Disp     Enb      Address    What            Value       		HexValue");
+	LIST_FOREACH(head, first, next, cur){
+		Log("%2d        watchpoint    keep                         %-9s       %-4d			0x%-4x",cur->NO,(cur->what),cur->value,cur->value);
 	}
 }
 void wp_destroy()
@@ -121,18 +96,13 @@ void wp_destroy()
 }
 void wp_scan()
 {
-	int i = 0;
 	bool *success = (bool *)malloc(sizeof(bool));
-//	Log("Now in watchpoint.c wp_scan function\n");
-//	Log("The value is %d\n",expr(head[0].what,success));
-	while(head[i].next != NULL)
-	{
-		if(expr(head[i].what,success) != head[i].value)
-		{
-			head[i].value = expr(head[i].what,success);
+	LIST_FOREACH(head, first, next, cur){
+		if(expr(cur->what, success) != cur->value){
+			cur->value = expr(cur->what, success);
 			nemu_state.state = NEMU_STOP;
-		}
-		i++;
+			break;
+		}		
 	}
 	free(success);
 }

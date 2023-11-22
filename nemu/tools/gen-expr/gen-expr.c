@@ -21,6 +21,8 @@
 #include <string.h>
 
 
+#pragma GCC push_options
+#pragma GCC optimize(0)
 // this should be enough
 static char buf[65536] = {};
 static int k = 0;
@@ -28,11 +30,55 @@ static int k = 0;
 static char code_buf[65536 + 128] = {}; // a little larger than `buf`
 static char *code_format =
 "#include <stdio.h>\n"
+"#include <signal.h>\n"
+"#include <setjmp.h>\n"
+"#pragma GCC diagnostic push\n"
+"#pragma GCC diagnostic ignored \"-Wdiv-by-zero\"\n"
+
+"int flag;"
+"void my_handler(int param){"
+"   signal(SIGFPE,my_handler);"
+"	flag = -1;"
+"  	printf(\"%%d\", flag);"
+
+"}"
 "int main() { "
+"  signal(SIGFPE,my_handler); "
 "  unsigned result = %s; "
-"  printf(\"%%u\", result); "
+"  if(flag != -1){"
+"     printf(\"%%u\", result); "
+"  }"
+
 "  return 0; "
-"}";
+"}\n"
+"#pragma GCC diagnostic pop";
+
+
+static int k;
+int choose(int num)
+{
+//	srand(time(NULL));
+	return rand()%num;
+}
+
+void gen_num() {
+	buf[k++] = rand()%9 + 1 + '0';
+	return;
+}
+
+void gen(char c) {
+	buf[k++] = c;
+	return;
+}
+
+void gen_rand_op() {
+	int i = 0;
+	char a[]="+-*/"; 	
+// //	srand(time(NULL));
+	i = rand()%4;
+	buf[k++] = a[i];
+	return;
+}
 
 int gen_num(char *str)
 {
@@ -92,23 +138,15 @@ char gen(char c, char *str)
 }
 
 static void gen_rand_expr() {
-//	static int k = 0;
-//	int data;
-//	char *data_str;
-	switch(choose(3))
-	{
-		case 0: buf[k++] = gen_num(buf) + '0'; break;
-		case 1: buf[k++] = gen('(',buf); 
-						if(buf[k-1] != '(')
-						{
-							buf[k++] = '(';
-						}
-						gen_rand_expr();	buf[k++] = gen(')',buf); break;
-		default: gen_rand_expr();	buf[k++] = gen_rand_op();	gen_rand_expr(); break;	
-	}
-//	buf[k] = '\0';
-//	k = 0;
-//  buf[0] = '\0';
+	case 0: gen_num(); break;
+	case 1: gen('('); gen_rand_expr(); gen(')'); break;
+	default: 
+			gen_rand_expr(); 
+			gen_rand_op(); 
+			gen_rand_expr(); 	
+		break;
+  }
+  return;
 }
 
 int main(int argc, char *argv[]) {
@@ -121,7 +159,7 @@ int main(int argc, char *argv[]) {
   int i;
   for (i = 0; i < loop; i ++) {
     gen_rand_expr();
-		k = 0;
+	buf[k] = '\0';
     sprintf(code_buf, code_format, buf);
 
     FILE *fp = fopen("/tmp/.code.c", "w");
@@ -138,8 +176,15 @@ int main(int argc, char *argv[]) {
     int result;
     ret = fscanf(fp, "%d", &result);
     pclose(fp);
-
-    printf("%u %s\n", result, buf);
+	if(result == -1)
+	{
+		//printf("!!!!!!\n");
+	}
+	else {
+		printf("%u %s\n", result, buf);
+	} 
+	buf[0] = '\0';
+	k = 0;
   }
   return 0;
 }

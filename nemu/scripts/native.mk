@@ -18,6 +18,8 @@ include $(NEMU_HOME)/scripts/build.mk
 
 include $(NEMU_HOME)/tools/difftest.mk
 
+#AM_TEST_DIR = /home/pro/ysyx/ysyx-workbench/am-kernels/tests/cpu-tests/build
+
 compile_git:
 	$(call git_commit, "compile NEMU")
 $(BINARY): compile_git
@@ -26,6 +28,7 @@ $(BINARY): compile_git
 
 override ARGS ?= --log=$(BUILD_DIR)/nemu-log.txt
 override ARGS += $(ARGS_DIFF)
+
 
 # Command to execute NEMU
 IMG ?=
