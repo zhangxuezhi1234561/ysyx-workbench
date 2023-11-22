@@ -71,8 +71,6 @@ static int cmd_w(char *args) {
 	free(success);
 	return 0;
 }
-<<<<<<< HEAD
-=======
 
 static int cmd_p(char *args) {	
 	bool *success =(bool *)malloc(sizeof(bool));
@@ -83,7 +81,6 @@ static int cmd_p(char *args) {
 	return 0;
 }
 
->>>>>>> pa2
 static int cmd_si(char *args) {
 	int n = 0;
 	if(args == NULL)
@@ -122,12 +119,6 @@ static int cmd_x(char *args) {
 	sscanf(address_char,"%x",&address);
 	for(int i = 0;i < num;i++)
 	{
-<<<<<<< HEAD
-		printf("0x%x:         %x\n",address+i*4,*guest_to_host(address+i*4));
-	}
-	return 0;
-}
-=======
 		printf("0x%x:%x\n",address+i*4,paddr_read(address+i*4, 4));
 	}
 	return 0;
@@ -139,7 +130,6 @@ static int cmd_d(char *args) {
   free_wp(num);
   return 0;
 }
->>>>>>> pa2
 static int cmd_help(char *args);
 
 static struct {
@@ -156,11 +146,8 @@ static struct {
 	{"si","Step Execute",cmd_si},
 	{"info","Print Information",cmd_info},
 	{"x","Scan Memory",cmd_x},
-<<<<<<< HEAD
-=======
 	{"p","Print Expression Value",cmd_p},
   {"d","Delete Watchpoint",cmd_d},
->>>>>>> pa2
 };
 
 #define NR_CMD ARRLEN(cmd_table)
