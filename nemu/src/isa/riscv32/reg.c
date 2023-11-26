@@ -43,5 +43,16 @@ word_t isa_reg_str2val(const char *s, bool *success) {
 		}
 	}
 	return gpr(reg_id);
-  //return 0;
+}
+
+word_t *csr(int src){
+	word_t* ret = NULL;
+	switch(src){
+		case MCAUSE:	ret = &cpu.mcause; break;
+		case MSTATUS:	ret = &cpu.mstatus; break;
+		case MEPC:		ret = &cpu.mepc;		break;
+		case MTVEC:		ret = &cpu.mtvec;	break;
+		default: assert(0);
+	}
+	return ret;
 }

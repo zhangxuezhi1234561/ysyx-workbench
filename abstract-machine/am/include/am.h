@@ -31,6 +31,8 @@ typedef struct {
   const char *msg;
 } Event;
 
+enum {ECALL=11};
+
 // A protected address space with user memory @area
 // and arch-dependent @ptr
 typedef struct {
