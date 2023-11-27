@@ -28,8 +28,9 @@ const char *regs[] = {
 void isa_reg_display() {
 	for(int i = 0;i < NR_GPR;i++)
 	{
-		printf("%-3s        %-8x            %d\n",regs[i],gpr(i),gpr(i));
+		printf("%-3s:0x%8x    %d\n",regs[i],gpr(i),gpr(i));
 	}
+	printf("mcause: 0x%x, mstatus: 0x%x, mepc: 0x%x, mtvec: 0x%x\n", cpu.mcause, cpu.mstatus, cpu.mepc, cpu.mtvec);
 }
 
 word_t isa_reg_str2val(const char *s, bool *success) {
