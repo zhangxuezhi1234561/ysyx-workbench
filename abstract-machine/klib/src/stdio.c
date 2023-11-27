@@ -107,7 +107,7 @@ static char *number(char *str, long num, int base, int size, int precision, int 
 int printf(const char *fmt, ...) {
 	va_list args;
 	va_start(args, fmt);
-	char out[500];
+	char out[3000];
 	int ret = vsprintf(out, fmt, args);
 	putstr(out);
 	va_end(args);
