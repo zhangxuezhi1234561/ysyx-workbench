@@ -75,14 +75,16 @@ int main(int argc, char *argv[], char *envp[]) {
   logo_sf = SDL_LoadBMP("/share/pictures/projectn.bmp");
   assert(logo_sf);
   set_i_max();
-
+  
   while (1) {
-    display_menu(i_max);
 
+    display_menu(i_max);
+    
     SDL_Event e;
     do {
       SDL_WaitEvent(&e);
     } while (e.type != SDL_KEYDOWN);
+
 
     int i = -1;
     switch (e.key.keysym.sym) {
@@ -99,6 +101,8 @@ int main(int argc, char *argv[], char *envp[]) {
       case SDLK_LEFT: prev(); break;
       case SDLK_RIGHT: next(); break;
     }
+
+        
 
     if (i != -1 && i <= i_max) {
       i += page * 10;
@@ -142,18 +146,23 @@ static void draw_text_row(char *s, int r) {
 static void display_menu(int n) {
   clear_display();
   SDL_Rect rect = { .x = screen->w - logo_sf->w, .y = 0 };
+
+  printf("screen->w: %d, logo_sf->w: %d\n", screen->w, logo_sf->w);
+  
   SDL_BlitSurface(logo_sf, NULL, screen, &rect);
+  
   printf("Available applications:\n");
   char buf[80];
   int i;
   for (i = 0; i <= n; i ++) {
+    
     auto *item = &items[page * 10 + i];
     sprintf(buf, "  [%d] %s", i, item->name);
     draw_text_row(buf, i);
   }
 
   i = 11;
-
+    
   sprintf(buf, "  page = %2d, #total apps = %d", page, nitems);
   draw_text_row(buf, i);
   i ++;

@@ -3,16 +3,145 @@
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst, SDL_Rect *dstrect) {
+  //assert(0);
   assert(dst && src);
   assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
+  //printf("check src_w = %d, src_h = %d; dst_w = %d, dst_h = %d, dstrect_x = %d, dstrect_y = %d\n", src->w, src->h, dst->w, dst->h, dstrect->x, dstrect->y);
+
+
+  uint32_t* dst_pixels = (uint32_t*)dst->pixels;
+  uint32_t* src_pixels = (uint32_t*)src->pixels;
+  // int x, y;
+  SDL_Rect src_tmp = {0, 0, 0, 0};//x, y, w, h
+  SDL_Rect dst_tmp = {0, 0, 0, 0};
+  
+  if(srcrect == NULL){
+    // x = 0;
+    // y = 0;
+    // src_tmp.w = src->w;
+    // src_tmp.h = src->h;
+    srcrect = &src_tmp;
+    srcrect->x = 0;
+    srcrect->y = 0;
+    srcrect->w = src->w;
+    srcrect->h = src->h;
+  }
+  if(dstrect == NULL){
+    // x = 0;
+    // y = 0;
+    // dst_tmp.w = dst->w;
+    // dst_tmp.h = dst->h;
+    dstrect = &dst_tmp;
+    // dstrect->x = 0;
+    // dstrect->y = 0;
+    dstrect->w = 0;
+    dstrect->h = 0;
+  }
+  
+  for(int i = 0; i < srcrect->h; i++){
+    for(int j = 0; j < srcrect->w; j++){
+      if(src->format->BitsPerPixel == 8){
+        //*((uint8_t*)(dst_pixels + ((j + dstrect->x) + (i + dstrect->y) * dst->w))) = *((uint8_t*)(src_pixels + ((j + srcrect->x) + (i + srcrect->y) * src->w)));
+        memcpy(dst->pixels + ((j + dstrect->x) + (i + dstrect->y) * dst->w), src->pixels + ((j + srcrect->x) + (i + srcrect->y) * src->w), src->format->BytesPerPixel);
+        //assert(0);
+      }
+      else{
+        *(dst_pixels + ((j + dstrect->x) + (i + dstrect->y) * dst->w)) = *(src_pixels + ((j + srcrect->x) + (i + srcrect->y) * src->w));
+      }
+      // *(dst_pixels + ((j + dstrect->x) + (i + dstrect->y) * dst->w)) = 255;
+      // printf("dst_pixels: 0x%x\n", *(dst_pixels + ((j + dstrect->x) + (i + dstrect->y) * dst->w)));
+      
+    }
+  }
+
+  NDL_OpenCanvas(&dst->w, &dst->h);
+  //assert(0);
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
+ // assert(0);
+  uint32_t* pixels = (uint32_t*)dst->pixels;
+  SDL_Rect tmp;
+
+  if(dstrect == NULL){
+    dstrect = &tmp;
+    dstrect->w = dst->w;
+    dstrect->h = dst->h;
+    dstrect->x = 0;
+    dstrect->y = 0;
+  }
+
+  // if(dstrect == NULL){
+  //   x = 0; y = 0;
+  //   w = dst->w; h = dst->h;
+  // }
+  // else{
+  //   x = dstrect->x; dstrect->y;
+  //   w = dstrect->w; h = dstrect->h;
+  // }
+
+  for(int i = 0; i < dstrect->h; i++){
+    for(int j = 0; j < dstrect->w; j++){
+      if(dst->format->BitsPerPixel == 8){
+        assert(0);
+        dst->pixels[(dstrect->y + i) * dst->w + (dstrect->x + j)] = color;
+      }
+      else{
+        *(pixels + ((j + dstrect->x) + (i + dstrect->y) * dst->w)) = color;// when BitsPerPixel is 8 same
+      } 
+        //pixels[(dstrect->y + j) * dst->w + (dstrect->x + i)] = color;
+    }
+  }
+
+  // for(int i = 0; i < h; i++){
+  //   for(int j = 0; j < w; j++){
+  //     *(pixels + ((j + x) + (i + y) * dst->w)) = color;
+  //   }
+  // }
+  NDL_OpenCanvas(&dst->w, &dst->h);
+ // assert(0);
+
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
+  //assert(0);
+  uint32_t* pixels;
+  
+  if(s->format->BitsPerPixel == 8){
+    pixels = (uint32_t*)malloc(sizeof(uint32_t) * s->w * s->h);
+    
+    for(int i = 0; i < s->w * s->h; i++){
+      SDL_Color *color = s->format->palette->colors;
+      uint8_t *s_pixels = (uint8_t*)(s->pixels);
+      pixels[i] = color[s_pixels[i]].val;
+      // pixels[i] = 255;
+      // if(pixels[i]){
+      //   printf("pixels %d is 0x%x\n", i, pixels[i]);
+      // }
+    }
+      
+    
+  }
+  else{
+    pixels = (uint32_t*)s->pixels;
+  }
+  if(x == 0 && y == 0 && w == 0 && h == 0){
+    NDL_OpenCanvas(&w, &h);
+    NDL_OpenCanvas(&s->w, &s->h);
+    NDL_DrawRect(pixels, 0, 0, s->w, s->h);
+  }
+  else{
+    NDL_OpenCanvas(&s->w, &s->h);
+    NDL_DrawRect(pixels, x, y, s->w, s->h);
+  }
+  if(s->format->BitsPerPixel == 8){
+    free(pixels);
+  }
+  
+ // assert(0);
 }
 
 // APIs below are already implemented.

@@ -7,6 +7,9 @@
 extern "C" {
 #endif
 
+extern struct timeval navy_boot_time;
+extern int navy_screen_w, navy_screen_h;
+
 int NDL_Init(uint32_t flags);
 void NDL_Quit();
 uint32_t NDL_GetTicks();

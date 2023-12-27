@@ -25,6 +25,16 @@
     } \
   } while (0)
 
+#ifndef Assert
+#define Assert(cond, format, ...) \
+  do { \
+    if (!(cond)) { \
+      Log(format, ## __VA_ARGS__); \
+      assert(cond); \
+    } \
+  } while (0)
+#endif
+
 #define TODO() panic("please implement me")
 
 #endif

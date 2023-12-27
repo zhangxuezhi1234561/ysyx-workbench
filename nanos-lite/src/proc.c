@@ -23,6 +23,22 @@ void init_proc() {
   switch_boot_pcb();
 
   Log("Initializing processes...");
+  //naive_uload(NULL, "/bin/hello");
+  // naive_uload(NULL, "/bin/file-test");
+  //naive_uload(NULL, "/bin/timer-test");
+  //naive_uload(NULL, "/bin/event-test");
+  //naive_uload(NULL, "/bin/bmp-test");
+  //naive_uload(NULL, "/bin/nslider");
+  //naive_uload(NULL, "/bin/menu");
+  // naive_uload(NULL, "/bin/nterm");
+    // naive_uload(NULL, "/bin/bird");
+  // naive_uload(NULL, "/bin/pal");
+  // naive_uload(NULL, "/bin/typing-game");
+  // naive_uload(NULL, "/bin/coremark");
+  naive_uload(NULL, "/bin/dhrystone");
+
+
+  
 
   // load program here
 

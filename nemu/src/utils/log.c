@@ -36,6 +36,12 @@ int fun_state = 0;
 int Sym_num = 0;
 static int space_num = 0;
 static int ret_space_num = 0;
+//-------------elf1-----------//
+Elf32_Sym *Symbol1 = NULL;
+Elf32_Shdr *shdr1 = NULL;
+char *strtab1 = NULL;
+int Sym_num1 = 0;
+
 #endif
 vaddr_t ftrace_pc;
 
@@ -90,6 +96,7 @@ int RingBuffer_write(RingBuffer *buffer, char *data, int length){
 }
 
 int RingBuffer_read(RingBuffer *buffer, int amount){
+  #define RingBuffer_read_already
   //char *target = malloc(sizeof(char*));
   //int len = 0;
  // char *s = "dataghjg";
@@ -179,6 +186,62 @@ void init_elf(const char *elf_file){
 
 }
 
+void init_elf_1(const char *elf_file){
+  int shnum;
+  int temp;
+  FILE *fp = fopen(elf_file, "r");
+  if(fp == NULL) assert(0);
+
+  Elf32_Ehdr elf_header;
+
+  int readfile = fread(&elf_header, sizeof(Elf32_Ehdr), 1, fp);
+  if(readfile == 0) assert(0);
+
+  if(!is_elf(elf_header)) assert(0);
+
+  // ---------
+
+  shdr1 = (Elf32_Shdr*)malloc(sizeof(Elf32_Shdr) * elf_header.e_shnum);
+  fseek(fp, elf_header.e_shoff, SEEK_SET);
+  temp = fread(shdr1, sizeof(Elf32_Shdr) * elf_header.e_shnum, 1, fp);
+  if(temp == 0) assert(0);
+  rewind(fp);
+
+  fseek(fp, shdr1[elf_header.e_shstrndx].sh_offset, SEEK_SET);    //strtab
+  char shstrtab[shdr1[elf_header.e_shstrndx].sh_size];
+  temp = fread(shstrtab, shdr1[elf_header.e_shstrndx].sh_size, 1, fp);
+  if(temp == 0) assert(0);
+  rewind(fp);
+
+
+  
+
+  for(shnum = 1; shnum < elf_header.e_shnum; shnum++) {
+    if(!strcmp(shstrtab + shdr1[shnum].sh_name, ".strtab"))
+    {
+      strtab1 = (char *)malloc(sizeof(char) * shdr1[shnum].sh_size);
+      if(strtab1 == NULL) assert(0);
+      fseek(fp, shdr1[shnum].sh_offset, SEEK_SET);
+      temp = fread(strtab1, shdr1[shnum].sh_size, 1, fp);
+      if(temp == 0) assert(0);
+      rewind(fp);
+    }
+
+    if(shdr1[shnum].sh_type == 2){
+      Sym_num1 = shdr1[shnum].sh_size / sizeof(Elf32_Sym);
+      Symbol1 = (Elf32_Sym*)malloc(sizeof(char) * shdr1[shnum].sh_size);
+      
+      fseek(fp, shdr1[shnum].sh_offset, SEEK_SET);
+      temp = fread(Symbol1, shdr1[shnum].sh_size, 1, fp);
+      if(temp == 0) assert(0);
+      rewind(fp);
+    }
+  }
+
+  return;
+
+}
+
 char *fun_pcparse(vaddr_t pc){
   char *funstr = NULL;
   for(int i = 1;i < Sym_num; i++){
@@ -186,7 +249,20 @@ char *fun_pcparse(vaddr_t pc){
       funstr = strtab + Symbol[i].st_name;
     }
   }
-  assert(funstr != NULL);
+ // assert(funstr != NULL);
+  return funstr;
+}
+
+char *fun_pcparse_1(vaddr_t pc){
+  char *funstr = NULL;
+  for(int i = 1;i < Sym_num1; i++){
+   //printf("-------pc = 0x%x  Symbol1[%d].st_value = 0x%x  size is %x\n", pc, i, Symbol1[i].st_value, Symbol1[i].st_size);
+    if(pc >= Symbol1[i].st_value && pc < Symbol1[i].st_value + Symbol1[i].st_size ){
+    //  assert(0);
+      funstr = strtab1 + Symbol1[i].st_name;
+    }
+  }
+ // assert(funstr != NULL);
   return funstr;
 }
 
@@ -204,7 +280,15 @@ void ftrace_display(){
       while(temp_num > 0){log_write("\t"); temp_num--;}
       space_num++;
       ret_space_num = space_num - 1;
-      log_write("call [%s@0x%x]\n", fun_pcparse(cpu.pc),cpu.pc);
+      if(fun_pcparse(cpu.pc)) 
+      {
+        log_write("call [%s@0x%x]\n", fun_pcparse(cpu.pc),cpu.pc);
+      }
+      else
+      { 
+     //   assert(0);
+        log_write("call elf1 [%s]\n", fun_pcparse_1(cpu.pc));
+      }
     }    
     if(fun_state == RET) {
       ret_space_num = ret_space_num >= 0 ? ret_space_num : 0;
@@ -212,7 +296,8 @@ void ftrace_display(){
       while(ret_temp_num > 0){log_write("\t"); ret_temp_num--;}
       ret_space_num--;
       space_num = ret_space_num + 1;
-      log_write("ret [%s]\n", fun_pcparse(cpu.pc));
+      if(fun_pcparse(cpu.pc)) log_write("ret [%s]\n", fun_pcparse(cpu.pc));
+      else log_write("ret elf1 [%s]\n", fun_pcparse_1(cpu.pc));
     }
     fun_state = 0;
   }

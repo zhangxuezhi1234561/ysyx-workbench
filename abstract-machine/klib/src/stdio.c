@@ -15,6 +15,7 @@
 
 #define is_digit(c) ((c) >= '0' && (c) <= '9')
 
+
 static char *digits = "0123456789abcdefghijklmnopqrstuvwxyz";
 static char *upper_digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 //void putch(char ch);
@@ -107,11 +108,13 @@ static char *number(char *str, long num, int base, int size, int precision, int 
 int printf(const char *fmt, ...) {
 	va_list args;
 	va_start(args, fmt);
-	char out[3000];
+	char* out = (char*)malloc(2000 * sizeof(char));
 	int ret = vsprintf(out, fmt, args);
 	putstr(out);
 	va_end(args);
+	free(out);
 	return ret;
+	//return 0;
 	//  panic("Not implemented");
 }
 
@@ -259,37 +262,51 @@ int sprintf(char *out, const char *fmt, ...) {
 
 int vsnprintf(char *out, size_t n, const char *fmt, va_list ap);
 int snprintf(char *out, size_t n, const char *fmt, ...) {
-	int result;
-	va_list ap;
-	va_start(ap, fmt);
-	result = vsnprintf(out, n, fmt, ap);
-	va_end(ap);
-	return result;
+	int ret = 0;
+    va_list va;
+    char *buff = (char *)malloc(n);
+
+    va_start(va, fmt);
+    ret = vsnprintf(buff, n, fmt, va);
+    va_end(va);
+
+    memcpy(out, buff, ret);
+
+    free(buff);
+
+    return ret;
+
 //  panic("Not implemented");
 }
 
 int vsnprintf(char *out, size_t n, const char *fmt, va_list ap) {
-	char *buf =	NULL;
+	char* buf = (char*)malloc(256 * sizeof(buf));
 	int result = vsprintf(buf, fmt, ap);
 
-	if(!buf)
-		return -1;
-	if(result < 0){
-		free(buf);
-		return -1;
-	}
+	// if(!buf)
+	// 	return -1;
+	// if(result < 0){
+	// 	free(buf);
+	// 	return -1;
+	// }
 
 	result = strlen(buf);
+	
 	if(n > 0){
-		if((long)n > result)
-			memcpy(out, buf, result+1);
+		if((long)n > result){
+			memcpy(out, buf, result + 1);
+			//out[result] = '\0';
+		}
 		else
 		{
 			memcpy(out, buf, n-1);
-			out[n-1] = 0;
+			out[n-1] = '\0';
 		}
 	}
+
+	//printf("result is %d, n is %d, OUT is %s\n", result, n, out);
 	free(buf);
+	//printf("****%s\n", buf);
 	return result;
 	
 	//  panic("Not implemented");

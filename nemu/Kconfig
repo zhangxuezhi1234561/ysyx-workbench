@@ -143,7 +143,7 @@ config TRACE_START
 config TRACE_END
   depends on TRACE
   int "When tracing is disabled (unit: number of instructions)"
-  default 10000
+  default 1000000
 
 config ITRACE
   depends on TRACE && TARGET_NATIVE_ELF && ENGINE_INTERPRETER
@@ -164,19 +164,6 @@ config DIFFTEST
     Enable differential testing with a reference design.
     Note that this will significantly reduce the performance of NEMU.
 
-config MTRACE
-  bool "Enable mtrace"
-  default y
-
-config FTRACE
-  bool "Enable ftrace"
-  default y
-
-config DTRACE
-  bool "Enable dtrace"
-  default y
-
-
 choice
   prompt "Reference design"
   default DIFFTEST_REF_SPIKE if ISA_riscv
@@ -194,6 +181,22 @@ config DIFFTEST_REF_KVM
   bool "KVM"
 endif
 endchoice
+
+config MTRACE
+  bool "Enable mtrace"
+  default y
+
+config FTRACE
+  bool "Enable ftrace"
+  default y
+
+config DTRACE
+  bool "Enable dtrace"
+  default y
+
+config STRACE
+  bool "Enable strace"
+  default y
 
 config DIFFTEST_REF_PATH
   string
