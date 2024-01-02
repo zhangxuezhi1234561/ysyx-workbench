@@ -20,6 +20,7 @@
 #include "sdb.h"
 #include <stdio.h>
 #include <memory/paddr.h>
+#include <cpu/difftest.h>
 
 static int is_batch_mode = false;
 static word_t old_value;
@@ -130,6 +131,58 @@ static int cmd_d(char *args) {
   free_wp(num);
   return 0;
 }
+
+bool diff_attach = true;
+static int cmd_detach(char *args) {
+  #ifndef CONFIG_DIFFTEST
+  printf("First turn on the difftest!\n");
+  #else
+  diff_attach = false;
+  #endif
+  return 0;
+}
+
+char *path_cfg(char *name){
+  char *home_path = getenv("NEMU_HOME");
+  char *filename = malloc(100);
+  strcpy(filename, home_path);
+  strcat(filename, "/src/nemu_history/");
+  strcat(filename, name);
+  return filename;
+}
+
+static int cmd_attach(char *args) {
+  #ifndef CONFIG_DIFFTEST
+  printf("First turn on the difftest!\n");
+  #else
+  diff_attach = true;
+  difftest_attach();
+  #endif
+  return 0;
+}
+
+static int cmd_save(char *args) {
+  char *name = strtok(NULL, " ");
+  char *path = path_cfg(name);
+
+  FILE *fp = fopen(path, "w");
+  save_regs(fp);
+  save_mem(fp);
+  fclose(fp);
+  return 0;
+}
+
+static int cmd_load(char *args) {
+  char *name = strtok(NULL, " ");
+  char *path = path_cfg(name);
+
+  FILE *fp = fopen(path, "r");
+  load_regs(fp);
+  load_mem(fp);
+  fclose(fp);
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -148,6 +201,10 @@ static struct {
 	{"x","Scan Memory",cmd_x},
 	{"p","Print Expression Value",cmd_p},
   {"d","Delete Watchpoint",cmd_d},
+  {"detach","Detach difftest", cmd_detach},
+  {"attach", "Attach difftest", cmd_attach},
+  {"save"  , "Save system snapshot", cmd_save},
+  {"load"  , "Load system snapshot", cmd_load},
 };
 
 #define NR_CMD ARRLEN(cmd_table)

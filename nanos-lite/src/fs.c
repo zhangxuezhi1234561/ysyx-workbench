@@ -56,7 +56,8 @@ int fs_open(const char *pathname, int flags, int mode){
       break;
     }
   }
-  assert(ret != -1);
+  // assert(ret != -1);
+  Assert(ret != -1, "pathname: %s\n", pathname);
   return ret;
 }
 

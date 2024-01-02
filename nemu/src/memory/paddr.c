@@ -71,3 +71,17 @@ void paddr_write(paddr_t addr, int len, word_t data) {
   IFDEF(CONFIG_DEVICE, mmio_write(addr, len, data); return);
   out_of_bound(addr);
 }
+
+void save_mem(FILE *fp) {
+  if(fwrite(pmem, CONFIG_MSIZE, 1, fp) == 0){
+    panic("Mem fail write to file");
+  }
+  return;
+}
+
+void load_mem(FILE *fp) {
+  if(fread(pmem, CONFIG_MSIZE, 1, fp) == 0){
+    panic("Mem fail read");
+  }
+  return;
+}

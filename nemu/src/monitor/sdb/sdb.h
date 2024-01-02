@@ -39,3 +39,5 @@ void wp_destroy();
 	WP *V = NULL; \
 	for(V = _node = L->S; _node != NULL; V = _node = _node->M)
 #endif
+
+

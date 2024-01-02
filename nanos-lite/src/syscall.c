@@ -1,7 +1,7 @@
 #include <common.h>
 #include "syscall.h"
 #include <sys/time.h>
-//#include <proc.h>
+#include <proc.h>
 #include <fs.h>
 
 
@@ -42,7 +42,8 @@ void do_syscall(Context *c) {
       #ifdef STRACE
         printf("syscall is SYS_exit, ID = %d, return value is 0x%x\n", a[0], c->GPR2);
       #endif    
-      sys_halt(a[1]);            
+      //sys_halt(a[1]);
+      exit();            
       break;
     case SYS_write: 
       c->GPR2 = fs_write(a[1], (const void *)a[2], a[3]);      //call the fs.c fs_write function.
@@ -86,6 +87,13 @@ void do_syscall(Context *c) {
         printf("syscall is SYS_gettimeofday, ID = %d, return value is 0x%x\n", a[0], c->GPR2);
       #endif        
       break;
+    case SYS_execve:
+      naive_uload(NULL, (char*)a[1]);
+      c->GPR2 = 0;
+      #ifdef STRACE
+        printf("syscall is SYS_execve, ID = %d, return value is 0x%x\n", a[0], c->GPR2);
+      #endif 
+      break; 
     default: panic("Unhandled syscall ID = %d", a[0]);
   }
 }

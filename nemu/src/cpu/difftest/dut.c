@@ -20,6 +20,7 @@
 #include <memory/paddr.h>
 #include <utils.h>
 #include <difftest-def.h>
+#include <assert.h>
 
 void (*ref_difftest_memcpy)(paddr_t addr, void *buf, size_t n, bool direction) = NULL;
 void (*ref_difftest_regcpy)(void *dut, bool direction) = NULL;
@@ -101,6 +102,10 @@ static void checkregs(CPU_state *ref, vaddr_t pc) {
 }
 
 void difftest_step(vaddr_t pc, vaddr_t npc) {
+  if(!diff_attach){
+    return;
+  }
+
   CPU_state ref_r;
 
   if (skip_dut_nr_inst > 0) {
@@ -128,6 +133,12 @@ void difftest_step(vaddr_t pc, vaddr_t npc) {
 
   checkregs(&ref_r, pc);
 }
+
+void difftest_attach() {
+  ref_difftest_memcpy(RESET_VECTOR, guest_to_host(RESET_VECTOR), CONFIG_MSIZE, DIFFTEST_TO_REF);
+  ref_difftest_regcpy(&cpu, DIFFTEST_TO_REF); 
+}
+
 #else
 void init_difftest(char *ref_so_file, long img_size, int port) { }
 #endif

@@ -1,7 +1,10 @@
 #include <nterm.h>
 #include <stdarg.h>
 #include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <SDL.h>
+#include <string.h>
 
 char handle_key(SDL_Event *ev);
 
@@ -23,11 +26,26 @@ static void sh_prompt() {
 }
 
 static void sh_handle_cmd(const char *cmd) {
+  // printf("-------cmd: %s\n", cmd);
+  if(cmd[0] == '\n'){
+    return;
+  }
+  char cmd_cpy[30];
+  strcpy(cmd_cpy, cmd);
+  
+  char *argv;
+  argv = strtok(cmd_cpy, "\n");
+  // printf("-------cmd: %s\n",argv);
+  // execve(argv, NULL, NULL);
+  execvp(argv, NULL);
+
 }
 
 void builtin_sh_run() {
   sh_banner();
   sh_prompt();
+  setenv("PATH", "/bin", 0);
+
 
   while (1) {
     SDL_Event ev;

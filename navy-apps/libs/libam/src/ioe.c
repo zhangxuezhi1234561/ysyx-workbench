@@ -37,6 +37,7 @@ void __navy_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
     kbd->keydown = false;
   }
   kbd->keycode = ev->key.keysym.sym;
+  free(ev);
 }
 
 void __navy_gpu_config(AM_GPU_CONFIG_T *cfg) {

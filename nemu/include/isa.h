@@ -58,4 +58,8 @@ word_t isa_query_intr();
 bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc);
 void isa_difftest_attach();
 
+//snapshot
+void save_regs(FILE *fp);
+void load_regs(FILE *fp); 
+
 #endif

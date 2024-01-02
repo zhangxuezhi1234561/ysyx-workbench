@@ -57,3 +57,17 @@ word_t *csr(int src){
 	}
 	return ret;
 }
+
+void save_regs(FILE *fp) {
+	if(fwrite(&cpu, sizeof(cpu), 1, fp) == 0) {
+		panic("Reg fail write");
+	}
+	return;
+}
+
+void load_regs(FILE *fp) {
+	if(fread(&cpu, sizeof(cpu), 1, fp) == 0){
+		panic("Reg fail load");
+	}
+	return;
+}
