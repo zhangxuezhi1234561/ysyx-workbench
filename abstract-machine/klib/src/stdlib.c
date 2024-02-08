@@ -65,7 +65,7 @@ void *malloc(size_t size) {
   //return (char *)header + SIZE_T_SIZE;
 
   */
-
+#if !(defined(__ISA_NATIVE__) && defined(__NATIVE_USE_KLIB__))
   size = (size_t)ROUNDUP(size, 8);
   if(hbrk == NULL){
 
@@ -77,11 +77,13 @@ void *malloc(size_t size) {
   char *old = hbrk;
   hbrk += size;
 
-  for(uint32_t *p = (uint32_t *)old; p != (uint32_t *)hbrk; p++) {
-    *p = 0;
-  }
+  // for(uint32_t *p = (uint32_t *)old; p != (uint32_t *)hbrk; p++) {  ///!!!!!!!!!!!!!
+  //   *p = 0;
+  // }
 
   return old;
+#endif
+  return NULL;
 }
 
 void free(void *ptr) {

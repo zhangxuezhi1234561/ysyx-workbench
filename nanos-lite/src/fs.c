@@ -57,7 +57,7 @@ int fs_open(const char *pathname, int flags, int mode){
     }
   }
   // assert(ret != -1);
-  Assert(ret != -1, "pathname: %s\n", pathname);
+  // Assert(ret != -1, "pathname: %s\n", pathname);
   return ret;
 }
 
@@ -140,7 +140,7 @@ size_t fs_lseek(int fd, size_t offset, int whence){
     default:
       assert(0);
   }
-  assert(file_open_offset[fd] >= 0 && file_open_offset[fd] <= file_table[fd].size);
+  // assert(file_open_offset[fd] >= 0 && file_open_offset[fd] <= file_table[fd].size);
   return file_open_offset[fd];
 }
 

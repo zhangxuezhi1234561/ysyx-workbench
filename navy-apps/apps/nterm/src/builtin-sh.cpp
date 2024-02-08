@@ -30,21 +30,33 @@ static void sh_handle_cmd(const char *cmd) {
   if(cmd[0] == '\n'){
     return;
   }
-  char cmd_cpy[30];
+  char *cmd_cpy = (char*)malloc(40 * sizeof(char));
+  // printf("-------cmd: %s\n",cmd);
   strcpy(cmd_cpy, cmd);
+  // printf("-------cmd: %s\n",cmd_cpy);
   
   char *argv;
-  argv = strtok(cmd_cpy, "\n");
+  cmd_cpy = strtok(cmd_cpy, "\n");
+  argv = strtok(cmd_cpy, " ");
+
+  char *args[5] = {NULL};
+  int cnt = 0;
+  args[cnt++] = strtok(NULL, " ");
+  while(args[cnt - 1]) {
+    args[cnt++] = strtok(NULL, " ");
+  }
   // printf("-------cmd: %s\n",argv);
   // execve(argv, NULL, NULL);
-  execvp(argv, NULL);
+  printf("args: %s\n", args[0]);
+  printf("args[1]: %s\n", args[1]);
+  execvp(argv, args);
 
 }
 
 void builtin_sh_run() {
   sh_banner();
   sh_prompt();
-  setenv("PATH", "/bin", 0);
+  setenv("PATH", "/bin:/usr/bin", 0);
 
 
   while (1) {

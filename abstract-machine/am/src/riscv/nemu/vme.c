@@ -1,6 +1,7 @@
 #include <am.h>
 #include <nemu.h>
 #include <klib.h>
+#include <arch/riscv.h>
 
 static AddrSpace kas = {};
 static void* (*pgalloc_usr)(int) = NULL;
@@ -33,11 +34,11 @@ bool vme_init(void* (*pgalloc_f)(int), void (*pgfree_f)(void*)) {
   int i;
   for (i = 0; i < LENGTH(segments); i ++) {
     void *va = segments[i].start;
+    printf("segments[%d]: start at %x, end at %x\n", i, segments[i].start, segments[i].end);
     for (; va < segments[i].end; va += PGSIZE) {
       map(&kas, va, va, 0);
     }
   }
-
   set_satp(kas.ptr);
   vme_enable = 1;
 
@@ -66,9 +67,48 @@ void __am_switch(Context *c) {
   }
 }
 
+static inline PTE check_pageing(PTE *entry, PTE vpn) {
+  if(entry[vpn] & _PAGE_PRESENT) {
+    return get_pfn(entry[vpn]) << NORMAL_PAGE_SHIFT;
+  }
+  else {
+    PTE base = (PTE)(pgalloc_usr(PGSIZE));
+    set_pfn(&entry[vpn], base >> NORMAL_PAGE_SHIFT);
+    set_attribute(&entry[vpn], _PAGE_PRESENT);
+    return base;
+  }
+}
+
+/*
+    00    00 0000 000    0 0000 0000     0000 0000 0000
+---|p0|--|    p1     |--|     p2    |---|      o       |
+*/
+
 void map(AddrSpace *as, void *va, void *pa, int prot) {
+  PTE vpn[] = {
+    ((PTE)va >> 12) & ((1 << 9) - 1),
+    ((PTE)va >> 21) & ((1 << 9) - 1),
+    ((PTE)va >> 30) & ((1 << 9) - 1)
+  };
+  PTE *first_page  = as->ptr;
+  PTE *second_page = (PTE*)check_pageing(first_page, vpn[2]);
+  PTE *third_page  = (PTE*)check_pageing(second_page, vpn[1]);
+  
+  set_pfn(&third_page[vpn[0]], (PTE)pa >> NORMAL_PAGE_SHIFT);
+  set_attribute(&third_page[vpn[0]], _PAGE_PRESENT);
 }
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
-  return NULL;
+  Context *ctx = (Context*)((uint8_t*)kstack.end - sizeof(Context));
+  memset((void*)ctx, 0, sizeof(Context));
+  ctx->mstatus = 0x1800;
+  ctx->mepc = (uintptr_t)entry;
+  ctx->mscratch = 0;
+  ctx->gpr[SP_REG] = (uintptr_t)ctx;
+  ctx->pdir = as->ptr;
+
+  // Log("ucontext: 0x%lx\n", (uintptr_t)ctx);
+
+  return ctx; 
+  // return NULL;
 }

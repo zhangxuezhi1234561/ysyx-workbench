@@ -47,4 +47,24 @@ typedef uintptr_t PTE;
 
 #define PGSIZE    4096
 
+#define NORMAL_PAGE_SHIFT 12
+#define PAGE_PFN_SHIFT    10
+// prot
+#define _PAGE_PRESENT (uintptr_t)1 << 0
+#define _PAGE_WRITE   (uintptr_t)1 << 1
+
+
+static inline void set_pfn(PTE *entry, PTE pfn) {
+  *entry = pfn << 10;
+}
+
+static inline void set_attribute(PTE *entry, PTE flag) {
+  PTE temp = *entry >> 10;
+  *entry = temp << 10 | flag;
+}
+
+static inline PTE get_pfn(PTE entry) {
+  return (entry) >> 10;
+}
+
 #endif

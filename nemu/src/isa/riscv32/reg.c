@@ -30,7 +30,8 @@ void isa_reg_display() {
 	{
 		printf("%-3s:0x%8x    %d\n",regs[i],gpr(i),gpr(i));
 	}
-	printf("mcause: 0x%x, mstatus: 0x%x, mepc: 0x%x, mtvec: 0x%x\n", cpu.mcause, cpu.mstatus, cpu.mepc, cpu.mtvec);
+	printf("mcause: 0x%x, mstatus: 0x%x, mepc: 0x%x, mtvec: 0x%x, msratch: 0x%x, satp: 0x%x\n", 
+	cpu.mcause, cpu.mstatus, cpu.mepc, cpu.mtvec, cpu.mscratch, cpu.satp);
 }
 
 word_t isa_reg_str2val(const char *s, bool *success) {
@@ -53,6 +54,8 @@ word_t *csr(int src){
 		case MSTATUS:	ret = &cpu.mstatus; break;
 		case MEPC:		ret = &cpu.mepc;		break;
 		case MTVEC:		ret = &cpu.mtvec;	break;
+		case MSCRATCH:  ret = &cpu.mscratch; break;
+		case SATP:		ret = &cpu.satp; break;
 		default: assert(0);
 	}
 	return ret;

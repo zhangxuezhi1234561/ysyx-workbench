@@ -9,7 +9,7 @@
 
 struct Context {
   // TODO: fix the order of these members to match trap.S
-  uintptr_t gpr[NR_REGS], mcause, mstatus, mepc;
+  uintptr_t gpr[NR_REGS], mcause, mstatus, mepc, mscratch;
   void *pdir;
 };
 
@@ -23,5 +23,8 @@ struct Context {
 #define GPR3 gpr[11]   //a1
 #define GPR4 gpr[12]   //a2
 #define GPRx gpr[10]   //a0
+
+#define SP_REG   2   
+#define RA_REG   1 
 
 #endif

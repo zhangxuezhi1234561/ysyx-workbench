@@ -25,6 +25,8 @@ typedef struct {
   word_t mstatus;
   word_t mepc;
   word_t mtvec;
+  word_t mscratch;
+  word_t satp;
 } MUXDEF(CONFIG_RV64, riscv64_CPU_state, riscv32_CPU_state);
 
 // decode
@@ -34,6 +36,8 @@ typedef struct {
   } inst;
 } MUXDEF(CONFIG_RV64, riscv64_ISADecodeInfo, riscv32_ISADecodeInfo);
 
-#define isa_mmu_check(vaddr, len, type) (MMU_DIRECT)
+#define NORMAL_PAGE_SHIFT 12
+#define PAGE_PFN_SHIFT    10
+// #define isa_mmu_check(vaddr, len, type) (MMU_DIRECT)
 
 #endif

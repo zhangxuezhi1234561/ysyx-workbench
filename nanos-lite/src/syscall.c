@@ -42,8 +42,8 @@ void do_syscall(Context *c) {
       #ifdef STRACE
         printf("syscall is SYS_exit, ID = %d, return value is 0x%x\n", a[0], c->GPR2);
       #endif    
-      //sys_halt(a[1]);
-      exit();            
+      sys_halt(a[1]);
+      // exit();            
       break;
     case SYS_write: 
       c->GPR2 = fs_write(a[1], (const void *)a[2], a[3]);      //call the fs.c fs_write function.
@@ -88,7 +88,16 @@ void do_syscall(Context *c) {
       #endif        
       break;
     case SYS_execve:
-      naive_uload(NULL, (char*)a[1]);
+      if(fs_open((const char *)a[1], 0, 0) == -1){
+        c->GPR2 = (uintptr_t)-2;
+        break;
+      }
+      // naive_uload(NULL, (char*)a[1]);
+      context_uload(current, (char *)a[1], (char **)a[2], (char **)a[3]);
+      // printf("++++current1: 0x%lx\n", current);
+      switch_boot_pcb();
+      // printf("++++current2: 0x%lx\n", current);
+      yield();
       c->GPR2 = 0;
       #ifdef STRACE
         printf("syscall is SYS_execve, ID = %d, return value is 0x%x\n", a[0], c->GPR2);

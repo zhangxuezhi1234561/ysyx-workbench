@@ -20,8 +20,10 @@
 
 #define MCAUSE  0x342
 #define MSTATUS 0x300
-#define MTVEC	0x305
+#define MTVEC	  0x305
 #define MEPC    0x341
+#define MSCRATCH 0x340
+#define SATP    0x180
 
 static inline int check_reg_idx(int idx) {
   IFDEF(CONFIG_RT_CHECK, assert(idx >= 0 && idx < MUXDEF(CONFIG_RVE, 16, 32)));

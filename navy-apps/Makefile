@@ -166,8 +166,10 @@ $(CLEAN_ALL):
 .PHONY: clean-all $(CLEAN_ALL)
 
 ### Build fsimg and ramdisk for Nanos-lite
-APPS =  menu nterm bird pal am-kernels fceux
-TESTS = dummy hello file-test timer-test event-test bmp-test
+#APPS =  menu nterm bird pal am-kernels fceux
+APPS =  menu nterm bird pal busybox
+#TESTS = dummy hello file-test timer-test event-test bmp-test 
+TESTS = exec-test
 
 fsimg: $(addprefix apps/, $(APPS)) $(addprefix tests/, $(TESTS))
 	-for t in $^; do $(MAKE) -s -C $(NAVY_HOME)/$$t install; done

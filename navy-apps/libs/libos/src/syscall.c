@@ -6,6 +6,7 @@
 #include "syscall.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
 
 
 // helper macros
@@ -117,7 +118,9 @@ int _gettimeofday(struct timeval *tv, struct timezone *tz) {
 }
 
 int _execve(const char *fname, char * const argv[], char *const envp[]) {
-  return _syscall_(SYS_execve, (intptr_t)fname, (intptr_t)argv, (intptr_t)envp);
+  int ret = _syscall_(SYS_execve, (intptr_t)fname, (intptr_t)argv, (intptr_t)envp);
+  errno = -ret;
+  return 0;
   // _exit(SYS_execve);
   // return 0;
 }
