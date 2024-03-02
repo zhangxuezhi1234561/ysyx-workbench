@@ -6,6 +6,24 @@
 
 - 其他功能: 接入RT-Thread系统、快照、接入busybox、内建shell、支持menuconfig配置裁剪
 
+
+
+### 实现库函数
+
+- 实现stdio.c、stdlib.c、string.c下的一些常见库函数
+
+
+
+### 实现的系统调用
+
+- 9 system calls
+
+	- open, read, write, lseek, close, gettimeofday, brk, exit, execve
+
+	
+
+
+
 ## 效果显示
 
 ### 运行贪吃蛇游戏
@@ -31,3 +49,11 @@
 ###  分页机制之下同时运行内核线程与用户进程
 
 ![image-20240225155127306](ysyx.assets/image-20240225155127306.png)
+
+
+
+### 接入RT-Thread
+
+![image-20240302185024607](ysyx.assets/image-20240302185024607.png)
+
+![image-20240302185046462](ysyx.assets/image-20240302185046462.png)
