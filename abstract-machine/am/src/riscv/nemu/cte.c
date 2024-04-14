@@ -5,6 +5,10 @@
 
 static Context* (*user_handler)(Event, Context*) = NULL;
 
+enum interrupt {
+  MTI = 7,
+};
+
 const char *regs[] = {
   "$0", "ra", "sp", "gp", "tp", "t0", "t1", "t2",
   "s0", "s1", "a0", "a1", "a2", "a3", "a4", "a5",
@@ -18,14 +22,29 @@ Context* __am_irq_handle(Context *c) {
   __am_get_cur_as(c);
   if (user_handler) {
     Event ev = {0};
-    switch (c->mcause) {
-      case ECALL:
-        if(c->GPR1 == -1){ev.event = EVENT_YIELD; c->mepc += 4;}
-        else{ev.event = EVENT_SYSCALL; c->mepc += 4;}
-      //  else assert(0);
-        break;
-      default: ev.event = EVENT_ERROR; assert(0); break;
+    // printf("mcause is 0x%lx\n", c->mcause);
+    if(c->mcause & (0x80000000)) {
+      // assert(0);
+      uintptr_t cause = c->mcause & ~(0x80000000);
+      switch(cause) {
+        case MTI:
+          ev.event = EVENT_IRQ_TIMER;
+          // c->mepc += 4;   
+          break;
+        default: assert(0);     
+      }
     }
+    else {
+      switch (c->mcause) {
+        case ECALL:
+          if(c->GPR1 == -1){ev.event = EVENT_YIELD; c->mepc += 4;}
+          else{ev.event = EVENT_SYSCALL; c->mepc += 4;}
+        //  else assert(0);
+          break;
+        default: ev.event = EVENT_ERROR; printf("error cause is %d\n", c->mcause); assert(0); break;
+      }      
+    }
+
 /*
     for(int i = 0; i < 32; i++){
       printf("%s: %x\n", regs[i], c->gpr[i]);
@@ -43,6 +62,7 @@ extern void __am_asm_trap(void);
 
 bool cte_init(Context*(*handler)(Event, Context*)) {
   // initialize exception entry
+  // printf("In cte__init\n");
   asm volatile("csrw mtvec, %0" : : "r"(__am_asm_trap));
 
   // register event handler
@@ -54,7 +74,7 @@ bool cte_init(Context*(*handler)(Event, Context*)) {
 Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   Context *ctx = (Context*)((uint8_t*)kstack.end - sizeof(Context));
   memset((void*)ctx, 0, sizeof(Context));
-  ctx->mstatus = 0x1800;
+  ctx->mstatus = 0x1800 | 0x00000080;
   ctx->mepc = (uintptr_t)entry;
   
   ctx->mscratch = 0;

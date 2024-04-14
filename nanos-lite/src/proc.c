@@ -41,17 +41,18 @@ void init_proc() {
   // naive_uload(NULL, "/bin/dhrystone");
   // naive_uload(NULL, "/bin/fceux");
 
-  int *arg1 = malloc(sizeof(int));
-  *arg1 = 1;
+  // int *arg1 = malloc(sizeof(int));
+  // *arg1 = 1;
   // int *arg2 = malloc(sizeof(int));
   // *arg2 = 2;
-  context_kload(&pcb[0], hello_fun, arg1);
+  // context_kload(&pcb[0], hello_fun, arg1);
 
   // context_kload(&pcb[1], hello_fun, arg2);
   // context_uload(&pcb[0], "/bin/exec-test", argv, NULL);
-  // context_uload(&pcb[0], "/bin/menu", argv, NULL);
+  // context_uload(&pcb[1], "/bin/menu", NULL, NULL);
   // context_uload(&pcb[1], "/bin/nterm", NULL, NULL);
-  context_uload(&pcb[1], "/bin/pal", NULL, NULL);
+  // context_uload(&pcb[1], "/bin/pal", argv, NULL);
+  context_uload(&pcb[1], "/bin/bird", NULL, NULL);
 
   // context_uload(&pcb[1], "/bin/dummy", NULL, NULL);
   // context_uload(&pcb[0], "/bin/hello", NULL, NULL);
@@ -73,7 +74,8 @@ int times = 0;
 Context* schedule(Context *prev) {
   current->cp = prev;
   // printf("------current1->cp: 0x%lx\n", current->cp);
-  current = (times++ % 1000 != 0 ? &pcb[1] : &pcb[0]);
+  current = (times++ % 10000 != 0 ? &pcb[1] : &pcb[1]);
+  // current = (current == &pcb[1] ? &pcb[0] : &pcb[1]);
   // current = &pcb[0];
   // printf("------current2: 0x%lx\n", current);
   // printf("------current2->cp: 0x%lx\n", current->cp);

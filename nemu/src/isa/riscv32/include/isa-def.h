@@ -27,7 +27,13 @@ typedef struct {
   word_t mtvec;
   word_t mscratch;
   word_t satp;
+  bool INTR;
 } MUXDEF(CONFIG_RV64, riscv64_CPU_state, riscv32_CPU_state);
+
+//mstatus
+#define   MSTATUS_MIE_BITS  0x8
+#define   MSTATUS_MPIE_BITS 0x80
+#define   MSTATUS_MPP_BITS 0x1800
 
 // decode
 typedef struct {

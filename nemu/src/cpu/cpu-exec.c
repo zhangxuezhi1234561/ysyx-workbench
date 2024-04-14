@@ -86,6 +86,15 @@ static void execute(uint64_t n) {
     trace_and_difftest(&s, cpu.pc);
     if (nemu_state.state != NEMU_RUNNING) break;
     IFDEF(CONFIG_DEVICE, device_update());
+
+    word_t intr = isa_query_intr();
+    if(intr != INTR_EMPTY) {
+      // printf("cpu.pc: 0x%x, inst_num: %ld, s.pc: 0x%x, mtvec: 0x%x\n", s.dnpc, g_nr_guest_inst, s.pc, cpu.mtvec);
+      s.dnpc = isa_raise_intr(intr, s.pc);
+      // printf("cpu.pc: 0x%x, inst_num: %ld, s.pc: 0x%x\n", s.dnpc, g_nr_guest_inst, s.pc);
+      
+      cpu.pc = s.dnpc;
+    }
   }
 }
 
@@ -126,6 +135,9 @@ void cpu_exec(uint64_t n) {
 
   uint64_t timer_end = get_time();
   g_timer += timer_end - timer_start;
+
+
+
 
   switch (nemu_state.state) {
     case NEMU_RUNNING:

@@ -73,7 +73,7 @@ static inline PTE check_pageing(PTE *entry, PTE vpn) {
   }
   else {
     PTE base = (PTE)(pgalloc_usr(PGSIZE));
-    set_pfn(&entry[vpn], base >> NORMAL_PAGE_SHIFT);
+    set_pfn(&entry[vpn], base >> NORMAL_PAGE_SHIFT);  // right shift 12, left shift 10
     set_attribute(&entry[vpn], _PAGE_PRESENT);
     return base;
   }
@@ -101,7 +101,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
   Context *ctx = (Context*)((uint8_t*)kstack.end - sizeof(Context));
   memset((void*)ctx, 0, sizeof(Context));
-  ctx->mstatus = 0x1800;
+  ctx->mstatus = 0x1800 | 0x00000080;
   ctx->mepc = (uintptr_t)entry;
   ctx->mscratch = 0;
   ctx->gpr[SP_REG] = (uintptr_t)ctx;

@@ -109,7 +109,7 @@ static int decode_exec(Decode *s) {
 
 	INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs  , I, {word_t* csr_reg = csr(imm); word_t tmp = *csr_reg; *csr_reg = tmp | src1; R(rd) = tmp; /*difftest_skip_ref();*/});//t0--5, t1--6, t2--7
 	INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw	 , I, {word_t* csr_reg = csr(imm); word_t tmp = *csr_reg; *csr_reg = src1; R(rd) = tmp;});
-	INSTPAT("0011000 00010 00000 000 00000 11100 11", mret	 , N, s->dnpc = *csr(MEPC));
+	INSTPAT("0011000 00010 00000 000 00000 11100 11", mret	 , N, s->dnpc = isa_ret_intr());
 	INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall  , N, s->dnpc = isa_raise_intr(ECALL, s->pc));
 
 

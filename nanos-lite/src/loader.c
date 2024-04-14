@@ -98,12 +98,13 @@ void context_uload(PCB *pcb, char *filename, char *const argv[], char *const env
  
   printf("------filename: %s\n", filename);
   
+  //----------- apply user stack 32Kb ----------//
   uintptr_t ustack_base = (uintptr_t)new_page(8);
-  uintptr_t ustack = ustack_base + 8 * PGSIZE;
+  uintptr_t ustack = ustack_base + 8 * PGSIZE;    // stack top pointer
   // if(envp){
   //   printf("------envp[0]: %s\n", envp[0]);
   // }
-
+//------------- map the 32KB user stack -------------//
 #ifdef HAS_VME
   protect(&pcb->as);
   for(int i = 0; i < 8; i++) {
@@ -111,7 +112,7 @@ void context_uload(PCB *pcb, char *filename, char *const argv[], char *const env
   }
 #endif
 
-
+//---------- get args --------- //
   char **p_argv = (char **)argv;
   char **p_envp = (char **)envp;
 
@@ -128,6 +129,7 @@ void context_uload(PCB *pcb, char *filename, char *const argv[], char *const env
     len_envp += (strlen(envp[i]) + 1);
   }
 
+//------- calculate the total len, from stack top down ----------//
   int total_len = (1 + argc + 1 + envpc + 1) * sizeof(uintptr_t) + len_argv + len_envp;
 
   int str_ptr = ustack - total_len;
@@ -152,10 +154,6 @@ void context_uload(PCB *pcb, char *filename, char *const argv[], char *const env
     str_ptr += sizeof(uintptr_t);
     argv_ptr += (strlen(envp[i]) + 1);
   }
-
-
-  
-
 
   uintptr_t entry = loader(pcb, filename);
   // if(argv) printf("------argv: %s, envpc: %d\n", argv[0], 1);
