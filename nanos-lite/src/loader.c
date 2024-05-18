@@ -100,7 +100,7 @@ void context_uload(PCB *pcb, char *filename, char *const argv[], char *const env
   
   //----------- apply user stack 32Kb ----------//
   uintptr_t ustack_base = (uintptr_t)new_page(8);
-  uintptr_t ustack = ustack_base + 8 * PGSIZE;    // stack top pointer
+  uintptr_t ustack = ustack_base + 8 * PGSIZE;    // stack top pointer  8*PGSIZE------STACK_SIZE
   // if(envp){
   //   printf("------envp[0]: %s\n", envp[0]);
   // }
