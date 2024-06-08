@@ -24,14 +24,14 @@ VM_TRACE_FST = 0
 # Generated module classes, fast-path, compile with highest optimization
 VM_CLASSES_FAST += \
 	Vcore \
+	Vcore__Dpi_Export__0 \
 	Vcore___024root__DepSet_h0a3cae5e__0 \
 	Vcore___024root__DepSet_h134b5715__0 \
 	Vcore_core__DepSet_hf216864e__0 \
-	Vcore_core__DepSet_hf216864e__1 \
 	Vcore_ifu_ifetch__DepSet_h34b6a80f__0 \
-	Vcore_sirv_gnrl_dfflr__DepSet_hacca00fd__0 \
 	Vcore_sirv_gnrl_dffl__DepSet_hab8abccf__0 \
 	Vcore_exu_decode__DepSet_h66efcaa5__0 \
+	Vcore_sirv_gnrl_dfflr__DepSet_hacca00fd__0 \
 
 # Generated module classes, non-fast-path, compile with low/medium optimization
 VM_CLASSES_SLOW += \
@@ -48,15 +48,15 @@ VM_CLASSES_SLOW += \
 	Vcore_ifu_ifetch__Slow \
 	Vcore_ifu_ifetch__DepSet_h34b6a80f__0__Slow \
 	Vcore_ifu_ifetch__DepSet_h28d158c4__0__Slow \
-	Vcore_sirv_gnrl_dfflr__Slow \
-	Vcore_sirv_gnrl_dfflr__DepSet_hacca00fd__0__Slow \
-	Vcore_sirv_gnrl_dfflr__DepSet_hb094b1b2__0__Slow \
 	Vcore_sirv_gnrl_dffl__Slow \
 	Vcore_sirv_gnrl_dffl__DepSet_hab8abccf__0__Slow \
 	Vcore_sirv_gnrl_dffl__DepSet_hb1d56584__0__Slow \
 	Vcore_exu_decode__Slow \
 	Vcore_exu_decode__DepSet_h66efcaa5__0__Slow \
 	Vcore_exu_decode__DepSet_h7679fb6a__0__Slow \
+	Vcore_sirv_gnrl_dfflr__Slow \
+	Vcore_sirv_gnrl_dfflr__DepSet_hacca00fd__0__Slow \
+	Vcore_sirv_gnrl_dfflr__DepSet_hb094b1b2__0__Slow \
 
 # Generated support classes, fast-path, compile with highest optimization
 VM_SUPPORT_FAST += \

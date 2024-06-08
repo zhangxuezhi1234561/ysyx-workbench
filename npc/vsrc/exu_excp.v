@@ -10,7 +10,9 @@ module exu_excp(
     input               alu_excp_i_valid,
     input               alu_excp_i_ebreak,
 
-    output  [`XLEN-1:0] cmt_cause
+    output  [`XLEN-1:0] cmt_cause,
+
+    output  [`XLEN-1:0] endcode
 );
     wire    excpirq_flush_ack   =   1'b1;
     wire    excpirq_flush_req;
@@ -42,12 +44,12 @@ module exu_excp(
 
     assign  cmt_cause           =   excp_cause;
 
-    import "DPI-C" function void npc_stop(input int a);
+    import "DPI-C" function void npc_stop(input int a, input int b);
     // initial begin
     //     npc_stop(alu_excp_flush_req_ebreak);
     // end
     always @(posedge alu_excp_flush_req_ebreak) begin 
-        npc_stop(alu_excp_flush_req_ebreak);
+        npc_stop(alu_excp_flush_req_ebreak, endcode);
     end
 
 

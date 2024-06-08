@@ -24,10 +24,12 @@ class Vcore___024root final : public VerilatedModule {
     VL_IN8(ifu_req_ready,0,0);
     VL_IN8(ifu_rsp_valid,0,0);
     VL_OUT8(ifu_rsp_ready,0,0);
+    CData/*0:0*/ __Vdpi_export_trigger;
     CData/*0:0*/ __Vtrigrprev__TOP__core____PVT__inst_exu__DOT__inst_exu_commit__DOT__inst_exu_excp__DOT__alu_excp_flush_req_ebreak;
     CData/*0:0*/ __Vtrigrprev__TOP__clk;
     CData/*0:0*/ __Vtrigrprev__TOP__rst;
     CData/*0:0*/ __VactContinue;
+    VL_OUT(inspect_pc,31,0);
     VL_IN(pc_rtvec,31,0);
     VL_OUT(ifu_req_pc,31,0);
     VL_IN(ifu_rsp_instr,31,0);
@@ -36,9 +38,9 @@ class Vcore___024root final : public VerilatedModule {
     IData/*31:0*/ __VactIterCount;
     VlUnpacked<CData/*0:0*/, 6> __Vm_traceActivity;
     VlTriggerVec<1> __VstlTriggered;
-    VlTriggerVec<1> __VicoTriggered;
-    VlTriggerVec<3> __VactTriggered;
-    VlTriggerVec<3> __VnbaTriggered;
+    VlTriggerVec<2> __VicoTriggered;
+    VlTriggerVec<4> __VactTriggered;
+    VlTriggerVec<4> __VnbaTriggered;
 
     // INTERNAL VARIABLES
     Vcore__Syms* const vlSymsp;

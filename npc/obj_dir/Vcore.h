@@ -35,6 +35,7 @@ class Vcore VL_NOT_FINAL : public VerilatedModel {
     VL_IN8(&ifu_req_ready,0,0);
     VL_IN8(&ifu_rsp_valid,0,0);
     VL_OUT8(&ifu_rsp_ready,0,0);
+    VL_OUT(&inspect_pc,31,0);
     VL_IN(&pc_rtvec,31,0);
     VL_OUT(&ifu_req_pc,31,0);
     VL_IN(&ifu_rsp_instr,31,0);
@@ -79,6 +80,9 @@ class Vcore VL_NOT_FINAL : public VerilatedModel {
     void trace(VerilatedVcdC* tfp, int levels, int options = 0);
     /// Retrieve name of this model instance (as passed to constructor).
     const char* name() const;
+
+    /// DPI Export functions
+    static void publicgetsignal(svLogicVecVal* out_rf);
 
     // Abstract methods from VerilatedModel
     const char* hierName() const override final;

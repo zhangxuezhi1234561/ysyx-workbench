@@ -16,6 +16,9 @@ class Vcore_exu_decode final : public VerilatedModule {
     // DESIGN SPECIFIC STATE
     // Anonymous structures to workaround compiler member-count bugs
     struct {
+        VL_IN8(__PVT__clk,0,0);
+        VL_IN8(__PVT__rst,0,0);
+        VL_IN8(__PVT__i_prdt_taken,0,0);
         VL_OUT8(__PVT__dec_rs1x0,0,0);
         VL_OUT8(__PVT__dec_rs2x0,0,0);
         VL_OUT8(__PVT__dec_rs1en,0,0);
@@ -24,15 +27,25 @@ class Vcore_exu_decode final : public VerilatedModule {
         VL_OUT8(__PVT__dec_rs1idx,4,0);
         VL_OUT8(__PVT__dec_rs2idx,4,0);
         VL_OUT8(__PVT__dec_rdidx,4,0);
+        VL_OUT8(__PVT__dec_bjp,0,0);
+        VL_OUT8(__PVT__dec_jal,0,0);
+        VL_OUT8(__PVT__dec_jalr,0,0);
+        VL_OUT8(__PVT__dec_jalr_rs1idx,4,0);
         CData/*0:0*/ __PVT__rv32_op_imm;
+        CData/*0:0*/ __PVT__rv32_op;
         CData/*0:0*/ __PVT__rv32_system;
         CData/*0:0*/ __PVT__rv32_auipc;
         CData/*0:0*/ __PVT__rv32_ebreak;
         CData/*0:0*/ __PVT__rv32_addi;
+        CData/*0:0*/ __PVT__rv32_nop;
         CData/*0:0*/ __PVT__alu_op;
-        CData/*0:0*/ __Vtogcov__dec_rs1x0;
+        CData/*0:0*/ __PVT__need_imm;
+        CData/*0:0*/ __PVT__rv32_imm_sel_i;
         CData/*0:0*/ __Vtogcov__dec_rs2x0;
         CData/*0:0*/ __Vtogcov__dec_rdwen;
+        CData/*0:0*/ __Vtogcov__dec_bjp;
+        CData/*0:0*/ __Vtogcov__dec_jal;
+        CData/*0:0*/ __Vtogcov__dec_jalr;
         CData/*0:0*/ __Vtogcov__opcode_1_0_11;
         CData/*0:0*/ __Vtogcov__opcode_4_2_000;
         CData/*0:0*/ __Vtogcov__opcode_4_2_001;
@@ -67,6 +80,8 @@ class Vcore_exu_decode final : public VerilatedModule {
         CData/*0:0*/ __Vtogcov__rv32_func7_1111111;
         CData/*0:0*/ __Vtogcov__rv32_func7_0000100;
         CData/*0:0*/ __Vtogcov__rv32_func7_0001000;
+    };
+    struct {
         CData/*0:0*/ __Vtogcov__rv32_func7_0001100;
         CData/*0:0*/ __Vtogcov__rv32_func7_0101100;
         CData/*0:0*/ __Vtogcov__rv32_func7_0010000;
@@ -80,8 +95,6 @@ class Vcore_exu_decode final : public VerilatedModule {
         CData/*0:0*/ __Vtogcov__rv32_func7_1110001;
         CData/*0:0*/ __Vtogcov__rv32_func7_1100001;
         CData/*0:0*/ __Vtogcov__rv32_func7_1101001;
-    };
-    struct {
         CData/*0:0*/ __Vtogcov__rv32_rd_x0;
         CData/*0:0*/ __Vtogcov__rv32_op_imm;
         CData/*0:0*/ __Vtogcov__rv32_op;
@@ -91,22 +104,30 @@ class Vcore_exu_decode final : public VerilatedModule {
         CData/*0:0*/ __Vtogcov__rv32_addi;
         CData/*0:0*/ __Vtogcov__rv32_nop;
         CData/*0:0*/ __Vtogcov__alu_op;
-        CData/*0:0*/ __VdfgTmp_hc3fc61f5__0;
+        CData/*0:0*/ __Vtogcov__need_imm;
+        CData/*0:0*/ __Vtogcov__rv32_imm_sel_i;
+        CData/*0:0*/ __Vtogcov__dec_bjp_test;
+        CData/*0:0*/ __PVT__decode_dec_bjp_test_dfflr__DOT__qout_r;
+        CData/*0:0*/ decode_dec_bjp_test_dfflr__DOT____Vtogcov__qout_r;
         VL_IN(__PVT__rv32_instr,31,0);
         VL_IN(__PVT__i_pc,31,0);
         VL_OUT(__PVT__dec_imm,31,0);
         VL_OUT(__PVT__dec_pc,31,0);
+        VL_OUT(__PVT__dec_bjp_imm,31,0);
         IData/*20:0*/ __PVT__alu_info_bus;
         IData/*31:0*/ __PVT__rv32_i_imm;
         IData/*31:0*/ __PVT__rv32_s_imm;
         IData/*31:0*/ __PVT__rv32_b_imm;
         IData/*31:0*/ __PVT__rv32_j_imm;
+        IData/*16:0*/ __PVT__bjp_info_bus;
         IData/*31:0*/ __Vtogcov__dec_imm;
+        IData/*31:0*/ __Vtogcov__dec_bjp_imm;
         IData/*20:0*/ __Vtogcov__alu_info_bus;
         IData/*31:0*/ __Vtogcov__rv32_i_imm;
         IData/*31:0*/ __Vtogcov__rv32_s_imm;
         IData/*31:0*/ __Vtogcov__rv32_b_imm;
         IData/*31:0*/ __Vtogcov__rv32_j_imm;
+        IData/*16:0*/ __Vtogcov__bjp_info_bus;
         VL_OUT64(__PVT__dec_info,32,0);
         QData/*32:0*/ __Vtogcov__dec_info;
     };

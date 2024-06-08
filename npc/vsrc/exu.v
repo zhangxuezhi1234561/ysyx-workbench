@@ -11,11 +11,13 @@ module exu(
     input   [`RFIDX_WIDTH-1:0]   i_rs1idx,
     input   [`RFIDX_WIDTH-1:0]   i_rs2idx,
 
-    input   i_pc_vld,
+    input                       i_pc_vld,
+    input                       i_prdt_taken,
 
     output                      commit_trap,
 
-    output  [`XLEN-1:0]         rf2ifu_x1
+    output  [`XLEN-1:0]         rf2ifu_x1,
+    output  [`XLEN-1:0]         rf2ifu_rs1
 );
 
 
@@ -26,6 +28,7 @@ module exu(
     wire                rf_wbck_ena;
     wire    [`XLEN-1:0] rf_wbck_wdat;           //write rd data
     wire    [`RFIDX_WIDTH-1:0] rf_wbck_rdidx;   //write rd data
+    wire    [`XLEN-1:0] endcode;
 
     RegisterFile inst_RegisterFile(
         .clk    (clk),
@@ -40,7 +43,8 @@ module exu(
         .wbck_dest_idx  (rf_wbck_rdidx),    //input
         .wbck_dest_dat  (rf_wbck_wdat),     //input
 
-        .x1_r           (rf2ifu_x1)
+        .x1_r           (rf2ifu_x1),
+        .endcode        (endcode)
     );
 
     //----------- Instantiate the Decode ------------//
@@ -54,8 +58,13 @@ module exu(
     wire    [`RFIDX_WIDTH-1:0]   dec_rdidx;
     wire                         dec_rdwen;
     exu_decode inst_exu_decode(
+        .clk    (clk),
+        .rst    (rst),
+
         .rv32_instr     (i_ir),
         .i_pc           (i_pc),
+        .i_prdt_taken   (i_prdt_taken),
+
         .dec_rs1x0      (dec_rs1x0),
         .dec_rs2x0      (dec_rs2x0),
         .dec_rs1en      (dec_rs1en),    //output
@@ -66,7 +75,13 @@ module exu(
         .dec_rdidx      (dec_rdidx),
         .dec_imm        (dec_imm),
         .dec_pc         (dec_pc),
-        .dec_info       (dec_info)
+        .dec_info       (dec_info),
+
+        .dec_bjp        (),
+        .dec_jal        (),
+        .dec_jalr       (),
+        .dec_jalr_rs1idx    (),
+        .dec_bjp_imm        ()
     );
 
 
@@ -116,11 +131,14 @@ module exu(
     wire    [`XLEN-1:0] alu_wbck_o_wdat;
     wire    [`RFIDX_WIDTH-1:0]  alu_wbck_o_rdidx;
 
+    wire    alu_cmt_bjp;
     wire    alu_cmt_ebreak;
 
     wire    alu_cmt_valid;
     wire    alu_cmt_ready;
     wire    alu_cmt_ebreak;
+    wire    alu_cmt_bjp_prdt;
+
     wire    alu_cmt_pc_vld;
     wire    [`PC_SIZE-1:0]  alu_cmt_pc;
     wire    [`INSTR_SIZE-1:0]   alu_cmt_instr;
@@ -149,7 +167,10 @@ module exu(
         .cmt_o_pc       (alu_cmt_pc),
         .cmt_o_instr    (alu_cmt_instr),
         .cmt_o_imm      (alu_cmt_imm),
+
+        .cmt_o_bjp      (alu_cmt_bjp),
         .cmt_o_ebreak   (alu_cmt_ebreak),
+        .cmt_o_bjp_prdt (alu_cmt_bjp_prdt),     //output
 
         .wbck_o_valid   (alu_wbck_o_valid),
         .wbck_o_ready   (alu_wbck_o_ready),
@@ -180,9 +201,16 @@ module exu(
         .alu_cmt_i_instr        (alu_cmt_instr),
         .alu_cmt_i_pc_vld       (alu_cmt_pc_vld),
         .alu_cmt_i_imm          (alu_cmt_imm),
-        .alu_cmt_i_ebreak       (alu_cmt_ebreak),
 
-        .cmt_cause              (cmt_cause)
+        .alu_cmt_i_bjp          (alu_cmt_bjp),
+        .alu_cmt_i_ebreak       (alu_cmt_ebreak),
+        .alu_cmt_i_bjp_prdt     (alu_cmt_bjp_prdt),
+
+        .cmt_cause              (cmt_cause),
+
+        .endcode                (endcode)
     );
+
+    assign  rf2ifu_rs1  =   rf_rs1;
 
 endmodule

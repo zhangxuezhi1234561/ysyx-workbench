@@ -1,47 +1,36 @@
 #include <verilated.h>
+#include <stdio.h>
 #include <memory>
 #include "Vcore.h"
-#include "Vcore_core.h"
 #include "host.h"
 #include "macro.h"
 #include "Vcore__Dpi.h"
 
 using namespace std;
 
-#define CONFIG_MSIZE    0x2000000       // 128M
-#define CONFIG_MBASE    0x80000000
-#define RESET_VECTOR    0x80000000
+vluint64_t sim_time = 0;
 
-static uint8_t pmem[CONFIG_MSIZE] PG_ALIGN = {};
-
-static const uint32_t img[] = {
-    0x108093,       // 00000 00000 01 -- 00001 -- 000 -- 00001 -- 0010011
-    0x208093,
-    0x308093,
-    0x100073
-};
-
-uint8_t* guest_to_host(uint32_t paddr) { return pmem + paddr - CONFIG_MBASE; }
-
-static uint32_t pmem_read(uint32_t addr, int len) {
-    uint32_t ret = host_read(guest_to_host(addr), len);
-    return ret;
-}
-
-void init_isa() {
-    memcpy(guest_to_host(RESET_VECTOR), img, sizeof(img));
-    return;
-}
-
-void npc_stop(int a) {
+void npc_stop(int a, int b) {      // using at exu_excp.v
     VL_PRINTF("!!!\n");    
     if(a)    assert(0);
+    // Log("npc: %s at pc =" FMT_WORD,
+    //     (b == 0 ? ANSI_FMT("HIT GOOD TRAP", ANSI_FG_GREEN) :
+    //     ANSI_FMT("HIT BAD TRAP", ANSI_FG_RED))    
+    // );
     return;
 }
+
+double sc_time_stamp() {
+    return sim_time;
+}
+
+
+void init_monitor(int, char *[]);
 
 int main(int argc, char** argv) {
 
-    init_isa();
+    // init_isa();
+    init_monitor(argc, argv);
 
     // Create logs/ directory in case we have traces to put under it
     Verilated::mkdir("logs");   
@@ -57,7 +46,7 @@ int main(int argc, char** argv) {
     //const std::unique_ptr<Vcore_ifu_ifetch> submodule{new Vcore_ifu_ifetch{contextp.get(), "SubModule"}};
 
     // Set Vtop's input signals
-    int count = 30;
+    int count = 300;
     top->clk            =   0;
     top->rst            =   !0;
 
@@ -66,30 +55,38 @@ int main(int argc, char** argv) {
     top->ifu_req_ready  =   1;
 
     top->ifu_rsp_valid  =   1;
+
+
+
     while(!contextp->gotFinish() && count--) {
     //while(count--) {
+        uint32_t    pc_req;
+        pc_req  = top->ifu_req_pc;
 
-
-        contextp->timeInc(1);
-        top->clk    =   !top->clk;
-        if(top->clk) {
+         //contextp->timeInc(5);
+        if(sim_time % 5 == 0) {
+            top->clk    =   !top->clk;  
+            // top->ifu_rsp_valid  =   0;
+            // top->ifu_req_ready  =   1;
+        }
+        if(sim_time % 10 == 2 && contextp->time() > 50) {
             if(top->ifu_req_valid) {
-                VL_PRINTF("ifu_req_pc=0x%x\n", top->ifu_req_pc);
-                top->ifu_rsp_instr  = pmem_read(top->ifu_req_pc, 4);
-                //top->ifu_rsp_valid  =   1;
-                //top->ifu_req_ready  =   0;
+                VL_PRINTF("ifu_req_pc=0x%x\n", pc_req);
+                top->ifu_rsp_instr  = pmem_read(pc_req, 4);
+                // top->ifu_rsp_valid  =   1;
+                // top->ifu_req_ready  =   0;
             } else {
                 //top->ifu_rsp_valid  =   0;
                 //top->ifu_rsp_valid  =   0;
                 //top->ifu_req_ready  =   1;
             }
         }
-        top->ifu_req_ready  =   1;
-        top->ifu_rsp_valid  =   1;        
+        // top->ifu_req_ready  =   1;
+        // top->ifu_rsp_valid  =   1;        
 
-        
+    
         if(!top->clk) {
-            if(contextp->time() > 1 && contextp->time() < 10) {
+            if(contextp->time() > 1 && contextp->time() < 50) {
                 top->rst = 0;
             } else {
                 top->rst = 1;
@@ -99,16 +96,17 @@ int main(int argc, char** argv) {
         //cout << "reset_flag_r: " << top->reset_flag_r << endl;
 
         // read outputs
-        VL_PRINTF("[%" PRId64 "] clk=%x rst=%x  \
-            ifu_req_pc=0x%x \
-            ifu_rsp_instr=0x%x  \
-            \n",   
-            contextp->time(), top->clk, top->rst, 
-            top->ifu_req_pc,
-            top->ifu_rsp_instr
-        );
-
+        // VL_PRINTF("[%" PRId64 "] clk=%x rst=%x  
+        //     ifu_req_pc=0x%x 
+        //     ifu_rsp_instr=0x%x  
+        //     \n",   
+        //     contextp->time(), top->clk, top->rst, 
+        //     top->ifu_req_pc,
+        //     top->ifu_rsp_instr
+        // );
+        sim_time++;
         top->eval();
+        
     }
     // Final model cleanup
     top->final();

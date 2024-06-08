@@ -19,11 +19,12 @@
 #include "Vcore_core.h"
 #include "Vcore_ifu.h"
 #include "Vcore_ifu_ifetch.h"
-#include "Vcore_sirv_gnrl_dfflr.h"
 #include "Vcore_sirv_gnrl_dffl.h"
 #include "Vcore_exu_decode.h"
+#include "Vcore_sirv_gnrl_dfflr.h"
 
 // DPI TYPES for DPI Export callbacks (Internal use)
+using Vcore__Vcb_publicgetsignal_t = void (*) (Vcore__Syms* __restrict vlSymsp, VlUnpacked<IData/*31:0*/, 32> &out_rf);
 
 // SYMS CLASS (contains all model state)
 class Vcore__Syms final : public VerilatedSyms {
@@ -79,11 +80,15 @@ class Vcore__Syms final : public VerilatedSyms {
     Vcore_sirv_gnrl_dfflr          TOP__core__inst_ifu__inst_ifu_ifetch__ifu_pc_dfflr;
     Vcore_exu_decode               TOP__core__inst_ifu__inst_ifu_ifetch__inst_ifu_minidec__DOT__inst_exu_decode;
     Vcore_sirv_gnrl_dfflr          TOP__core__inst_ifu__inst_ifu_ifetch__pc_dfflr;
+    Vcore_sirv_gnrl_dfflr          TOP__core__inst_ifu__inst_ifu_ifetch__pc_op1_dfflr;
+    Vcore_sirv_gnrl_dfflr          TOP__core__inst_ifu__inst_ifu_ifetch__pc_op2_dfflr;
+    Vcore_sirv_gnrl_dfflr          TOP__core__inst_ifu__inst_ifu_ifetch__pc_r_final_dfflr;
 
     // COVERAGE
-    std::atomic<uint32_t> __Vcoverage[1378];
+    std::atomic<uint32_t> __Vcoverage[1867];
 
     // SCOPE NAMES
+    VerilatedScope __Vscope_core__inst_exu__inst_RegisterFile;
     VerilatedScope __Vscope_core__inst_ifu__inst_ifu_ifetch;
 
     // CONSTRUCTORS

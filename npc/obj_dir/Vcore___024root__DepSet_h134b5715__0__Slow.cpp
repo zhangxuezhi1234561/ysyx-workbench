@@ -79,6 +79,9 @@ VL_ATTR_COLD void Vcore___024root___dump_triggers__ico(Vcore___024root* vlSelf) 
     if (vlSelf->__VicoTriggered.at(0U)) {
         VL_DBG_MSGF("         'ico' region trigger index 0 is active: Internal 'ico' trigger - first iteration\n");
     }
+    if (vlSelf->__VicoTriggered.at(1U)) {
+        VL_DBG_MSGF("         'ico' region trigger index 1 is active: Internal 'ico' trigger - DPI export trigger\n");
+    }
 }
 #endif  // VL_DEBUG
 
@@ -92,13 +95,16 @@ VL_ATTR_COLD void Vcore___024root___dump_triggers__act(Vcore___024root* vlSelf) 
         VL_DBG_MSGF("         No triggers active\n");
     }
     if (vlSelf->__VactTriggered.at(0U)) {
-        VL_DBG_MSGF("         'act' region trigger index 0 is active: @(posedge core.inst_exu.inst_exu_commit.inst_exu_excp.alu_excp_flush_req_ebreak)\n");
+        VL_DBG_MSGF("         'act' region trigger index 0 is active: Internal 'act' trigger - DPI export trigger\n");
     }
     if (vlSelf->__VactTriggered.at(1U)) {
-        VL_DBG_MSGF("         'act' region trigger index 1 is active: @(posedge clk or negedge rst)\n");
+        VL_DBG_MSGF("         'act' region trigger index 1 is active: @(posedge core.inst_exu.inst_exu_commit.inst_exu_excp.alu_excp_flush_req_ebreak)\n");
     }
     if (vlSelf->__VactTriggered.at(2U)) {
-        VL_DBG_MSGF("         'act' region trigger index 2 is active: @(posedge clk)\n");
+        VL_DBG_MSGF("         'act' region trigger index 2 is active: @(posedge clk or negedge rst)\n");
+    }
+    if (vlSelf->__VactTriggered.at(3U)) {
+        VL_DBG_MSGF("         'act' region trigger index 3 is active: @(posedge clk)\n");
     }
 }
 #endif  // VL_DEBUG
@@ -113,13 +119,16 @@ VL_ATTR_COLD void Vcore___024root___dump_triggers__nba(Vcore___024root* vlSelf) 
         VL_DBG_MSGF("         No triggers active\n");
     }
     if (vlSelf->__VnbaTriggered.at(0U)) {
-        VL_DBG_MSGF("         'nba' region trigger index 0 is active: @(posedge core.inst_exu.inst_exu_commit.inst_exu_excp.alu_excp_flush_req_ebreak)\n");
+        VL_DBG_MSGF("         'nba' region trigger index 0 is active: Internal 'nba' trigger - DPI export trigger\n");
     }
     if (vlSelf->__VnbaTriggered.at(1U)) {
-        VL_DBG_MSGF("         'nba' region trigger index 1 is active: @(posedge clk or negedge rst)\n");
+        VL_DBG_MSGF("         'nba' region trigger index 1 is active: @(posedge core.inst_exu.inst_exu_commit.inst_exu_excp.alu_excp_flush_req_ebreak)\n");
     }
     if (vlSelf->__VnbaTriggered.at(2U)) {
-        VL_DBG_MSGF("         'nba' region trigger index 2 is active: @(posedge clk)\n");
+        VL_DBG_MSGF("         'nba' region trigger index 2 is active: @(posedge clk or negedge rst)\n");
+    }
+    if (vlSelf->__VnbaTriggered.at(3U)) {
+        VL_DBG_MSGF("         'nba' region trigger index 3 is active: @(posedge clk)\n");
     }
 }
 #endif  // VL_DEBUG
@@ -131,6 +140,7 @@ VL_ATTR_COLD void Vcore___024root___ctor_var_reset(Vcore___024root* vlSelf) {
     // Body
     vlSelf->clk = VL_RAND_RESET_I(1);
     vlSelf->rst = VL_RAND_RESET_I(1);
+    vlSelf->inspect_pc = VL_RAND_RESET_I(32);
     vlSelf->pc_rtvec = VL_RAND_RESET_I(32);
     vlSelf->ifu_req_valid = VL_RAND_RESET_I(1);
     vlSelf->ifu_req_ready = VL_RAND_RESET_I(1);
@@ -138,6 +148,7 @@ VL_ATTR_COLD void Vcore___024root___ctor_var_reset(Vcore___024root* vlSelf) {
     vlSelf->ifu_rsp_valid = VL_RAND_RESET_I(1);
     vlSelf->ifu_rsp_ready = VL_RAND_RESET_I(1);
     vlSelf->ifu_rsp_instr = VL_RAND_RESET_I(32);
+    vlSelf->__Vdpi_export_trigger = 0;
     vlSelf->__Vtrigrprev__TOP__core____PVT__inst_exu__DOT__inst_exu_commit__DOT__inst_exu_excp__DOT__alu_excp_flush_req_ebreak = VL_RAND_RESET_I(1);
     vlSelf->__Vtrigrprev__TOP__clk = VL_RAND_RESET_I(1);
     vlSelf->__Vtrigrprev__TOP__rst = VL_RAND_RESET_I(1);

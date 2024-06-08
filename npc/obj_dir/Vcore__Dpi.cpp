@@ -14,3 +14,11 @@
 #include "Vcore__Dpi.h"
 #include "Vcore.h"
 
+#ifndef VL_DPIDECL_publicgetsignal_
+#define VL_DPIDECL_publicgetsignal_
+void publicgetsignal(svLogicVecVal* out_rf) {
+    // DPI export at /home/pro/ysyx/ysyx-workbench/npc/vsrc/RegisterFile.v:43:7
+    return Vcore::publicgetsignal(out_rf);
+}
+#endif
+

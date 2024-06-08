@@ -18,6 +18,7 @@ Vcore::Vcore(VerilatedContext* _vcontextp__, const char* _vcname__)
     , ifu_req_ready{vlSymsp->TOP.ifu_req_ready}
     , ifu_rsp_valid{vlSymsp->TOP.ifu_rsp_valid}
     , ifu_rsp_ready{vlSymsp->TOP.ifu_rsp_ready}
+    , inspect_pc{vlSymsp->TOP.inspect_pc}
     , pc_rtvec{vlSymsp->TOP.pc_rtvec}
     , ifu_req_pc{vlSymsp->TOP.ifu_req_pc}
     , ifu_rsp_instr{vlSymsp->TOP.ifu_rsp_instr}

@@ -15,9 +15,13 @@ extern "C" {
 #endif
 
 
+    // DPI EXPORTS
+    // DPI export at /home/pro/ysyx/ysyx-workbench/npc/vsrc/RegisterFile.v:43:7
+    extern void publicgetsignal(svLogicVecVal* out_rf);
+
     // DPI IMPORTS
-    // DPI import at vsrc/exu_excp.v:45:34
-    extern void npc_stop(int a);
+    // DPI import at /home/pro/ysyx/ysyx-workbench/npc/vsrc/exu_excp.v:47:34
+    extern void npc_stop(int a, int b);
 
 #ifdef __cplusplus
 }

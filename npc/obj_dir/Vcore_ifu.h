@@ -22,6 +22,7 @@ class Vcore_ifu final : public VerilatedModule {
     VL_IN8(__PVT__rst,0,0);
     VL_OUT8(__PVT__ifu_o_rs1idx,4,0);
     VL_OUT8(__PVT__ifu_o_rs2idx,4,0);
+    VL_OUT8(__PVT__ifu_o_prdt_taken,0,0);
     VL_OUT8(__PVT__ifu_o_valid,0,0);
     VL_IN8(__PVT__ifu_o_ready,0,0);
     VL_OUT8(__PVT__ifu_req_valid,0,0);
@@ -29,11 +30,14 @@ class Vcore_ifu final : public VerilatedModule {
     VL_IN8(__PVT__ifu_rsp_valid,0,0);
     VL_OUT8(__PVT__ifu_rsp_ready,0,0);
     VL_OUT8(__PVT__ifu_o_pc_vld,0,0);
+    VL_OUT(__PVT__inspect_pc,31,0);
     VL_IN(__PVT__pc_rtvec,31,0);
     VL_OUT(__PVT__ifu_o_ir,31,0);
     VL_OUT(__PVT__ifu_o_pc,31,0);
     VL_OUT(__PVT__ifu_req_pc,31,0);
     VL_IN(__PVT__ifu_rsp_instr,31,0);
+    VL_IN(__PVT__rf2ifu_x1,31,0);
+    VL_IN(__PVT__rf2ifu_rs1,31,0);
 
     // INTERNAL VARIABLES
     Vcore__Syms* const vlSymsp;

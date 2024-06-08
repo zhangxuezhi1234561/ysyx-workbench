@@ -14,11 +14,13 @@ VL_ATTR_COLD void Vcore_ifu___ctor_var_reset(Vcore_ifu* vlSelf) {
     // Body
     vlSelf->__PVT__clk = VL_RAND_RESET_I(1);
     vlSelf->__PVT__rst = VL_RAND_RESET_I(1);
+    vlSelf->__PVT__inspect_pc = VL_RAND_RESET_I(32);
     vlSelf->__PVT__pc_rtvec = VL_RAND_RESET_I(32);
     vlSelf->__PVT__ifu_o_ir = VL_RAND_RESET_I(32);
     vlSelf->__PVT__ifu_o_pc = VL_RAND_RESET_I(32);
     vlSelf->__PVT__ifu_o_rs1idx = VL_RAND_RESET_I(5);
     vlSelf->__PVT__ifu_o_rs2idx = VL_RAND_RESET_I(5);
+    vlSelf->__PVT__ifu_o_prdt_taken = VL_RAND_RESET_I(1);
     vlSelf->__PVT__ifu_o_valid = VL_RAND_RESET_I(1);
     vlSelf->__PVT__ifu_o_ready = VL_RAND_RESET_I(1);
     vlSelf->__PVT__ifu_req_valid = VL_RAND_RESET_I(1);
@@ -28,4 +30,6 @@ VL_ATTR_COLD void Vcore_ifu___ctor_var_reset(Vcore_ifu* vlSelf) {
     vlSelf->__PVT__ifu_rsp_ready = VL_RAND_RESET_I(1);
     vlSelf->__PVT__ifu_rsp_instr = VL_RAND_RESET_I(32);
     vlSelf->__PVT__ifu_o_pc_vld = VL_RAND_RESET_I(1);
+    vlSelf->__PVT__rf2ifu_x1 = VL_RAND_RESET_I(32);
+    vlSelf->__PVT__rf2ifu_rs1 = VL_RAND_RESET_I(32);
 }

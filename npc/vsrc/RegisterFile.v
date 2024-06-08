@@ -13,7 +13,8 @@ module RegisterFile (
 	input	[`RFIDX_WIDTH-1:0] wbck_dest_idx,
 	input	[`XLEN-1:0]		   wbck_dest_dat,
 
-	output	[`XLEN-1:0]	x1_r
+	output	[`XLEN-1:0]	x1_r,
+	output	[`XLEN-1:0]	endcode
 );
 	reg	[`XLEN-1:0] rf_r [`RFREG_NUM-1:0];	//define general registers
 	wire	[`RFREG_NUM-1:0] rf_wen;
@@ -35,5 +36,15 @@ module RegisterFile (
 	assign	read_src2_dat = rf_r[read_src2_idx];
 
 	assign	x1_r	=	rf_r[1];
-	
+	assign	endcode	=	rf_r[10];
+
+	export "DPI-C" task publicgetsignal;
+
+	task publicgetsignal;
+		output	[`XLEN-1:0]	out_rf[`RFREG_NUM-1:0];
+			int j;
+			for(j = 0; j < `RFREG_NUM;j = j + 1) begin
+				out_rf[j] = rf_r[j];
+			end
+	endtask
 endmodule

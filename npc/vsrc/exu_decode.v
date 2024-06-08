@@ -1,8 +1,12 @@
 `include "defines.v"
 
 module exu_decode(
+    input   clk,
+    input   rst,
+
     input   [`INSTR_SIZE-1:0]   rv32_instr, //e203 i_instr
     input   [`PC_SIZE-1:0]      i_pc,       //current instrument's pc value
+    input                       i_prdt_taken,
 
     //  The decoded info-bus
     output  dec_rs1x0,
@@ -15,7 +19,14 @@ module exu_decode(
     output  [`RFIDX_WIDTH-1:0]  dec_rdidx,
     output  [`XLEN-1:0]         dec_imm,
     output  [`PC_SIZE-1:0]      dec_pc,
-    output  [`DECINFO_WIDTH-1:0] dec_info
+    output  [`DECINFO_WIDTH-1:0] dec_info,
+
+    output  dec_bjp,
+    output  dec_jal,
+    output  dec_jalr,
+
+    output  [`RFIDX_WIDTH-1:0]  dec_jalr_rs1idx,
+    output  [`XLEN-1:0]         dec_bjp_imm
 
 );
     // verilator lint_off UNUSEDSIGNAL
@@ -85,11 +96,15 @@ module exu_decode(
     wire rv32_rs2_x0        = (rv32_rs2 == 5'b00000);
     wire rv32_rd_x0         = (rv32_rd  == 5'b00000);
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////    
+    wire    rv32_jalr   =   opcode_6_5_11 & opcode_4_2_001 & opcode_1_0_11;
+    wire    rv32_jal    =   opcode_6_5_11 & opcode_4_2_011 & opcode_1_0_11;
+    
     wire    rv32_op_imm =   opcode_6_5_00 & opcode_4_2_100 & opcode_1_0_11;     //judge whether the imm type
     wire    rv32_op     =   opcode_6_5_01 & opcode_4_2_100 & opcode_1_0_11;
     wire    rv32_system =   opcode_6_5_11 & opcode_4_2_100 & opcode_1_0_11;
     wire    rv32_auipc  =   opcode_6_5_00 & opcode_4_2_101 & opcode_1_0_11;
+    wire    rv32_lui    =   opcode_6_5_00 & opcode_4_2_101 & opcode_1_0_11;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // System Instruction
@@ -103,22 +118,32 @@ module exu_decode(
     wire    ecall_ebreak    =   rv32_ebreak;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-    wire    alu_op      =   rv32_op_imm | ecall_ebreak;
+    wire    alu_op      =   rv32_op_imm
+                          | rv32_auipc
+                          | rv32_lui
+                          | ecall_ebreak;
     wire    need_imm;
 
     wire [`DECINFO_ALU_WIDTH-1:0]    alu_info_bus;
     assign  alu_info_bus[`DECINFO_GRP]          = `DECINFO_GRP_ALU;
     assign  alu_info_bus[`DECINFO_RV32]         = 1'd1;
-    assign  alu_info_bus[`DECINFO_ALU_ADD]      = rv32_addi;
+    assign  alu_info_bus[`DECINFO_ALU_ADD]      = rv32_addi | rv32_auipc;
+    assign  alu_info_bus[`DECINFO_ALU_LUI]      = rv32_lui;
     assign  alu_info_bus[`DECINFO_ALU_OP2IMM]   = need_imm;
-    assign  alu_info_bus[`DECINFO_ALU_EBRK]     = rv32_ebreak;  
+    assign  alu_info_bus[`DECINFO_ALU_NOP]      = rv32_nop;
     assign  alu_info_bus[`DECINFO_ALU_OP1PC]    = rv32_auipc;
-
+    assign  alu_info_bus[`DECINFO_ALU_EBRK]     = rv32_ebreak;  
     // instrument type judge
      
 
-    wire    rv32_need_rs1   =   (~rv32_rs1_x0);
-    wire    rv32_need_rs2   =   (~rv32_rs2_x0);
+    wire    rv32_need_rs1   =   (~rv32_rs1_x0)
+                              & (~rv32_jal)
+                              & (~rv32_lui)
+                              & (~rv32_auipc) 
+                                ;
+    wire    rv32_need_rs2   =   (~rv32_rs2_x0)
+                              | (rv32_op) 
+                                ;
     wire    rv32_need_rd    =   (~rv32_rd_x0);
 
   
@@ -150,19 +175,33 @@ module exu_decode(
                                     1'b0
                                 };
 
-    wire    rv32_imm_sel_i  =   rv32_op_imm;   
+    wire    rv32_imm_sel_i  =   rv32_op_imm | rv32_jalr;
+    wire    rv32_imm_sel_jalr   =   rv32_jalr;   
+    wire    [31:0]  rv32_jalr_imm   =   rv32_i_imm;
+    wire    rv32_imm_sel_u  =   rv32_auipc | rv32_lui;
+    wire    rv32_imm_sel_j  =   rv32_jal;    
+    wire    rv32_imm_sel_jal        =   rv32_jal;
+    wire    [31:0]  rv32_jal_imm    =   rv32_j_imm;
     // determine the imm value
-    wire    [31:0]  rv32_imm    =   ({32{rv32_imm_sel_i}} & rv32_i_imm);
+    wire    [31:0]  rv32_imm    =   
+                                    ({32{rv32_imm_sel_i}} & rv32_i_imm)
+                                  | ({32{rv32_imm_sel_u}} & rv32_u_imm) 
+                                  | ({32{rv32_imm_sel_j}} & rv32_j_imm)
+                                    ;
 
     // determine whether need RS1/RS2/RD register
-    wire    rv32_need_imm   =   rv32_imm_sel_i;
+    wire    rv32_need_imm   =   rv32_imm_sel_i
+                              | rv32_imm_sel_u 
+                              | rv32_imm_sel_j
+                                ;
     assign  need_imm    =   rv32_need_imm;    
 
 
     
 
     // verilator lint_on UNUSEDSIGNAL
-
+    assign  dec_imm     =   rv32_imm;
+    assign  dec_pc      =   i_pc;
 
     assign  dec_rs1idx  =   rv32_rs1[`RFIDX_WIDTH-1:0];
     assign  dec_rs2idx  =   rv32_rs2[`RFIDX_WIDTH-1:0];
@@ -172,14 +211,33 @@ module exu_decode(
     assign  dec_rs2en   =   rv32_need_rs2;
     assign  dec_rdwen   =   rv32_need_rd;
 
-    assign  dec_imm     =   rv32_imm;
-    assign  dec_pc      =   i_pc;
+    assign  dec_rs1x0   =   (dec_rs1idx ==  `RFIDX_WIDTH'b0);
+    assign  dec_rs2x0   =   (dec_rs2idx ==  `RFIDX_WIDTH'b0);    
+///////////////////////////////////////////////////////////////////
+    assign  dec_jal     =   rv32_jal;
+    assign  dec_jalr    =   rv32_jalr;
+    assign  dec_bjp     =   dec_jal | dec_jalr;
+
+    wire    bjp_op      =   dec_bjp;
+
+    wire    [`DECINFO_BJP_WIDTH-1:0]    bjp_info_bus;
+    assign  bjp_info_bus[`DECINFO_GRP]  =   `DECINFO_GRP_BJP;
+    assign  bjp_info_bus[`DECINFO_BJP_JUMP]     =   dec_jal | dec_jalr;
+    assign  bjp_info_bus[`DECINFO_BJP_BPRDT]    =   i_prdt_taken;
 
 
     
-    assign  dec_info    =   ({`DECINFO_WIDTH{alu_op}}   &   {{`DECINFO_WIDTH-`DECINFO_ALU_WIDTH{1'b0}},alu_info_bus});
+    assign  dec_info    =   ({`DECINFO_WIDTH{alu_op}}   &   {{`DECINFO_WIDTH-`DECINFO_ALU_WIDTH{1'b0}},alu_info_bus})
+                          | ({`DECINFO_WIDTH{bjp_op}}   &   {{`DECINFO_WIDTH-`DECINFO_BJP_WIDTH{1'b0}},bjp_info_bus}) 
+                            ;
+ 
+    assign  dec_bjp_imm =   ({32{rv32_jal}}  & rv32_jal_imm)
+                          | ({32{rv32_jalr}} & rv32_jalr_imm)
+                          ; 
 
-    assign  dec_rs1x0   =   (dec_rs1idx ==  `RFIDX_WIDTH'b0);
-    assign  dec_rs2x0   =   (dec_rs2idx ==  `RFIDX_WIDTH'b0);
+    assign  dec_jalr_rs1idx     =   rv32_rs1[`RFIDX_WIDTH-1:0];
+
+    wire dec_bjp_test;
+    sirv_gnrl_dfflr #(1)        decode_dec_bjp_test_dfflr (1, rv32_addi, dec_bjp_test, clk, rst);
 
 endmodule

@@ -27,10 +27,6 @@ module  exu_wbck(
     assign  wbck_i_wdat     =   alu_wbck_i_wdat;
     assign  wbck_i_rdidx    =   alu_wbck_i_rdidx;
 
-
-
-
-
     assign  wbck_i_ready = rf_wbck_o_ready;
     wire    rf_wbck_o_valid = wbck_i_valid;
 

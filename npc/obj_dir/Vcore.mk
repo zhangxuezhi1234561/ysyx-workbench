@@ -35,9 +35,16 @@ VM_PREFIX = Vcore
 VM_MODPREFIX = Vcore
 # User CFLAGS (from -CFLAGS on Verilator command line)
 VM_USER_CFLAGS = \
+	-MMD \
+	-O3 \
+	-I/home/pro/ysyx/ysyx-workbench/npc/csrc/include \
+	-std=c++14 \
+	-fno-exceptions \
+	-fPIE \
 
 # User LDLIBS (from -LDFLAGS on Verilator command line)
 VM_USER_LDLIBS = \
+	/home/pro/ysyx/ysyx-workbench/npc/csrc/monitor/build/util.a \
 
 # User .cpp files (from .cpp's on Verilator command line)
 VM_USER_CLASSES = \
