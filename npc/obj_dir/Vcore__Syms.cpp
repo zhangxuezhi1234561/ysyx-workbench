@@ -11,8 +11,6 @@
 #include "Vcore_exu_decode.h"
 #include "Vcore_sirv_gnrl_dfflr.h"
 
-void Vcore_core____Vdpiexp_inst_exu__DOT__inst_RegisterFile__DOT__publicgetsignal_TOP__core(Vcore__Syms* __restrict vlSymsp, VlUnpacked<IData/*31:0*/, 32> &out_rf);
-
 // FUNCTIONS
 Vcore__Syms::~Vcore__Syms()
 {
@@ -88,9 +86,6 @@ Vcore__Syms::Vcore__Syms(VerilatedContext* contextp, const char* namep, Vcore* m
     , TOP__core__inst_ifu__inst_ifu_ifetch__ifu_pc_dfflr{this, Verilated::catName(namep, "core.inst_ifu.inst_ifu_ifetch.ifu_pc_dfflr")}
     , TOP__core__inst_ifu__inst_ifu_ifetch__inst_ifu_minidec__DOT__inst_exu_decode{this, Verilated::catName(namep, "core.inst_ifu.inst_ifu_ifetch.inst_ifu_minidec.inst_exu_decode")}
     , TOP__core__inst_ifu__inst_ifu_ifetch__pc_dfflr{this, Verilated::catName(namep, "core.inst_ifu.inst_ifu_ifetch.pc_dfflr")}
-    , TOP__core__inst_ifu__inst_ifu_ifetch__pc_op1_dfflr{this, Verilated::catName(namep, "core.inst_ifu.inst_ifu_ifetch.pc_op1_dfflr")}
-    , TOP__core__inst_ifu__inst_ifu_ifetch__pc_op2_dfflr{this, Verilated::catName(namep, "core.inst_ifu.inst_ifu_ifetch.pc_op2_dfflr")}
-    , TOP__core__inst_ifu__inst_ifu_ifetch__pc_r_final_dfflr{this, Verilated::catName(namep, "core.inst_ifu.inst_ifu_ifetch.pc_r_final_dfflr")}
 {
     // Configure time unit / time precision
     _vm_contextp__->timeunit(-9);
@@ -135,9 +130,6 @@ Vcore__Syms::Vcore__Syms(VerilatedContext* contextp, const char* namep, Vcore* m
     TOP__core__inst_ifu__inst_ifu_ifetch.__PVT__ifu_pc_dfflr = &TOP__core__inst_ifu__inst_ifu_ifetch__ifu_pc_dfflr;
     TOP__core__inst_ifu__inst_ifu_ifetch.__PVT__inst_ifu_minidec__DOT__inst_exu_decode = &TOP__core__inst_ifu__inst_ifu_ifetch__inst_ifu_minidec__DOT__inst_exu_decode;
     TOP__core__inst_ifu__inst_ifu_ifetch.__PVT__pc_dfflr = &TOP__core__inst_ifu__inst_ifu_ifetch__pc_dfflr;
-    TOP__core__inst_ifu__inst_ifu_ifetch.__PVT__pc_op1_dfflr = &TOP__core__inst_ifu__inst_ifu_ifetch__pc_op1_dfflr;
-    TOP__core__inst_ifu__inst_ifu_ifetch.__PVT__pc_op2_dfflr = &TOP__core__inst_ifu__inst_ifu_ifetch__pc_op2_dfflr;
-    TOP__core__inst_ifu__inst_ifu_ifetch.__PVT__pc_r_final_dfflr = &TOP__core__inst_ifu__inst_ifu_ifetch__pc_r_final_dfflr;
     // Setup each module's pointer back to symbol table (for public functions)
     TOP.__Vconfigure(true);
     TOP__core.__Vconfigure(true);
@@ -179,15 +171,10 @@ Vcore__Syms::Vcore__Syms(VerilatedContext* contextp, const char* namep, Vcore* m
     TOP__core__inst_ifu__inst_ifu_ifetch__ifu_pc_dfflr.__Vconfigure(false);
     TOP__core__inst_ifu__inst_ifu_ifetch__inst_ifu_minidec__DOT__inst_exu_decode.__Vconfigure(false);
     TOP__core__inst_ifu__inst_ifu_ifetch__pc_dfflr.__Vconfigure(false);
-    TOP__core__inst_ifu__inst_ifu_ifetch__pc_op1_dfflr.__Vconfigure(false);
-    TOP__core__inst_ifu__inst_ifu_ifetch__pc_op2_dfflr.__Vconfigure(false);
-    TOP__core__inst_ifu__inst_ifu_ifetch__pc_r_final_dfflr.__Vconfigure(false);
     // Setup scopes
-    __Vscope_core__inst_exu__inst_RegisterFile.configure(this, name(), "core.inst_exu.inst_RegisterFile", "inst_RegisterFile", -9, VerilatedScope::SCOPE_OTHER);
     __Vscope_core__inst_ifu__inst_ifu_ifetch.configure(this, name(), "core.inst_ifu.inst_ifu_ifetch", "inst_ifu_ifetch", 0, VerilatedScope::SCOPE_OTHER);
     // Setup export functions
     for (int __Vfinal = 0; __Vfinal < 2; ++__Vfinal) {
-        __Vscope_core__inst_exu__inst_RegisterFile.exportInsert(__Vfinal, "publicgetsignal", (void*)(&Vcore_core____Vdpiexp_inst_exu__DOT__inst_RegisterFile__DOT__publicgetsignal_TOP__core));
         __Vscope_core__inst_ifu__inst_ifu_ifetch.varInsert(__Vfinal,"reset_flag_r", &(TOP__core__inst_ifu__inst_ifu_ifetch.reset_flag_r), false, VLVT_UINT8,VLVD_NODIR|VLVF_PUB_RW,0);
     }
 }

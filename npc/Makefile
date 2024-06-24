@@ -35,6 +35,7 @@ $(UTIL_ARCHIVE): $(UTIL_OBJS)
 -include $(UTIL_OBJS:.o=.d)
 
 NPCFLAGS = -i $(AM_HOME)/../am-kernels/tests/cpu-tests/build/dummy-riscv32e-npc.bin
+NPCFLAGS += -d $(NEMU_HOME)/build/riscv32-nemu-interpreter-so
 
 ifneq ($(words $(CURDIR)),1)
  $(error Unsupported: GNU Make cannot build in directories containing spaces, build elsewhere: '$(CURDIR)')

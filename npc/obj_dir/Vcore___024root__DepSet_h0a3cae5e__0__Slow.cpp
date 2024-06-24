@@ -48,22 +48,16 @@ VL_ATTR_COLD void Vcore___024root___eval_triggers__stl(Vcore___024root* vlSelf) 
 #endif
 }
 
-VL_ATTR_COLD void Vcore___024root___stl_sequent__TOP__0(Vcore___024root* vlSelf) {
-    if (false && vlSelf) {}  // Prevent unused
-    Vcore__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vcore___024root___stl_sequent__TOP__0\n"); );
-    // Body
-    vlSelf->inspect_pc = vlSymsp->TOP__core__inst_ifu__inst_ifu_ifetch__pc_dfflr.__PVT__qout_r;
-}
-
+void Vcore___024root___nba_sequent__TOP__0(Vcore___024root* vlSelf);
 VL_ATTR_COLD void Vcore_core___stl_sequent__TOP__core__0(Vcore_core* vlSelf);
 VL_ATTR_COLD void Vcore_ifu_ifetch___stl_sequent__TOP__core__inst_ifu__inst_ifu_ifetch__0(Vcore_ifu_ifetch* vlSelf);
 VL_ATTR_COLD void Vcore_exu_decode___stl_sequent__TOP__core__inst_ifu__inst_ifu_ifetch__inst_ifu_minidec__DOT__inst_exu_decode__0(Vcore_exu_decode* vlSelf);
 VL_ATTR_COLD void Vcore_exu_decode___stl_sequent__TOP__core__inst_exu__DOT__inst_exu_decode__0(Vcore_exu_decode* vlSelf);
 VL_ATTR_COLD void Vcore_sirv_gnrl_dffl___stl_sequent__TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__2__KET____DOT__rfno0__DOT__rf_dffl__0(Vcore_sirv_gnrl_dffl* vlSelf);
-void Vcore___024root___ico_sequent__TOP__0(Vcore___024root* vlSelf);
-VL_ATTR_COLD void Vcore_core___stl_sequent__TOP__core__1(Vcore_core* vlSelf);
 VL_ATTR_COLD void Vcore_ifu_ifetch___stl_sequent__TOP__core__inst_ifu__inst_ifu_ifetch__1(Vcore_ifu_ifetch* vlSelf);
+VL_ATTR_COLD void Vcore_core___stl_sequent__TOP__core__1(Vcore_core* vlSelf);
+void Vcore___024root___nba_comb__TOP__0(Vcore___024root* vlSelf);
+VL_ATTR_COLD void Vcore_ifu_ifetch___stl_sequent__TOP__core__inst_ifu__inst_ifu_ifetch__2(Vcore_ifu_ifetch* vlSelf);
 void Vcore_sirv_gnrl_dffl___nba_sequent__TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__1__KET____DOT__rfno0__DOT__rf_dffl__1(Vcore_sirv_gnrl_dffl* vlSelf);
 void Vcore_sirv_gnrl_dffl___nba_sequent__TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__2__KET____DOT__rfno0__DOT__rf_dffl__1(Vcore_sirv_gnrl_dffl* vlSelf);
 void Vcore_sirv_gnrl_dffl___nba_sequent__TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__3__KET____DOT__rfno0__DOT__rf_dffl__1(Vcore_sirv_gnrl_dffl* vlSelf);
@@ -95,8 +89,8 @@ void Vcore_sirv_gnrl_dffl___nba_sequent__TOP__core__inst_exu__DOT__inst_Register
 void Vcore_sirv_gnrl_dffl___nba_sequent__TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__29__KET____DOT__rfno0__DOT__rf_dffl__1(Vcore_sirv_gnrl_dffl* vlSelf);
 void Vcore_sirv_gnrl_dffl___nba_sequent__TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__30__KET____DOT__rfno0__DOT__rf_dffl__1(Vcore_sirv_gnrl_dffl* vlSelf);
 void Vcore_sirv_gnrl_dffl___nba_sequent__TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__31__KET____DOT__rfno0__DOT__rf_dffl__1(Vcore_sirv_gnrl_dffl* vlSelf);
-void Vcore___024root___ico_sequent__TOP__1(Vcore___024root* vlSelf);
-void Vcore_core___ico_sequent__TOP__core__2(Vcore_core* vlSelf);
+void Vcore___024root___nba_sequent__TOP__1(Vcore___024root* vlSelf);
+void Vcore_core___nba_sequent__TOP__core__5(Vcore_core* vlSelf);
 
 VL_ATTR_COLD void Vcore___024root___eval_stl(Vcore___024root* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
@@ -104,7 +98,7 @@ VL_ATTR_COLD void Vcore___024root___eval_stl(Vcore___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vcore___024root___eval_stl\n"); );
     // Body
     if (vlSelf->__VstlTriggered.at(0U)) {
-        Vcore___024root___stl_sequent__TOP__0(vlSelf);
+        Vcore___024root___nba_sequent__TOP__0(vlSelf);
         vlSelf->__Vm_traceActivity[5U] = 1U;
         vlSelf->__Vm_traceActivity[4U] = 1U;
         vlSelf->__Vm_traceActivity[3U] = 1U;
@@ -144,9 +138,10 @@ VL_ATTR_COLD void Vcore___024root___eval_stl(Vcore___024root* vlSelf) {
         Vcore_sirv_gnrl_dffl___stl_sequent__TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__2__KET____DOT__rfno0__DOT__rf_dffl__0((&vlSymsp->TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__29__KET____DOT__rfno0__DOT__rf_dffl));
         Vcore_sirv_gnrl_dffl___stl_sequent__TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__2__KET____DOT__rfno0__DOT__rf_dffl__0((&vlSymsp->TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__30__KET____DOT__rfno0__DOT__rf_dffl));
         Vcore_sirv_gnrl_dffl___stl_sequent__TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__2__KET____DOT__rfno0__DOT__rf_dffl__0((&vlSymsp->TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__31__KET____DOT__rfno0__DOT__rf_dffl));
-        Vcore___024root___ico_sequent__TOP__0(vlSelf);
-        Vcore_core___stl_sequent__TOP__core__1((&vlSymsp->TOP__core));
         Vcore_ifu_ifetch___stl_sequent__TOP__core__inst_ifu__inst_ifu_ifetch__1((&vlSymsp->TOP__core__inst_ifu__inst_ifu_ifetch));
+        Vcore_core___stl_sequent__TOP__core__1((&vlSymsp->TOP__core));
+        Vcore___024root___nba_comb__TOP__0(vlSelf);
+        Vcore_ifu_ifetch___stl_sequent__TOP__core__inst_ifu__inst_ifu_ifetch__2((&vlSymsp->TOP__core__inst_ifu__inst_ifu_ifetch));
         Vcore_sirv_gnrl_dffl___nba_sequent__TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__1__KET____DOT__rfno0__DOT__rf_dffl__1((&vlSymsp->TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__1__KET____DOT__rfno0__DOT__rf_dffl));
         Vcore_sirv_gnrl_dffl___nba_sequent__TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__2__KET____DOT__rfno0__DOT__rf_dffl__1((&vlSymsp->TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__2__KET____DOT__rfno0__DOT__rf_dffl));
         Vcore_sirv_gnrl_dffl___nba_sequent__TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__3__KET____DOT__rfno0__DOT__rf_dffl__1((&vlSymsp->TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__3__KET____DOT__rfno0__DOT__rf_dffl));
@@ -178,7 +173,7 @@ VL_ATTR_COLD void Vcore___024root___eval_stl(Vcore___024root* vlSelf) {
         Vcore_sirv_gnrl_dffl___nba_sequent__TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__29__KET____DOT__rfno0__DOT__rf_dffl__1((&vlSymsp->TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__29__KET____DOT__rfno0__DOT__rf_dffl));
         Vcore_sirv_gnrl_dffl___nba_sequent__TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__30__KET____DOT__rfno0__DOT__rf_dffl__1((&vlSymsp->TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__30__KET____DOT__rfno0__DOT__rf_dffl));
         Vcore_sirv_gnrl_dffl___nba_sequent__TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__31__KET____DOT__rfno0__DOT__rf_dffl__1((&vlSymsp->TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__31__KET____DOT__rfno0__DOT__rf_dffl));
-        Vcore___024root___ico_sequent__TOP__1(vlSelf);
-        Vcore_core___ico_sequent__TOP__core__2((&vlSymsp->TOP__core));
+        Vcore___024root___nba_sequent__TOP__1(vlSelf);
+        Vcore_core___nba_sequent__TOP__core__5((&vlSymsp->TOP__core));
     }
 }

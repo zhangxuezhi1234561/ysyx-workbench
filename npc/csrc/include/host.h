@@ -8,8 +8,6 @@
 #define CONFIG_MBASE    0x80000000
 #define RESET_VECTOR    0x80000000  
 
-
-
 static inline uint32_t host_read(void *addr, int len) {
     switch(len) {
         case 1: return *(uint8_t *) addr;
@@ -22,5 +20,13 @@ static inline uint32_t host_read(void *addr, int len) {
 uint8_t* guest_to_host(uint32_t paddr);
 void init_isa();
 uint32_t pmem_read(uint32_t addr, int len);
+
+typedef struct {
+    uint32_t *gpr_pc;
+} cpu_state;
+
+void isa_reg_display();
+void npc_stop(int a, int b);
+
 
 #endif

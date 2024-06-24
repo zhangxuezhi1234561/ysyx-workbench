@@ -38,13 +38,8 @@ module RegisterFile (
 	assign	x1_r	=	rf_r[1];
 	assign	endcode	=	rf_r[10];
 
-	export "DPI-C" task publicgetsignal;
-
-	task publicgetsignal;
-		output	[`XLEN-1:0]	out_rf[`RFREG_NUM-1:0];
-			int j;
-			for(j = 0; j < `RFREG_NUM;j = j + 1) begin
-				out_rf[j] = rf_r[j];
-			end
-	endtask
+	import	"DPI-C"	function void set_gpr_ptr(input logic [`XLEN-1:0] a []);
+	always @* begin
+		set_gpr_ptr(rf_r);
+	end
 endmodule

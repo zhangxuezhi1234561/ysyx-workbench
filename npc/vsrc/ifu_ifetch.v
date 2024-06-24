@@ -128,10 +128,10 @@ module ifu_ifetch(
     wire    [`PC_SIZE-1:0]  ifu_pc_nxt = pc_r;
     wire    [`PC_SIZE-1:0]  ifu_pc_r;
     //Reg #(`PC_SIZE, `PC_SIZE'b0) ifu_pc_reg(clk, rst, ifu_pc_nxt, ifu_pc_r, ir_pc_vld_set);
-    sirv_gnrl_dfflr #(`PC_SIZE) ifu_pc_dfflr(ir_pc_vld_set, pc_nxt, ifu_pc_r, clk, rst);    
+    sirv_gnrl_dfflr #(`PC_SIZE) ifu_pc_dfflr(ir_pc_vld_set, ifu_pc_nxt, ifu_pc_r, clk, rst);    
 
     assign  ifu_o_ir    =   ifu_ir_r;
-    assign  ifu_o_pc    =   ifu_pc_r;
+    assign  ifu_o_pc    =   ifu_pc_r;               //regfile use
 
     assign  ifu_o_rs1idx = ir_rs1idx_r;
     assign  ifu_o_rs2idx = ir_rs2idx_r;
@@ -171,13 +171,11 @@ module ifu_ifetch(
     wire    [`PC_SIZE-1:0]  prdt_pc_add_op1;
     wire    [`PC_SIZE-1:0]  prdt_pc_add_op2;
 
-    wire    [`PC_SIZE-1:0]  pc_r_final;
-    sirv_gnrl_dfflr #(`PC_SIZE) pc_r_final_dfflr (pc_ena, pc_r, pc_r_final, clk, rst);
     ifu_litebpu inst_ifu_litebpu(
         .clk                (clk),                  //input
         .rst                (rst),                  //input
 
-        .pc                 (pc_nxt),                 //input
+        .pc                 (pc_r),                 //input
         .dec_jal            (minidec_jal),          //input
         .dec_jalr           (minidec_jalr),         //input
         .dec_bjp_imm        (minidec_bjp_imm),      //input
@@ -203,20 +201,12 @@ module ifu_ifetch(
 
     wire    bjp_req = minidec_bjp & prdt_taken;
 
-    // wire    [1:0] chose_pc    = bjp_req << 1 | ifu_reset_req;
-    wire    bjp_final;
-    wire    [`PC_SIZE-1:0]  prdt_pc_add_op1_final;
-    wire    [`PC_SIZE-1:0]  prdt_pc_add_op2_final;
-
-    sirv_gnrl_dfflr #(1) bjp_final_dfflr (pc_ena, bjp_req, bjp_final, clk, rst);
-    sirv_gnrl_dfflr #(`PC_SIZE) pc_op1_dfflr (pc_ena, prdt_pc_add_op1, prdt_pc_add_op1_final, clk, rst);
-    sirv_gnrl_dfflr #(`PC_SIZE) pc_op2_dfflr (pc_ena, prdt_pc_add_op2, prdt_pc_add_op2_final, clk, rst);
     wire    [`PC_SIZE-1:0] pc_add_op1 = 
-                                            bjp_final ? prdt_pc_add_op1_final   :
+                                            bjp_req ? prdt_pc_add_op1   :
                                             ifu_reset_req ? pc_rtvec : 
                                                             pc_r;    //pc_r is current pc
     wire    [`PC_SIZE-1:0] pc_add_op2 = 
-                                        bjp_final ? prdt_pc_add_op2_final   : 
+                                        bjp_req ? prdt_pc_add_op2   : 
                                         ifu_reset_req ? `PC_SIZE'b0 :
                                                          pc_incr_ofst;  
 
@@ -239,7 +229,6 @@ module ifu_ifetch(
 
     wire    pc_ena = ifu_req_hsked; 
 
-    // Reg #(`PC_SIZE, `PC_SIZE'b0) pc_reg(clk, rst, pc_nxt, pc_r, pc_ena);
     sirv_gnrl_dfflr #(`PC_SIZE) pc_dfflr (pc_ena, pc_nxt, pc_r, clk, rst);
 
     assign  inspect_pc = pc_r;

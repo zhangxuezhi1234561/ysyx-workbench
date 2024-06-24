@@ -45,8 +45,5 @@ module ifu_minidec(
         .dec_jalr_rs1idx    (dec_jalr_rs1idx),
         .dec_bjp_imm        (dec_bjp_imm)
    );
-
-    wire minidec_dec_bjp_test;
-    sirv_gnrl_dfflr #(1)        dec_bjp_test_dfflr (1, dec_bjp, minidec_dec_bjp_test, clk, rst);
     
 endmodule

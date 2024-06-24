@@ -18,9 +18,6 @@ class Vcore_ifu_ifetch final : public VerilatedModule {
     // CELLS
     Vcore_sirv_gnrl_dfflr* __PVT__ifu_ir_dfflr;
     Vcore_sirv_gnrl_dfflr* __PVT__ifu_pc_dfflr;
-    Vcore_sirv_gnrl_dfflr* __PVT__pc_r_final_dfflr;
-    Vcore_sirv_gnrl_dfflr* __PVT__pc_op1_dfflr;
-    Vcore_sirv_gnrl_dfflr* __PVT__pc_op2_dfflr;
     Vcore_sirv_gnrl_dfflr* __PVT__pc_dfflr;
     Vcore_exu_decode* __PVT__inst_ifu_minidec__DOT__inst_exu_decode;
 
@@ -57,7 +54,6 @@ class Vcore_ifu_ifetch final : public VerilatedModule {
         CData/*0:0*/ __PVT__bpu2rf_rs1_ena;
         CData/*0:0*/ __PVT__ir_rs1idx_ena;
         CData/*0:0*/ __PVT__ir_rs2idx_ena;
-        CData/*0:0*/ __PVT__bpu_wait;
         CData/*0:0*/ __PVT__bjp_req;
         CData/*0:0*/ __PVT__ifu_new_req;
         CData/*0:0*/ __PVT__ifu_req_valid_pre;
@@ -91,11 +87,9 @@ class Vcore_ifu_ifetch final : public VerilatedModule {
         CData/*0:0*/ __Vtogcov__minidec_bjp;
         CData/*0:0*/ __Vtogcov__minidec_jal;
         CData/*0:0*/ __Vtogcov__minidec_jalr;
+        CData/*0:0*/ __Vtogcov__bjp_req;
     };
     struct {
-        CData/*0:0*/ __Vtogcov__bpu_wait;
-        CData/*0:0*/ __Vtogcov__bjp_req;
-        CData/*0:0*/ __Vtogcov__bjp_final;
         CData/*0:0*/ __Vtogcov__ifu_new_req;
         CData/*0:0*/ __Vtogcov__ifu_req_valid_pre;
         CData/*0:0*/ __Vtogcov__out_flag_r;
@@ -116,28 +110,17 @@ class Vcore_ifu_ifetch final : public VerilatedModule {
         CData/*0:0*/ ifu_prdt_taken_dfflr__DOT____Vtogcov__qout_r;
         CData/*4:0*/ __PVT__ir_rs1idx_dfflr__DOT__qout_r;
         CData/*4:0*/ __PVT__ir_rs2idx_dfflr__DOT__qout_r;
-        CData/*0:0*/ inst_ifu_minidec__DOT____Vtogcov__minidec_dec_bjp_test;
-        CData/*0:0*/ __PVT__inst_ifu_minidec__DOT__dec_bjp_test_dfflr__DOT__qout_r;
-        CData/*0:0*/ inst_ifu_minidec__DOT__dec_bjp_test_dfflr__DOT____Vtogcov__qout_r;
         CData/*0:0*/ __PVT__inst_ifu_litebpu__DOT__dec_jalr_rs1xn;
-        CData/*0:0*/ __PVT__inst_ifu_litebpu__DOT__jalr_rs1x1_dep;
-        CData/*0:0*/ __PVT__inst_ifu_litebpu__DOT__jalr_rs1xn_dep;
-        CData/*0:0*/ __PVT__inst_ifu_litebpu__DOT__jalr_rs1xn_dep_ir_clr;
         CData/*0:0*/ __PVT__inst_ifu_litebpu__DOT__rs1xn_rdrf_ena;
         CData/*0:0*/ __PVT__inst_ifu_litebpu__DOT__rs1xn_rdrf_nxt;
         CData/*0:0*/ inst_ifu_litebpu__DOT____Vtogcov__dec_jalr_rs1x0;
         CData/*0:0*/ inst_ifu_litebpu__DOT____Vtogcov__dec_jalr_rs1x1;
         CData/*0:0*/ inst_ifu_litebpu__DOT____Vtogcov__dec_jalr_rs1xn;
-        CData/*0:0*/ inst_ifu_litebpu__DOT____Vtogcov__jalr_rs1x1_dep;
-        CData/*0:0*/ inst_ifu_litebpu__DOT____Vtogcov__jalr_rs1xn_dep;
-        CData/*0:0*/ inst_ifu_litebpu__DOT____Vtogcov__jalr_rs1xn_dep_ir_clr;
         CData/*0:0*/ inst_ifu_litebpu__DOT____Vtogcov__rs1xn_rdrf_r;
         CData/*0:0*/ inst_ifu_litebpu__DOT____Vtogcov__rs1xn_rdrf_ena;
         CData/*0:0*/ inst_ifu_litebpu__DOT____Vtogcov__rs1xn_rdrf_nxt;
         CData/*0:0*/ __PVT__inst_ifu_litebpu__DOT__rs1xn_rdrf_dfflrs__DOT__qout_r;
         CData/*0:0*/ inst_ifu_litebpu__DOT__rs1xn_rdrf_dfflrs__DOT____Vtogcov__qout_r;
-        CData/*0:0*/ __PVT__bjp_final_dfflr__DOT__qout_r;
-        CData/*0:0*/ bjp_final_dfflr__DOT____Vtogcov__qout_r;
         CData/*0:0*/ __PVT__out_flag_dfflr__DOT__qout_r;
         CData/*0:0*/ out_flag_dfflr__DOT____Vtogcov__qout_r;
         CData/*0:0*/ __PVT__pc_newpend_dfflr__DOT__qout_r;
@@ -156,12 +139,7 @@ class Vcore_ifu_ifetch final : public VerilatedModule {
         IData/*31:0*/ __PVT__pc_add_op2;
         IData/*31:0*/ __Vtogcov__minidec_bjp_imm;
         IData/*31:0*/ __Vtogcov__prdt_pc_add_op1;
-        IData/*31:0*/ __Vtogcov__pc_r_final;
-    };
-    struct {
         IData/*31:0*/ __Vtogcov__pc_nxt_pre;
-        IData/*31:0*/ __Vtogcov__prdt_pc_add_op1_final;
-        IData/*31:0*/ __Vtogcov__prdt_pc_add_op2_final;
         IData/*31:0*/ __Vtogcov__pc_add_op1;
         IData/*31:0*/ __Vtogcov__pc_add_op2;
     };

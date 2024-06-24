@@ -3,6 +3,8 @@
 #include <getopt.h>
 
 char *img_file = NULL;
+char *diff_so_file = NULL;
+int difftest_port = 1234;
 
 static long load_img() {
     if(img_file == NULL) {
@@ -30,21 +32,25 @@ static long load_img() {
 static int parse_args(int argc, char *argv[]) {
     const struct option table[] = {
         {"img"      , required_argument, NULL, 'i'},    //--img
+        {"diff"     , required_argument, NULL, 'd'},
         {0          , 0                , NULL,  0 },
     };
     int o;
-    while((o = getopt_long(argc, argv, "i:", table, NULL)) != -1) {
+    while((o = getopt_long(argc, argv, "i:d:", table, NULL)) != -1) {
         switch(o) {
-            case 'i': img_file = optarg; return 0;
+            case 'i': img_file = optarg; break;
+            case 'd': diff_so_file = optarg; break;
             default : assert(0);
         }
     }
     return 0;
 }
 
+long img_size;
 void init_monitor(int argc, char *argv[]) {
     parse_args(argc, argv);
-    load_img();
-    
+    img_size = load_img();
+    Log("difftest file %s", diff_so_file);
+    // init_difftest(diff_so_file, img_size, difftest_port);
     return;
 }

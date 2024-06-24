@@ -22,6 +22,7 @@ VL_ATTR_COLD void Vcore_core___ctor_var_reset(Vcore_core* vlSelf) {
     vlSelf->ifu_rsp_valid = VL_RAND_RESET_I(1);
     vlSelf->ifu_rsp_ready = VL_RAND_RESET_I(1);
     vlSelf->ifu_rsp_instr = VL_RAND_RESET_I(32);
+    vlSelf->__PVT__ifu_req_pc_temp = VL_RAND_RESET_I(32);
     vlSelf->__PVT__ifu_o_ready = VL_RAND_RESET_I(1);
     vlSelf->__PVT__rf2ifu_rs1 = VL_RAND_RESET_I(32);
     vlSelf->__Vtogcov__clk = VL_RAND_RESET_I(1);
@@ -34,6 +35,7 @@ VL_ATTR_COLD void Vcore_core___ctor_var_reset(Vcore_core* vlSelf) {
     vlSelf->__Vtogcov__ifu_rsp_valid = VL_RAND_RESET_I(1);
     vlSelf->__Vtogcov__ifu_rsp_ready = VL_RAND_RESET_I(1);
     vlSelf->__Vtogcov__ifu_rsp_instr = VL_RAND_RESET_I(32);
+    vlSelf->__Vtogcov__ifu_req_pc_temp = VL_RAND_RESET_I(32);
     vlSelf->__Vtogcov__ifu_o_valid = VL_RAND_RESET_I(1);
     vlSelf->__Vtogcov__ifu_o_ready = VL_RAND_RESET_I(1);
     vlSelf->__Vtogcov__ifu_o_ir = VL_RAND_RESET_I(32);
@@ -77,7 +79,6 @@ VL_ATTR_COLD void Vcore_core___ctor_var_reset(Vcore_core* vlSelf) {
         vlSelf->__PVT__inst_exu__DOT__inst_RegisterFile__DOT__rf_r[__Vi0] = VL_RAND_RESET_I(32);
     }
     vlSelf->__PVT__inst_exu__DOT__inst_RegisterFile__DOT__rf_wen = VL_RAND_RESET_I(32);
-    vlSelf->__PVT__inst_exu__DOT__inst_RegisterFile__DOT__publicgetsignal__Vstatic__j = 0;
     vlSelf->inst_exu__DOT__inst_RegisterFile__DOT____Vtogcov__rf_wen = VL_RAND_RESET_I(32);
     vlSelf->inst_exu__DOT__inst_RegisterFile__DOT____Vcellinp__regfile__BRA__1__KET____DOT__rfno0__DOT__rf_dffl____pinNumber1 = VL_RAND_RESET_I(1);
     vlSelf->inst_exu__DOT__inst_RegisterFile__DOT____Vcellinp__regfile__BRA__2__KET____DOT__rfno0__DOT__rf_dffl____pinNumber1 = VL_RAND_RESET_I(1);

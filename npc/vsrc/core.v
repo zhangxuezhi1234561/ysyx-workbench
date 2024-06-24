@@ -16,6 +16,7 @@ module  core(
     output  ifu_rsp_ready,
     input   [`INSTR_SIZE-1:0]   ifu_rsp_instr
 );
+    wire    [`PC_SIZE-1:0]      ifu_req_pc_temp;
 
     wire                        ifu_o_valid;
     wire                        ifu_o_ready;
@@ -29,6 +30,8 @@ module  core(
     wire                        ifu_o_pc_vld;
     wire    [`XLEN-1:0]         rf2ifu_x1;
     wire    [`XLEN-1:0]         rf2ifu_rs1;
+
+    // sirv_gnrl_dfflr #(`PC_SIZE) pc_r_final_dfflr (1, ifu_req_pc_temp, ifu_req_pc, clk, rst);
 
     ifu inst_ifu(
         .clk    (clk),              //input

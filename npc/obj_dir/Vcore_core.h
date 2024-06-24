@@ -148,11 +148,13 @@ class Vcore_core final : public VerilatedModule {
         VL_IN(pc_rtvec,31,0);
         VL_OUT(ifu_req_pc,31,0);
         VL_IN(ifu_rsp_instr,31,0);
+        IData/*31:0*/ __PVT__ifu_req_pc_temp;
         IData/*31:0*/ __PVT__rf2ifu_rs1;
         IData/*31:0*/ __Vtogcov__inspect_pc;
         IData/*31:0*/ __Vtogcov__pc_rtvec;
         IData/*31:0*/ __Vtogcov__ifu_req_pc;
         IData/*31:0*/ __Vtogcov__ifu_rsp_instr;
+        IData/*31:0*/ __Vtogcov__ifu_req_pc_temp;
         IData/*31:0*/ __Vtogcov__ifu_o_ir;
         IData/*31:0*/ __Vtogcov__ifu_o_pc;
         IData/*31:0*/ __Vtogcov__rf2ifu_x1;
@@ -169,7 +171,6 @@ class Vcore_core final : public VerilatedModule {
         IData/*31:0*/ inst_exu__DOT____Vtogcov__disp_alu_rs2;
         IData/*31:0*/ inst_exu__DOT____Vtogcov__cmt_cause;
         IData/*31:0*/ __PVT__inst_exu__DOT__inst_RegisterFile__DOT__rf_wen;
-        IData/*31:0*/ __PVT__inst_exu__DOT__inst_RegisterFile__DOT__publicgetsignal__Vstatic__j;
         IData/*31:0*/ inst_exu__DOT__inst_RegisterFile__DOT____Vtogcov__rf_wen;
         IData/*31:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__bjp_o_wbck_wdat;
         IData/*31:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__bjp_req_alu_op1;
@@ -183,9 +184,9 @@ class Vcore_core final : public VerilatedModule {
         IData/*31:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__alu_i_rs1;
         IData/*31:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__alu_i_rs2;
         IData/*31:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__alu_i_imm;
-        IData/*31:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__alu_i_pc;
     };
     struct {
+        IData/*31:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__alu_i_pc;
         IData/*31:0*/ inst_exu__DOT__inst_exu_alu__DOT____Vtogcov__bjp_o_wbck_wdat;
         IData/*31:0*/ inst_exu__DOT__inst_exu_alu__DOT____Vtogcov__bjp_req_alu_op1;
         IData/*31:0*/ inst_exu__DOT__inst_exu_alu__DOT____Vtogcov__bjp_req_alu_op2;

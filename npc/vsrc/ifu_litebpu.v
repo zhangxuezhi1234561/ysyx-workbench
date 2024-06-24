@@ -30,8 +30,8 @@ module  ifu_litebpu(
     wire    dec_jalr_rs1x1  =   (dec_jalr_rs1idx == `RFIDX_WIDTH'd1);
     wire    dec_jalr_rs1xn  =   (~dec_jalr_rs1x0) & (~dec_jalr_rs1x1);
 
-    wire    jalr_rs1x1_dep  =   dec_i_valid & dec_jalr & dec_jalr_rs1x1;
-    wire    jalr_rs1xn_dep  =   dec_i_valid & dec_jalr & dec_jalr_rs1xn;
+    wire    jalr_rs1x1_dep  =   dec_i_valid & dec_jalr & dec_jalr_rs1x1 & 1'b0;     //TODO
+    wire    jalr_rs1xn_dep  =   dec_i_valid & dec_jalr & dec_jalr_rs1xn & 1'b0;     //TODO
 
     wire    jalr_rs1xn_dep_ir_clr   =   jalr_rs1xn_dep & ir_valid_clr;
 
