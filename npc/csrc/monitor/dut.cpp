@@ -56,7 +56,7 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
     ref_difftest_memcpy(RESET_VECTOR, guest_to_host(RESET_VECTOR),img_size, DIFFTEST_TO_REF);
 
     *(cpu.gpr_pc + 32) = RESET_VECTOR;
-    ref_reg_display(cpu.gpr_pc);
+    // ref_reg_display(cpu.gpr_pc);
     ref_difftest_regcpy(cpu.gpr_pc, DIFFTEST_TO_REF);
     
 }
@@ -81,6 +81,8 @@ bool isa_difftest_checkregs(uint32_t *ref_r, vaddr_t pc) {
 void checkregs(uint32_t *ref, vaddr_t pc) {
     if(!isa_difftest_checkregs(ref, pc)) {
         isa_reg_display();
+        printf("----------------\n");
+        ref_reg_display(ref);
         assert(0);
     }
 }

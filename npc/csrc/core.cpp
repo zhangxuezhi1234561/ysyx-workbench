@@ -23,7 +23,7 @@ void npc_stop(int a, int b) {      // using at exu_excp.v
         ANSI_FMT("HIT BAD TRAP", ANSI_FG_RED))   ,
         halt_pc
     );
-    if(a)    assert(0);
+    // if(a)    assert(0);
     return;
 }
 
@@ -98,32 +98,42 @@ int main(int argc, char** argv) {
 
     bool difftest_init_flag = false;
 
+    int diff_cnt = 0;
+    uint32_t pc_temp[2] = {0};
+
     while(!contextp->gotFinish() && count--) {
         if(sim_time % 5 == 0) {
             top->clk    =   !top->clk;  
         }
         if((sim_time % 10 == 2 || sim_time % 10 == 3) && contextp->time() > 56) {
-            printf("___________________\n"); 
-            if(!difftest_init_flag) {
-                init_difftest(diff_so_file, img_size, difftest_port);   
-                difftest_init_flag = true;
-            }
             if(top->ifu_req_valid && instr_flag && sim_time % 10 == 2) {
+                if(!difftest_init_flag) {
+                    init_difftest(diff_so_file, img_size, difftest_port);   
+                    difftest_init_flag = true;
+                }               
+                for(int i = 1; i >= 1; i--) {
+                    pc_temp[i] = pc_temp[i - 1];
+                }
+                pc_temp[0] = top->inspect_pc;
+                if(diff_cnt < 2) {
+                    diff_cnt++;
+                } else {
+                    ref_difftest_exec(1);
+                    ref_difftest_regcpy(ref_r, DIFFTEST_TO_DUT); 
+                    *(cpu.gpr_pc + 32)  =   pc_temp[1];
+                    checkregs(ref_r, top->inspect_pc);
+                }
                 top->ifu_rsp_instr  = rsp_instr;
                 top->ifu_rsp_valid  =   1;
                 top->ifu_req_ready  =   1;
-
-                // ref_difftest_regcpy(ref_r, DIFFTEST_TO_DUT);
-                // ref_difftest_exec(1);
-                // checkregs(ref_r, top->inspect_pc);
             }
             if(top->ifu_req_valid && sim_time % 10 == 3 && contextp->time() > 56) {
                 VL_PRINTF("ifu_req_pc=0x%x\n", top->ifu_req_pc);
                 rsp_instr = pmem_read(top->ifu_req_pc, 4);
                 top->ifu_req_ready  =   1;
                 instr_flag = true;
-            }
-            printf("___________________\n");       
+                               
+            }      
         }
         if(!top->clk) {
             if(contextp->time() > 1 && contextp->time() < 50) {

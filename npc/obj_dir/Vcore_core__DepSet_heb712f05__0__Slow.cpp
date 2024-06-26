@@ -75,7 +75,7 @@ VL_ATTR_COLD void Vcore_core___ctor_var_reset(Vcore_core* vlSelf) {
     vlSelf->inst_exu__DOT____Vtogcov__alu_cmt_valid = VL_RAND_RESET_I(1);
     vlSelf->inst_exu__DOT____Vtogcov__alu_cmt_bjp_prdt = VL_RAND_RESET_I(1);
     vlSelf->inst_exu__DOT____Vtogcov__cmt_cause = VL_RAND_RESET_I(32);
-    for (int __Vi0 = 0; __Vi0 < 32; ++__Vi0) {
+    for (int __Vi0 = 0; __Vi0 < 33; ++__Vi0) {
         vlSelf->__PVT__inst_exu__DOT__inst_RegisterFile__DOT__rf_r[__Vi0] = VL_RAND_RESET_I(32);
     }
     vlSelf->__PVT__inst_exu__DOT__inst_RegisterFile__DOT__rf_wen = VL_RAND_RESET_I(32);

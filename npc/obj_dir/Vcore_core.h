@@ -218,7 +218,7 @@ class Vcore_core final : public VerilatedModule {
         QData/*32:0*/ inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_dpath__DOT____Vtogcov__adder_in1;
         QData/*32:0*/ inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_dpath__DOT____Vtogcov__adder_in2;
         QData/*32:0*/ inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_dpath__DOT____Vtogcov__adder_res;
-        VlUnpacked<IData/*31:0*/, 32> __PVT__inst_exu__DOT__inst_RegisterFile__DOT__rf_r;
+        VlUnpacked<IData/*31:0*/, 33> __PVT__inst_exu__DOT__inst_RegisterFile__DOT__rf_r;
     };
 
     // INTERNAL VARIABLES

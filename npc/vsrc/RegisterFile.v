@@ -16,7 +16,7 @@ module RegisterFile (
 	output	[`XLEN-1:0]	x1_r,
 	output	[`XLEN-1:0]	endcode
 );
-	reg	[`XLEN-1:0] rf_r [`RFREG_NUM-1:0];	//define general registers
+	reg	[`XLEN-1:0] rf_r [`RFREG_NUM:0];	//define general registers
 	wire	[`RFREG_NUM-1:0] rf_wen;
 	generate
 		genvar	i;

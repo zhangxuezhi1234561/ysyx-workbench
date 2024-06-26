@@ -40,7 +40,7 @@ VL_ATTR_COLD void Vcore_core___eval_initial__TOP__core(Vcore_core* vlSelf) {
     vlSymsp->__Vcoverage[308].fetch_add(1, std::memory_order_relaxed);
 }
 
-void Vcore_core____Vdpiimwrap_inst_exu__DOT__inst_RegisterFile__DOT__set_gpr_ptr__Vdpioc2_TOP__core(const VlUnpacked<IData/*31:0*/, 32> &a);
+void Vcore_core____Vdpiimwrap_inst_exu__DOT__inst_RegisterFile__DOT__set_gpr_ptr__Vdpioc2_TOP__core(const VlUnpacked<IData/*31:0*/, 33> &a);
 
 VL_ATTR_COLD void Vcore_core___stl_sequent__TOP__core__0(Vcore_core* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
