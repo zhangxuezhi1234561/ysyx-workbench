@@ -12,5 +12,5 @@
 !init.sh
 /fceux-am
 nvboard/
-/am-kernels
+#/am-kernels
 # /npc/obj_dir/*
