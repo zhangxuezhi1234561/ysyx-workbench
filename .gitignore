@@ -13,4 +13,5 @@
 /fceux-am
 nvboard/
 !/am-kernels/*
+!/ysyx.assets/*
 # /npc/obj_dir/*
