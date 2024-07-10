@@ -26,21 +26,33 @@ module  exu_alu(
     output                          cmt_o_ebreak,
     output                          cmt_o_bjp_prdt,
 
+    output                          cmt_o_ld,
+    output                          cmt_o_stamo,
+
     output                          wbck_o_valid,
     input                           wbck_o_ready,
     output  [`XLEN-1:0]             wbck_o_wdat,
-    output  [`RFIDX_WIDTH-1:0]      wbck_o_rdidx             
+    output  [`RFIDX_WIDTH-1:0]      wbck_o_rdidx,
+
+    // The AGU ICB Interface to LSU
+    output  [`ADDR_SIZE-1:0]        agu_icb_cmd_addr,
+    output                          agu_icb_cmd_read,
+    output  [`XLEN-1:0]             agu_icb_cmd_wdata,
+    output  [`XLEN/8-1:0]           agu_icb_cmd_wmask     
 );
     wire    alu_op  =   i_info[`DECINFO_GRP] == `DECINFO_GRP_ALU;
     wire    bjp_op  =   i_info[`DECINFO_GRP] == `DECINFO_GRP_BJP;
+    wire    agu_op  =   i_info[`DECINFO_GRP] == `DECINFO_GRP_AGU;
     // initial begin
     //     $display("DECINFO_GRP=%d\n", `DECINFO_GRP);
     // end
    
     wire    alu_i_valid =   alu_op & i_valid;
     wire    bjp_i_valid =   bjp_op & i_valid;
+    wire    agu_i_valid =   agu_op & i_valid;
     ////////////////////////////////////////////
     wire    bjp_i_ready;
+    wire    agu_i_ready;
     wire    bjp_o_valid;
     wire    bjp_o_ready;
     wire    [`XLEN-1:0] bjp_o_wbck_wdat;
@@ -84,20 +96,70 @@ module  exu_alu(
         .bjp_req_alu_add_res    (bjp_req_alu_add_res)
     );
 
+    wire    agu_o_valid;
+    wire    agu_o_ready;
+    wire    [`XLEN-1:0] agu_o_wbck_wdat;
+
+    wire    agu_o_cmt_ld;
+    wire    agu_o_cmt_stamo;
+
+    wire    [`XLEN-1:0] agu_req_alu_op1;
+    wire    [`XLEN-1:0] agu_req_alu_op2;
+    wire                agu_req_alu_add;
+    wire    [`XLEN-1:0] agu_req_alu_res;
+
+    wire    [`XLEN-1:0]             agu_i_rs1   =   {`XLEN{agu_op}} & i_rs1;
+    wire    [`XLEN-1:0]             agu_i_rs2   =   {`XLEN{agu_op}} & i_rs2;
+    wire    [`XLEN-1:0]             agu_i_imm   =   {`XLEN{agu_op}} & i_imm;
+    wire    [`DECINFO_WIDTH-1:0]    agu_i_info  =   {`DECINFO_WIDTH{agu_op}} & i_info;
+
+    exu_alu_lsuagu      inst_exu_alu_lsuagu(
+        .agu_i_valid        (agu_i_valid),
+        .agu_i_ready        (agu_i_ready),
+
+        .agu_i_rs1          (agu_i_rs1),
+        .agu_i_rs2          (agu_i_rs2),
+        .agu_i_imm          (agu_i_imm),
+        .agu_i_info         (agu_i_info[`DECINFO_AGU_WIDTH-1:0]),
+
+        .agu_o_valid        (agu_o_valid),
+        .agu_o_ready        (agu_o_ready),
+        .agu_o_wbck_wdat    (agu_o_wbck_wdat),
+        .agu_o_cmt_ld       (agu_o_cmt_ld),
+        .agu_o_cmt_stamo    (agu_o_cmt_stamo),
+
+        .agu_req_alu_op1    (agu_req_alu_op1),
+        .agu_req_alu_op2    (agu_req_alu_op2),
+        .agu_req_alu_add    (agu_req_alu_add),
+        .agu_req_alu_res    (agu_req_alu_res),
+
+        .agu_icb_cmd_addr   (agu_icb_cmd_addr),
+        .agu_icb_cmd_read   (agu_icb_cmd_read),
+        .agu_icb_cmd_wdata  (agu_icb_cmd_wdata),
+        .agu_icb_cmd_wmask  (agu_icb_cmd_wmask)
+    );
+
     wire    [`XLEN-1:0]     alu_req_alu_res;
     wire    [`XLEN-1:0]     alu_req_alu_op1;
     wire    [`XLEN-1:0]     alu_req_alu_op2;
 
     wire                    alu_req_alu_add;
+    wire                    alu_req_alu_xor;
+    wire                    alu_req_alu_or;
+    wire                    alu_req_alu_sltu;
     wire                    alu_req_alu_lui;
 
     wire    alu_req_alu =   alu_op & i_rdwen;
     wire    bjp_req_alu =   bjp_op;
+    wire    agu_req_alu =   agu_op;
 
     exu_alu_dpath   inst_exu_alu_dpath(
         .alu_req_alu    (alu_req_alu),          //input
 
         .alu_req_alu_add    (alu_req_alu_add),  //input
+        .alu_req_alu_xor    (alu_req_alu_xor),
+        .alu_req_alu_or     (alu_req_alu_or),
+        .alu_req_alu_sltu   (alu_req_alu_sltu),
         .alu_req_alu_lui    (alu_req_alu_lui),
         .alu_req_alu_op1    (alu_req_alu_op1),  //input
         .alu_req_alu_op2    (alu_req_alu_op2),  //input
@@ -109,7 +171,13 @@ module  exu_alu(
         .bjp_req_alu_op2        (bjp_req_alu_op2),
         .bjp_req_alu_add        (bjp_req_alu_add),
 
-        .bjp_req_alu_add_res    (bjp_req_alu_add_res)
+        .bjp_req_alu_add_res    (bjp_req_alu_add_res),
+
+        .agu_req_alu            (agu_req_alu),
+        .agu_req_alu_op1        (agu_req_alu_op1),
+        .agu_req_alu_op2        (agu_req_alu_op2),
+        .agu_req_alu_add        (agu_req_alu_add),
+        .agu_req_alu_res        (agu_req_alu_res)
     );
 
     wire        alu_o_valid;
@@ -145,6 +213,9 @@ module  exu_alu(
         .alu_o_cmt_ebreak   (alu_o_cmt_ebreak),
 
         .alu_req_alu_add    (alu_req_alu_add),  //output
+        .alu_req_alu_xor    (alu_req_alu_xor),
+        .alu_req_alu_or     (alu_req_alu_or),
+        .alu_req_alu_sltu   (alu_req_alu_sltu),
         .alu_req_alu_lui    (alu_req_alu_lui),
 
         .alu_req_alu_op1    (alu_req_alu_op1),  //output
@@ -157,16 +228,20 @@ module  exu_alu(
 
     wire    o_sel_alu   =   alu_op;
     wire    o_sel_bjp   =   bjp_op;   
+    wire    o_sel_agu   =   agu_op;
 
     assign  o_valid =   (o_sel_alu   &   alu_o_valid)
                       | (o_sel_bjp   &   bjp_o_valid)
+                      | (o_sel_agu   &   agu_o_valid)
                         ;        //TODO   
 
     assign  alu_o_ready     =   o_sel_alu & o_ready;
-    assign  bjp_o_ready     =   o_sel_bjp & o_ready;                            
+    assign  bjp_o_ready     =   o_sel_bjp & o_ready;   
+    assign  agu_o_ready     =   o_sel_agu & o_ready;                         
 
     assign  wbck_o_wdat =   ({`XLEN{o_sel_alu}} & alu_o_wbck_wdat)
-                          | ({`XLEN{o_sel_bjp}} & bjp_o_wbck_wdat) 
+                          | ({`XLEN{o_sel_bjp}} & bjp_o_wbck_wdat)
+                          | ({`XLEN{o_sel_agu}} & agu_o_wbck_wdat) 
                             ;
     assign  wbck_o_rdidx    =   i_rdidx;
 
@@ -180,6 +255,7 @@ module  exu_alu(
 
     assign  i_ready =   (alu_i_ready & alu_op)
                       | (bjp_i_ready & bjp_op) 
+                      | (agu_i_ready & agu_op)
                         ;
 
     // Each Instruction need to commit
@@ -188,6 +264,9 @@ module  exu_alu(
     assign  cmt_o_pc        =   i_pc;
     assign  cmt_o_imm       =   i_imm;  
     assign  cmt_o_pc_vld    =   i_pc_vld;
+
+    assign  cmt_o_ld        =   (o_sel_agu & agu_o_cmt_ld);
+    assign  cmt_o_stamo     =   o_sel_agu  & agu_o_cmt_stamo;
 
     assign  cmt_o_bjp       =   o_sel_bjp & bjp_o_cmt_bjp;  
     assign  cmt_o_bjp_prdt  =   o_sel_bjp & bjp_o_cmt_prdt;  

@@ -17,6 +17,7 @@ module  exu_disp(
     input       [`XLEN-1:0]         disp_i_imm,
     input       [`PC_SIZE-1:0]      disp_i_pc,
     
+    // Dispatch to ALU
     output                          disp_o_alu_valid,   // similar to input disp_i_valid
     input                           disp_o_alu_ready,
 
@@ -27,6 +28,9 @@ module  exu_disp(
     output      [`DECINFO_WIDTH-1:0]    disp_o_alu_info,
     output      [`XLEN-1:0]         disp_o_alu_imm,
     output      [`PC_SIZE-1:0]      disp_o_alu_pc
+
+    // Dispatch to OITF
+    
 );
 
     wire    disp_i_ready_pos    =   disp_o_alu_ready;

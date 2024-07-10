@@ -87,6 +87,7 @@ VL_ATTR_COLD void Vcore_ifu_ifetch___ctor_var_reset(Vcore_ifu_ifetch* vlSelf) {
     vlSelf->__Vtogcov__minidec_bjp = VL_RAND_RESET_I(1);
     vlSelf->__Vtogcov__minidec_jal = VL_RAND_RESET_I(1);
     vlSelf->__Vtogcov__minidec_jalr = VL_RAND_RESET_I(1);
+    vlSelf->__Vtogcov__minidec_bxx = VL_RAND_RESET_I(1);
     vlSelf->__Vtogcov__minidec_bjp_imm = VL_RAND_RESET_I(32);
     vlSelf->__Vtogcov__prdt_pc_add_op1 = VL_RAND_RESET_I(32);
     vlSelf->__Vtogcov__pc_nxt_pre = VL_RAND_RESET_I(32);

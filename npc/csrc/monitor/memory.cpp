@@ -13,9 +13,21 @@ static const uint32_t img[] = {
 
 uint8_t* guest_to_host(uint32_t paddr) { return pmem + paddr - CONFIG_MBASE; }
 
+void paddr_write(paddr_t addr, int wmask, word_t data) {
+    for(int i = 0; i < 4; i++) {
+        if(wmask & (1 << i)) {
+            *guest_to_host(addr + i) = (data >> (i * 8)) & 0xff;
+        }
+    }
+}
+
 uint32_t pmem_read(uint32_t addr, int len) {
     uint32_t ret = host_read(guest_to_host(addr), len);
     return ret;
+}
+
+void pmem_write(int waddr, int wdata, char wmask) {
+    paddr_write(waddr, wmask, wdata);
 }
 
 void init_isa() {

@@ -43,7 +43,7 @@ const char *regs[] = {
 };
 
 void isa_reg_display() {
-    printf("**************registers*************\n");
+    printf("**************npc registers*************\n");
     for(int i = 0; i <= 32; i++) {
         printf("    No:%d %s: 0x%08x\n", i, regs[i], *(cpu.gpr_pc + i));
     }

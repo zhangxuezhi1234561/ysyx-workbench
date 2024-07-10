@@ -2,7 +2,9 @@
 #define __MEMORY_HOST_H__
 
 #include <assert.h>
-#include "common.h"
+#include <common.h>
+
+// typedef MUXDEF(CONFIG_ISA64, uint64_t, uint32_t) word_t;
 
 #define CONFIG_MSIZE    0x2000000       // 128M
 #define CONFIG_MBASE    0x80000000
@@ -18,8 +20,12 @@ static inline uint32_t host_read(void *addr, int len) {
 }
 
 uint8_t* guest_to_host(uint32_t paddr);
+
+
+
 void init_isa();
 uint32_t pmem_read(uint32_t addr, int len);
+void pmem_write(int waddr, int wdata, char wmask);
 
 typedef struct {
     uint32_t *gpr_pc;
@@ -27,6 +33,5 @@ typedef struct {
 
 void isa_reg_display();
 void npc_stop(int a, int b);
-
 
 #endif

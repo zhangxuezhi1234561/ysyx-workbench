@@ -20,6 +20,9 @@ module  exu_alu_rglr(
 //----------------------------------------------------//
     // The operands and info to ALU
     output  alu_req_alu_add,
+    output  alu_req_alu_xor,
+    output  alu_req_alu_or,
+    output  alu_req_alu_sltu,
     output  alu_req_alu_lui,
 
     output  [`XLEN-1:0] alu_req_alu_op1,
@@ -42,6 +45,9 @@ module  exu_alu_rglr(
 
 
     assign  alu_req_alu_add =   alu_i_info[`DECINFO_ALU_ADD] & (~nop);
+    assign  alu_req_alu_xor =   alu_i_info[`DECINFO_ALU_XOR];
+    assign  alu_req_alu_or  =   alu_i_info[`DECINFO_ALU_OR];
+    assign  alu_req_alu_sltu =  alu_i_info[`DECINFO_ALU_SLTU];
     assign  alu_req_alu_lui =   alu_i_info[`DECINFO_ALU_LUI];
 
     assign  alu_o_valid     =   alu_i_valid;

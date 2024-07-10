@@ -81,7 +81,7 @@ bool isa_difftest_checkregs(uint32_t *ref_r, vaddr_t pc) {
 void checkregs(uint32_t *ref, vaddr_t pc) {
     if(!isa_difftest_checkregs(ref, pc)) {
         isa_reg_display();
-        printf("----------------\n");
+        printf("--------ref regs-------\n");
         ref_reg_display(ref);
         assert(0);
     }

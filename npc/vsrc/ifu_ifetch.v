@@ -146,13 +146,11 @@ module ifu_ifetch(
     wire    minidec_bjp;
     wire    minidec_jal;
     wire    minidec_jalr;
+    wire    minidec_bxx;
     wire    [`XLEN-1:0] minidec_bjp_imm;
     wire    [`RFIDX_WIDTH-1:0]  minidec_jalr_rs1idx;
 
     ifu_minidec inst_ifu_minidec(
-        .clk    (clk),
-        .rst    (rst),
-
         .instr  (ifu_rsp_instr),        //input
         // output
         .dec_rs1en  (minidec_rs1en),
@@ -163,6 +161,7 @@ module ifu_ifetch(
         .dec_bjp            (minidec_bjp),
         .dec_jal            (minidec_jal),
         .dec_jalr           (minidec_jalr),
+        .dec_bxx            (minidec_bxx),
         .dec_jalr_rs1idx    (minidec_jalr_rs1idx),
         .dec_bjp_imm        (minidec_bjp_imm)
     );
@@ -178,6 +177,8 @@ module ifu_ifetch(
         .pc                 (pc_r),                 //input
         .dec_jal            (minidec_jal),          //input
         .dec_jalr           (minidec_jalr),         //input
+        .dec_bxx            (minidec_bxx),
+
         .dec_bjp_imm        (minidec_bjp_imm),      //input
         .dec_jalr_rs1idx    (minidec_jalr_rs1idx),  //input
         

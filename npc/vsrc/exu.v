@@ -17,7 +17,20 @@ module exu(
     output                      commit_trap,
 
     output  [`XLEN-1:0]         rf2ifu_x1,
-    output  [`XLEN-1:0]         rf2ifu_rs1
+    output  [`XLEN-1:0]         rf2ifu_rs1,
+
+    // The LSU Write-Back Interface
+    input                       lsu_o_valid,
+    output                      lsu_o_ready,
+    input   [`XLEN-1:0]         lsu_o_wbck_wdat,
+    input                       lsu_o_cmt_ld,
+    input                       lsu_o_cmt_st,
+
+
+    output  [`ADDR_SIZE-1:0]    agu_icb_cmd_addr,
+    output                      agu_icb_cmd_read,
+    output  [`XLEN-1:0]         agu_icb_cmd_wdata,
+    output  [`XLEN/8-1:0]       agu_icb_cmd_wmask
 );
 
 
@@ -58,9 +71,6 @@ module exu(
     wire    [`RFIDX_WIDTH-1:0]   dec_rdidx;
     wire                         dec_rdwen;
     exu_decode inst_exu_decode(
-        .clk    (clk),
-        .rst    (rst),
-
         .rv32_instr     (i_ir),
         .i_pc           (i_pc),
         .i_prdt_taken   (i_prdt_taken),
@@ -80,6 +90,7 @@ module exu(
         .dec_bjp        (),
         .dec_jal        (),
         .dec_jalr       (),
+        .dec_bxx        (),
         .dec_jalr_rs1idx    (),
         .dec_bjp_imm        ()
     );
@@ -126,6 +137,12 @@ module exu(
         .disp_o_alu_pc      (disp_alu_pc)
     );
 
+    //----------------OITF--------------//
+    wire                        oitf_ret_ena;
+    wire                        oitf_ret_rdwen;
+    wire    [`RFIDX_WIDTH-1:0]  oitf_ret_rdidx;
+    //----------------------------------//
+
     wire    alu_wbck_o_valid;
     wire    alu_wbck_o_ready;
     wire    [`XLEN-1:0] alu_wbck_o_wdat;
@@ -133,6 +150,8 @@ module exu(
 
     wire    alu_cmt_bjp;
     wire    alu_cmt_ebreak;
+    wire    alu_cmt_ld;
+    wire    alu_cmt_stamo;
 
     wire    alu_cmt_valid;
     wire    alu_cmt_ready;
@@ -172,10 +191,52 @@ module exu(
         .cmt_o_ebreak   (alu_cmt_ebreak),
         .cmt_o_bjp_prdt (alu_cmt_bjp_prdt),     //output
 
+        .cmt_o_ld       (alu_cmt_ld),
+        .cmt_o_stamo    (alu_cmt_stamo),
+
         .wbck_o_valid   (alu_wbck_o_valid),
         .wbck_o_ready   (alu_wbck_o_ready),
         .wbck_o_wdat    (alu_wbck_o_wdat),
-        .wbck_o_rdidx   (alu_wbck_o_rdidx)
+        .wbck_o_rdidx   (alu_wbck_o_rdidx),
+
+        .agu_icb_cmd_addr   (agu_icb_cmd_addr),
+        .agu_icb_cmd_read   (agu_icb_cmd_read),
+        .agu_icb_cmd_wdata  (agu_icb_cmd_wdata),
+        .agu_icb_cmd_wmask  (agu_icb_cmd_wmask)
+    );
+
+    wire                        longp_wbck_o_valid;
+    wire                        longp_wbck_o_ready;
+    wire    [`FLEN-1:0]         longp_wbck_o_wdat;
+    wire    [`RFIDX_WIDTH-1:0]  longp_wbck_o_rdidx;  
+
+    wire                        longp_excp_o_ready;
+    wire                        longp_excp_o_valid;
+    wire                        longp_excp_o_ld;
+    wire                        longp_excp_o_st;
+    wire    [`PC_SIZE-1:0]      longp_excp_o_pc;
+
+    exu_longpwbck   inst_exu_longpwbck(
+        .lsu_wbck_i_valid   (lsu_o_valid),          
+        .lsu_wbck_i_ready   (lsu_o_ready),          //output
+        .lsu_wbck_i_wdat    (lsu_o_wbck_wdat),
+        .lsu_cmt_i_ld       (lsu_o_cmt_ld),         
+        .lsu_cmt_i_st       (lsu_o_cmt_st),
+
+        .longp_wbck_o_valid (longp_wbck_o_valid),   
+        .longp_wbck_o_ready (longp_wbck_o_ready),   //input
+        .longp_wbck_o_wdat  (longp_wbck_o_wdat),
+        .longp_wbck_o_rdidx (longp_wbck_o_rdidx),
+
+        .longp_excp_o_valid (longp_excp_o_valid),
+        .longp_excp_o_ready (longp_excp_o_ready),   //input
+        .longp_excp_o_ld    (longp_excp_o_ld),
+        .longp_excp_o_st    (longp_excp_o_st),
+        .longp_excp_o_pc    (longp_excp_o_pc),
+        
+        .oitf_ret_ena       (oitf_ret_ena),
+        .oitf_ret_rdwen     (oitf_ret_rdwen),       //output
+        .oitf_ret_rdidx     (oitf_ret_rdidx)
     );
 
     exu_wbck    inst_exu_wbck(
@@ -183,6 +244,11 @@ module exu(
         .alu_wbck_i_ready   (alu_wbck_o_ready),         //output
         .alu_wbck_i_wdat    (alu_wbck_o_wdat),         //input
         .alu_wbck_i_rdidx   (alu_wbck_o_rdidx),         //input
+
+        .longp_wbck_i_valid (longp_wbck_o_valid),
+        .longp_wbck_i_ready (longp_wbck_o_ready),
+        .longp_wbck_i_wdat  (longp_wbck_o_wdat),
+        .longp_wbck_i_rdidx (longp_wbck_o_rdidx),
 
         .rf_wbck_o_ena      (rf_wbck_ena),         //output
         .rf_wbck_o_wdat     (rf_wbck_wdat),         //output
@@ -205,6 +271,8 @@ module exu(
         .alu_cmt_i_bjp          (alu_cmt_bjp),
         .alu_cmt_i_ebreak       (alu_cmt_ebreak),
         .alu_cmt_i_bjp_prdt     (alu_cmt_bjp_prdt),
+        .alu_cmt_i_ld           (alu_cmt_ld),
+        .alu_cmt_i_stamo        (alu_cmt_stamo),
 
         .cmt_cause              (cmt_cause),
 

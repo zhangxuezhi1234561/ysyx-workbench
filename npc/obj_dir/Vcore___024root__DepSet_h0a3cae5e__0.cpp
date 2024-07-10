@@ -112,12 +112,11 @@ VL_INLINE_OPT void Vcore___024root___nba_comb__TOP__0(Vcore___024root* vlSelf) {
 
 void Vcore_core___nba_sequent__TOP__core__0(Vcore_core* vlSelf);
 void Vcore_ifu_ifetch___nba_sequent__TOP__core__inst_ifu__inst_ifu_ifetch__0(Vcore_ifu_ifetch* vlSelf);
-void Vcore_exu_decode___nba_sequent__TOP__core__inst_ifu__inst_ifu_ifetch__inst_ifu_minidec__DOT__inst_exu_decode__0(Vcore_exu_decode* vlSelf);
 void Vcore_sirv_gnrl_dfflr___nba_sequent__TOP__core__inst_ifu__inst_ifu_ifetch__ifu_ir_dfflr__0(Vcore_sirv_gnrl_dfflr* vlSelf);
 void Vcore_sirv_gnrl_dfflr___nba_sequent__TOP__core__inst_ifu__inst_ifu_ifetch__ifu_pc_dfflr__0(Vcore_sirv_gnrl_dfflr* vlSelf);
 void Vcore_sirv_gnrl_dfflr___nba_sequent__TOP__core__inst_ifu__inst_ifu_ifetch__pc_dfflr__0(Vcore_sirv_gnrl_dfflr* vlSelf);
 void Vcore_core___nba_sequent__TOP__core__1(Vcore_core* vlSelf);
-void Vcore_exu_decode___nba_sequent__TOP__core__inst_exu__DOT__inst_exu_decode__1(Vcore_exu_decode* vlSelf);
+void Vcore_exu_decode___nba_sequent__TOP__core__inst_exu__DOT__inst_exu_decode__0(Vcore_exu_decode* vlSelf);
 void Vcore_core___nba_sequent__TOP__core__2(Vcore_core* vlSelf);
 void Vcore_ifu_ifetch___nba_sequent__TOP__core__inst_ifu__inst_ifu_ifetch__1(Vcore_ifu_ifetch* vlSelf);
 void Vcore_sirv_gnrl_dffl___nba_sequent__TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__1__KET____DOT__rfno0__DOT__rf_dffl__0(Vcore_sirv_gnrl_dffl* vlSelf);
@@ -152,6 +151,8 @@ void Vcore_sirv_gnrl_dffl___nba_sequent__TOP__core__inst_exu__DOT__inst_Register
 void Vcore_sirv_gnrl_dffl___nba_sequent__TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__30__KET____DOT__rfno0__DOT__rf_dffl__0(Vcore_sirv_gnrl_dffl* vlSelf);
 void Vcore_sirv_gnrl_dffl___nba_sequent__TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__31__KET____DOT__rfno0__DOT__rf_dffl__0(Vcore_sirv_gnrl_dffl* vlSelf);
 void Vcore_core___nba_sequent__TOP__core__3(Vcore_core* vlSelf);
+void Vcore_core___nba_comb__TOP__core__0(Vcore_core* vlSelf);
+void Vcore_ifu_ifetch___nba_comb__TOP__core__inst_ifu__inst_ifu_ifetch__0(Vcore_ifu_ifetch* vlSelf);
 void Vcore_core___nba_sequent__TOP__core__4(Vcore_core* vlSelf);
 void Vcore_ifu_ifetch___nba_sequent__TOP__core__inst_ifu__inst_ifu_ifetch__2(Vcore_ifu_ifetch* vlSelf);
 void Vcore_sirv_gnrl_dffl___nba_sequent__TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__1__KET____DOT__rfno0__DOT__rf_dffl__1(Vcore_sirv_gnrl_dffl* vlSelf);
@@ -186,9 +187,9 @@ void Vcore_sirv_gnrl_dffl___nba_sequent__TOP__core__inst_exu__DOT__inst_Register
 void Vcore_sirv_gnrl_dffl___nba_sequent__TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__30__KET____DOT__rfno0__DOT__rf_dffl__1(Vcore_sirv_gnrl_dffl* vlSelf);
 void Vcore_sirv_gnrl_dffl___nba_sequent__TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__31__KET____DOT__rfno0__DOT__rf_dffl__1(Vcore_sirv_gnrl_dffl* vlSelf);
 void Vcore_core___nba_sequent__TOP__core__5(Vcore_core* vlSelf);
-void Vcore_core___nba_comb__TOP__core__0(Vcore_core* vlSelf);
-void Vcore_ifu_ifetch___nba_comb__TOP__core__inst_ifu__inst_ifu_ifetch__0(Vcore_ifu_ifetch* vlSelf);
 void Vcore_core___nba_comb__TOP__core__1(Vcore_core* vlSelf);
+void Vcore_ifu_ifetch___nba_comb__TOP__core__inst_ifu__inst_ifu_ifetch__1(Vcore_ifu_ifetch* vlSelf);
+void Vcore_core___nba_comb__TOP__core__2(Vcore_core* vlSelf);
 
 void Vcore___024root___eval_nba(Vcore___024root* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
@@ -201,13 +202,11 @@ void Vcore___024root___eval_nba(Vcore___024root* vlSelf) {
     if (vlSelf->__VnbaTriggered.at(1U)) {
         Vcore_ifu_ifetch___nba_sequent__TOP__core__inst_ifu__inst_ifu_ifetch__0((&vlSymsp->TOP__core__inst_ifu__inst_ifu_ifetch));
         vlSelf->__Vm_traceActivity[2U] = 1U;
-        Vcore_exu_decode___nba_sequent__TOP__core__inst_ifu__inst_ifu_ifetch__inst_ifu_minidec__DOT__inst_exu_decode__0((&vlSymsp->TOP__core__inst_ifu__inst_ifu_ifetch__inst_ifu_minidec__DOT__inst_exu_decode));
-        Vcore_exu_decode___nba_sequent__TOP__core__inst_ifu__inst_ifu_ifetch__inst_ifu_minidec__DOT__inst_exu_decode__0((&vlSymsp->TOP__core__inst_exu__DOT__inst_exu_decode));
         Vcore_sirv_gnrl_dfflr___nba_sequent__TOP__core__inst_ifu__inst_ifu_ifetch__ifu_ir_dfflr__0((&vlSymsp->TOP__core__inst_ifu__inst_ifu_ifetch__ifu_ir_dfflr));
         Vcore_sirv_gnrl_dfflr___nba_sequent__TOP__core__inst_ifu__inst_ifu_ifetch__ifu_pc_dfflr__0((&vlSymsp->TOP__core__inst_ifu__inst_ifu_ifetch__ifu_pc_dfflr));
         Vcore_sirv_gnrl_dfflr___nba_sequent__TOP__core__inst_ifu__inst_ifu_ifetch__pc_dfflr__0((&vlSymsp->TOP__core__inst_ifu__inst_ifu_ifetch__pc_dfflr));
         Vcore_core___nba_sequent__TOP__core__1((&vlSymsp->TOP__core));
-        Vcore_exu_decode___nba_sequent__TOP__core__inst_exu__DOT__inst_exu_decode__1((&vlSymsp->TOP__core__inst_exu__DOT__inst_exu_decode));
+        Vcore_exu_decode___nba_sequent__TOP__core__inst_exu__DOT__inst_exu_decode__0((&vlSymsp->TOP__core__inst_exu__DOT__inst_exu_decode));
         Vcore___024root___nba_sequent__TOP__0(vlSelf);
         Vcore_core___nba_sequent__TOP__core__2((&vlSymsp->TOP__core));
         Vcore_ifu_ifetch___nba_sequent__TOP__core__inst_ifu__inst_ifu_ifetch__1((&vlSymsp->TOP__core__inst_ifu__inst_ifu_ifetch));
@@ -247,9 +246,14 @@ void Vcore___024root___eval_nba(Vcore___024root* vlSelf) {
         Vcore_sirv_gnrl_dffl___nba_sequent__TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__31__KET____DOT__rfno0__DOT__rf_dffl__0((&vlSymsp->TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__31__KET____DOT__rfno0__DOT__rf_dffl));
         Vcore_core___nba_sequent__TOP__core__3((&vlSymsp->TOP__core));
     }
+    if ((vlSelf->__VnbaTriggered.at(1U) | vlSelf->__VnbaTriggered.at(2U))) {
+        Vcore_core___nba_comb__TOP__core__0((&vlSymsp->TOP__core));
+        vlSelf->__Vm_traceActivity[4U] = 1U;
+        Vcore_ifu_ifetch___nba_comb__TOP__core__inst_ifu__inst_ifu_ifetch__0((&vlSymsp->TOP__core__inst_ifu__inst_ifu_ifetch));
+    }
     if (vlSelf->__VnbaTriggered.at(1U)) {
         Vcore_core___nba_sequent__TOP__core__4((&vlSymsp->TOP__core));
-        vlSelf->__Vm_traceActivity[4U] = 1U;
+        vlSelf->__Vm_traceActivity[5U] = 1U;
         Vcore_ifu_ifetch___nba_sequent__TOP__core__inst_ifu__inst_ifu_ifetch__2((&vlSymsp->TOP__core__inst_ifu__inst_ifu_ifetch));
         Vcore_sirv_gnrl_dffl___nba_sequent__TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__1__KET____DOT__rfno0__DOT__rf_dffl__1((&vlSymsp->TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__1__KET____DOT__rfno0__DOT__rf_dffl));
         Vcore_sirv_gnrl_dffl___nba_sequent__TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__2__KET____DOT__rfno0__DOT__rf_dffl__1((&vlSymsp->TOP__core__inst_exu__DOT__inst_RegisterFile__DOT__regfile__BRA__2__KET____DOT__rfno0__DOT__rf_dffl));
@@ -286,10 +290,9 @@ void Vcore___024root___eval_nba(Vcore___024root* vlSelf) {
         Vcore_core___nba_sequent__TOP__core__5((&vlSymsp->TOP__core));
     }
     if ((vlSelf->__VnbaTriggered.at(1U) | vlSelf->__VnbaTriggered.at(2U))) {
-        Vcore_core___nba_comb__TOP__core__0((&vlSymsp->TOP__core));
-        vlSelf->__Vm_traceActivity[5U] = 1U;
-        Vcore_ifu_ifetch___nba_comb__TOP__core__inst_ifu__inst_ifu_ifetch__0((&vlSymsp->TOP__core__inst_ifu__inst_ifu_ifetch));
-        Vcore___024root___nba_comb__TOP__0(vlSelf);
         Vcore_core___nba_comb__TOP__core__1((&vlSymsp->TOP__core));
+        Vcore_ifu_ifetch___nba_comb__TOP__core__inst_ifu__inst_ifu_ifetch__1((&vlSymsp->TOP__core__inst_ifu__inst_ifu_ifetch));
+        Vcore___024root___nba_comb__TOP__0(vlSelf);
+        Vcore_core___nba_comb__TOP__core__2((&vlSymsp->TOP__core));
     }
 }

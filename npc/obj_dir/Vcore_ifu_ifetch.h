@@ -87,9 +87,10 @@ class Vcore_ifu_ifetch final : public VerilatedModule {
         CData/*0:0*/ __Vtogcov__minidec_bjp;
         CData/*0:0*/ __Vtogcov__minidec_jal;
         CData/*0:0*/ __Vtogcov__minidec_jalr;
-        CData/*0:0*/ __Vtogcov__bjp_req;
+        CData/*0:0*/ __Vtogcov__minidec_bxx;
     };
     struct {
+        CData/*0:0*/ __Vtogcov__bjp_req;
         CData/*0:0*/ __Vtogcov__ifu_new_req;
         CData/*0:0*/ __Vtogcov__ifu_req_valid_pre;
         CData/*0:0*/ __Vtogcov__out_flag_r;

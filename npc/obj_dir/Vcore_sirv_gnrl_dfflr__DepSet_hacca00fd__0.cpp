@@ -11,19 +11,19 @@
 VL_INLINE_OPT void Vcore_sirv_gnrl_dfflr___nba_sequent__TOP__core__inst_ifu__inst_ifu_ifetch__ifu_ir_dfflr__0(Vcore_sirv_gnrl_dfflr* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
     Vcore__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    VL_DEBUG_IF(VL_DBG_MSGF("+                Vcore_sirv_gnrl_dfflr___nba_sequent__TOP__core__inst_ifu__inst_ifu_ifetch__ifu_ir_dfflr__0\n"); );
+    VL_DEBUG_IF(VL_DBG_MSGF("+              Vcore_sirv_gnrl_dfflr___nba_sequent__TOP__core__inst_ifu__inst_ifu_ifetch__ifu_ir_dfflr__0\n"); );
     // Body
-    vlSymsp->__Vcoverage[1785].fetch_add(1, std::memory_order_relaxed);
+    vlSymsp->__Vcoverage[2269].fetch_add(1, std::memory_order_relaxed);
     if ((1U & (~ (IData)(vlSymsp->TOP.rst)))) {
-        vlSymsp->__Vcoverage[1784].fetch_add(1, std::memory_order_relaxed);
+        vlSymsp->__Vcoverage[2268].fetch_add(1, std::memory_order_relaxed);
     }
     if (vlSymsp->TOP.rst) {
         if (vlSymsp->TOP__core__inst_ifu__inst_ifu_ifetch.__PVT__ifu_rsp_hsked) {
-            vlSymsp->__Vcoverage[1782].fetch_add(1, std::memory_order_relaxed);
+            vlSymsp->__Vcoverage[2266].fetch_add(1, std::memory_order_relaxed);
             vlSelf->__PVT__qout_r = vlSymsp->TOP.ifu_rsp_instr;
         }
         if ((1U & (~ (IData)(vlSymsp->TOP__core__inst_ifu__inst_ifu_ifetch.__PVT__ifu_rsp_hsked)))) {
-            vlSymsp->__Vcoverage[1783].fetch_add(1, std::memory_order_relaxed);
+            vlSymsp->__Vcoverage[2267].fetch_add(1, std::memory_order_relaxed);
         }
     } else {
         vlSelf->__PVT__qout_r = 0U;
@@ -33,19 +33,19 @@ VL_INLINE_OPT void Vcore_sirv_gnrl_dfflr___nba_sequent__TOP__core__inst_ifu__ins
 VL_INLINE_OPT void Vcore_sirv_gnrl_dfflr___nba_sequent__TOP__core__inst_ifu__inst_ifu_ifetch__ifu_pc_dfflr__0(Vcore_sirv_gnrl_dfflr* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
     Vcore__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    VL_DEBUG_IF(VL_DBG_MSGF("+                Vcore_sirv_gnrl_dfflr___nba_sequent__TOP__core__inst_ifu__inst_ifu_ifetch__ifu_pc_dfflr__0\n"); );
+    VL_DEBUG_IF(VL_DBG_MSGF("+              Vcore_sirv_gnrl_dfflr___nba_sequent__TOP__core__inst_ifu__inst_ifu_ifetch__ifu_pc_dfflr__0\n"); );
     // Body
-    vlSymsp->__Vcoverage[1785].fetch_add(1, std::memory_order_relaxed);
+    vlSymsp->__Vcoverage[2269].fetch_add(1, std::memory_order_relaxed);
     if ((1U & (~ (IData)(vlSymsp->TOP.rst)))) {
-        vlSymsp->__Vcoverage[1784].fetch_add(1, std::memory_order_relaxed);
+        vlSymsp->__Vcoverage[2268].fetch_add(1, std::memory_order_relaxed);
     }
     if (vlSymsp->TOP.rst) {
         if (vlSymsp->TOP__core__inst_ifu__inst_ifu_ifetch.__PVT__ir_pc_vld_set) {
-            vlSymsp->__Vcoverage[1782].fetch_add(1, std::memory_order_relaxed);
+            vlSymsp->__Vcoverage[2266].fetch_add(1, std::memory_order_relaxed);
             vlSelf->__PVT__qout_r = vlSymsp->TOP__core__inst_ifu__inst_ifu_ifetch__pc_dfflr.__PVT__qout_r;
         }
         if ((1U & (~ (IData)(vlSymsp->TOP__core__inst_ifu__inst_ifu_ifetch.__PVT__ir_pc_vld_set)))) {
-            vlSymsp->__Vcoverage[1783].fetch_add(1, std::memory_order_relaxed);
+            vlSymsp->__Vcoverage[2267].fetch_add(1, std::memory_order_relaxed);
         }
     } else {
         vlSelf->__PVT__qout_r = 0U;
@@ -55,19 +55,19 @@ VL_INLINE_OPT void Vcore_sirv_gnrl_dfflr___nba_sequent__TOP__core__inst_ifu__ins
 VL_INLINE_OPT void Vcore_sirv_gnrl_dfflr___nba_sequent__TOP__core__inst_ifu__inst_ifu_ifetch__pc_dfflr__0(Vcore_sirv_gnrl_dfflr* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
     Vcore__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
-    VL_DEBUG_IF(VL_DBG_MSGF("+                Vcore_sirv_gnrl_dfflr___nba_sequent__TOP__core__inst_ifu__inst_ifu_ifetch__pc_dfflr__0\n"); );
+    VL_DEBUG_IF(VL_DBG_MSGF("+              Vcore_sirv_gnrl_dfflr___nba_sequent__TOP__core__inst_ifu__inst_ifu_ifetch__pc_dfflr__0\n"); );
     // Body
-    vlSymsp->__Vcoverage[1785].fetch_add(1, std::memory_order_relaxed);
+    vlSymsp->__Vcoverage[2269].fetch_add(1, std::memory_order_relaxed);
     if ((1U & (~ (IData)(vlSymsp->TOP.rst)))) {
-        vlSymsp->__Vcoverage[1784].fetch_add(1, std::memory_order_relaxed);
+        vlSymsp->__Vcoverage[2268].fetch_add(1, std::memory_order_relaxed);
     }
     if (vlSymsp->TOP.rst) {
         if (vlSymsp->TOP__core__inst_ifu__inst_ifu_ifetch.__PVT__ifu_req_hsked) {
-            vlSymsp->__Vcoverage[1782].fetch_add(1, std::memory_order_relaxed);
+            vlSymsp->__Vcoverage[2266].fetch_add(1, std::memory_order_relaxed);
             vlSelf->__PVT__qout_r = (0xfffffffeU & vlSymsp->TOP__core__inst_ifu__inst_ifu_ifetch.__PVT__pc_nxt_pre);
         }
         if ((1U & (~ (IData)(vlSymsp->TOP__core__inst_ifu__inst_ifu_ifetch.__PVT__ifu_req_hsked)))) {
-            vlSymsp->__Vcoverage[1783].fetch_add(1, std::memory_order_relaxed);
+            vlSymsp->__Vcoverage[2267].fetch_add(1, std::memory_order_relaxed);
         }
     } else {
         vlSelf->__PVT__qout_r = 0U;

@@ -17,6 +17,9 @@ module  exu_commit(
     input                       alu_cmt_i_ebreak,
     input                       alu_cmt_i_bjp_prdt,
 
+    input                       alu_cmt_i_ld,
+    input                       alu_cmt_i_stamo,
+
     output  [`XLEN-1:0]         cmt_cause,
     output  [`XLEN-1:0]         endcode
 );
