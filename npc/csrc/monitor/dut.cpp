@@ -1,5 +1,5 @@
 #include "host.h"
-#include "common.h"
+#include "npc_common.h"
 #include "dut.h"
 #include "dlfcn.h"
 

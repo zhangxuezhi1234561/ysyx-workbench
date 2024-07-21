@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <common.h>
+#include <npc_common.h>
 #include <getopt.h>
 
 char *img_file = NULL;

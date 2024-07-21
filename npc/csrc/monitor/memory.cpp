@@ -1,5 +1,5 @@
 #include "host.h"
-#include "common.h"
+#include "npc_common.h"
 #include <stdint.h>
 
 static uint8_t pmem[CONFIG_MSIZE] PG_ALIGN = {};
@@ -19,15 +19,6 @@ void paddr_write(paddr_t addr, int wmask, word_t data) {
             *guest_to_host(addr + i) = (data >> (i * 8)) & 0xff;
         }
     }
-}
-
-uint32_t pmem_read(uint32_t addr, int len) {
-    uint32_t ret = host_read(guest_to_host(addr), len);
-    return ret;
-}
-
-void pmem_write(int waddr, int wdata, char wmask) {
-    paddr_write(waddr, wmask, wdata);
 }
 
 void init_isa() {

@@ -21,17 +21,22 @@ module  exu_disp(
     output                          disp_o_alu_valid,   // similar to input disp_i_valid
     input                           disp_o_alu_ready,
 
+    input                           disp_o_alu_longpipe,
+
     output      [`XLEN-1:0]         disp_o_alu_rs1,
     output      [`XLEN-1:0]         disp_o_alu_rs2,
     output                          disp_o_alu_rdwen,
     output      [`RFIDX_WIDTH-1:0]  disp_o_alu_rdidx,
     output      [`DECINFO_WIDTH-1:0]    disp_o_alu_info,
     output      [`XLEN-1:0]         disp_o_alu_imm,
-    output      [`PC_SIZE-1:0]      disp_o_alu_pc
+    output      [`PC_SIZE-1:0]      disp_o_alu_pc,
 
     // Dispatch to OITF
+    output                          disp_oitf_ena
     
 );
+
+    wire    disp_alu_longp_real =   disp_o_alu_longpipe;
 
     wire    disp_i_ready_pos    =   disp_o_alu_ready;
     wire    disp_i_valid_pos;
@@ -46,6 +51,8 @@ module  exu_disp(
     assign  disp_o_alu_rdwen =  disp_i_rdwen;
     assign  disp_o_alu_rdidx =  disp_i_rdidx;
     assign  disp_o_alu_info  =  disp_i_info;
+
+    assign  disp_oitf_ena   =   disp_o_alu_valid & disp_o_alu_ready & disp_alu_longp_real;
 
     assign  disp_o_alu_imm  =   disp_i_imm;
     assign  disp_o_alu_pc   =   disp_i_pc;

@@ -14,7 +14,7 @@ VL_ATTR_COLD void Vcore_sirv_gnrl_dfflr___configure_coverage(Vcore_sirv_gnrl_dff
     VL_DEBUG_IF(VL_DBG_MSGF("+              Vcore_sirv_gnrl_dfflr___configure_coverage\n"); );
     // Body
     if (false && first) {}  // Prevent unused
-    vlSelf->__vlCoverInsert(&(vlSymsp->__Vcoverage[1800]), first, "/home/pro/ysyx/ysyx-workbench/npc/vsrc/sirv_gnrl_dfflr.v", 5, 23, "", "v_toggle/sirv_gnrl_dfflr", "lden", "");
+    vlSelf->__vlCoverInsert(&(vlSymsp->__Vcoverage[1813]), first, "/home/pro/ysyx/ysyx-workbench/npc/vsrc/sirv_gnrl_dfflr.v", 5, 23, "", "v_toggle/sirv_gnrl_dfflr", "lden", "");
     vlSelf->__vlCoverInsert(&(vlSymsp->__Vcoverage[102]), first, "/home/pro/ysyx/ysyx-workbench/npc/vsrc/sirv_gnrl_dfflr.v", 6, 23, "", "v_toggle/sirv_gnrl_dfflr", "dnxt[0]", "");
     vlSelf->__vlCoverInsert(&(vlSymsp->__Vcoverage[103]), first, "/home/pro/ysyx/ysyx-workbench/npc/vsrc/sirv_gnrl_dfflr.v", 6, 23, "", "v_toggle/sirv_gnrl_dfflr", "dnxt[1]", "");
     vlSelf->__vlCoverInsert(&(vlSymsp->__Vcoverage[104]), first, "/home/pro/ysyx/ysyx-workbench/npc/vsrc/sirv_gnrl_dfflr.v", 6, 23, "", "v_toggle/sirv_gnrl_dfflr", "dnxt[2]", "");
@@ -113,8 +113,8 @@ VL_ATTR_COLD void Vcore_sirv_gnrl_dfflr___configure_coverage(Vcore_sirv_gnrl_dff
     vlSelf->__vlCoverInsert(&(vlSymsp->__Vcoverage[197]), first, "/home/pro/ysyx/ysyx-workbench/npc/vsrc/sirv_gnrl_dfflr.v", 13, 14, "", "v_toggle/sirv_gnrl_dfflr", "qout_r[29]", "");
     vlSelf->__vlCoverInsert(&(vlSymsp->__Vcoverage[198]), first, "/home/pro/ysyx/ysyx-workbench/npc/vsrc/sirv_gnrl_dfflr.v", 13, 14, "", "v_toggle/sirv_gnrl_dfflr", "qout_r[30]", "");
     vlSelf->__vlCoverInsert(&(vlSymsp->__Vcoverage[199]), first, "/home/pro/ysyx/ysyx-workbench/npc/vsrc/sirv_gnrl_dfflr.v", 13, 14, "", "v_toggle/sirv_gnrl_dfflr", "qout_r[31]", "");
-    vlSelf->__vlCoverInsert(&(vlSymsp->__Vcoverage[2266]), first, "/home/pro/ysyx/ysyx-workbench/npc/vsrc/sirv_gnrl_dfflr.v", 19, 8, "", "v_branch/sirv_gnrl_dfflr", "if", "19-20");
-    vlSelf->__vlCoverInsert(&(vlSymsp->__Vcoverage[2267]), first, "/home/pro/ysyx/ysyx-workbench/npc/vsrc/sirv_gnrl_dfflr.v", 19, 9, "", "v_branch/sirv_gnrl_dfflr", "else", "");
-    vlSelf->__vlCoverInsert(&(vlSymsp->__Vcoverage[2268]), first, "/home/pro/ysyx/ysyx-workbench/npc/vsrc/sirv_gnrl_dfflr.v", 17, 3, "", "v_line/sirv_gnrl_dfflr", "elsif", "17-18");
-    vlSelf->__vlCoverInsert(&(vlSymsp->__Vcoverage[2269]), first, "/home/pro/ysyx/ysyx-workbench/npc/vsrc/sirv_gnrl_dfflr.v", 15, 1, "", "v_line/sirv_gnrl_dfflr", "block", "15-16");
+    vlSelf->__vlCoverInsert(&(vlSymsp->__Vcoverage[2279]), first, "/home/pro/ysyx/ysyx-workbench/npc/vsrc/sirv_gnrl_dfflr.v", 19, 8, "", "v_branch/sirv_gnrl_dfflr", "if", "19-20");
+    vlSelf->__vlCoverInsert(&(vlSymsp->__Vcoverage[2280]), first, "/home/pro/ysyx/ysyx-workbench/npc/vsrc/sirv_gnrl_dfflr.v", 19, 9, "", "v_branch/sirv_gnrl_dfflr", "else", "");
+    vlSelf->__vlCoverInsert(&(vlSymsp->__Vcoverage[2281]), first, "/home/pro/ysyx/ysyx-workbench/npc/vsrc/sirv_gnrl_dfflr.v", 17, 3, "", "v_line/sirv_gnrl_dfflr", "elsif", "17-18");
+    vlSelf->__vlCoverInsert(&(vlSymsp->__Vcoverage[2282]), first, "/home/pro/ysyx/ysyx-workbench/npc/vsrc/sirv_gnrl_dfflr.v", 15, 1, "", "v_line/sirv_gnrl_dfflr", "block", "15-16");
 }

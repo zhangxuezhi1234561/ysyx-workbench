@@ -4,6 +4,9 @@ module  exu_alu(
     input       i_valid,
     output      i_ready,
 
+    output      i_longpipe,     // Indicate this instruction is issued
+                                //   as a long pipe instruction
+
     input   [`XLEN-1:0] i_rs1,
     input   [`XLEN-1:0] i_rs2,
     input   [`XLEN-1:0] i_imm,
@@ -35,10 +38,14 @@ module  exu_alu(
     output  [`RFIDX_WIDTH-1:0]      wbck_o_rdidx,
 
     // The AGU ICB Interface to LSU
+    output                          agu_icb_cmd_valid,
+    input                           agu_icb_cmd_ready,
     output  [`ADDR_SIZE-1:0]        agu_icb_cmd_addr,
     output                          agu_icb_cmd_read,
     output  [`XLEN-1:0]             agu_icb_cmd_wdata,
-    output  [`XLEN/8-1:0]           agu_icb_cmd_wmask     
+    output  [`XLEN/8-1:0]           agu_icb_cmd_wmask,
+
+    input   [`XLEN-1:0]             agu_icb_rsp_rdata     
 );
     wire    alu_op  =   i_info[`DECINFO_GRP] == `DECINFO_GRP_ALU;
     wire    bjp_op  =   i_info[`DECINFO_GRP] == `DECINFO_GRP_BJP;
@@ -70,6 +77,10 @@ module  exu_alu(
     wire    [`XLEN-1:0]             bjp_i_imm   =   {`XLEN          {bjp_op}} & i_imm;
     wire    [`DECINFO_WIDTH-1:0]    bjp_i_info  =   {`DECINFO_WIDTH {bjp_op}} & i_info;
     wire    [`PC_SIZE-1:0]          bjp_i_pc    =   {`PC_SIZE       {bjp_op}} & i_pc;
+
+    wire    agu_i_longpipe;
+
+    assign  i_longpipe  =   agu_i_longpipe & agu_op;
 
     exu_alu_bjp inst_exu_alu_bjp(
         .bjp_i_valid    (bjp_i_valid),
@@ -122,6 +133,8 @@ module  exu_alu(
         .agu_i_imm          (agu_i_imm),
         .agu_i_info         (agu_i_info[`DECINFO_AGU_WIDTH-1:0]),
 
+        .agu_i_longpipe     (agu_i_longpipe),
+
         .agu_o_valid        (agu_o_valid),
         .agu_o_ready        (agu_o_ready),
         .agu_o_wbck_wdat    (agu_o_wbck_wdat),
@@ -133,10 +146,14 @@ module  exu_alu(
         .agu_req_alu_add    (agu_req_alu_add),
         .agu_req_alu_res    (agu_req_alu_res),
 
+        .agu_icb_cmd_valid  (agu_icb_cmd_valid),
+        .agu_icb_cmd_ready  (agu_icb_cmd_ready),
         .agu_icb_cmd_addr   (agu_icb_cmd_addr),
         .agu_icb_cmd_read   (agu_icb_cmd_read),
         .agu_icb_cmd_wdata  (agu_icb_cmd_wdata),
-        .agu_icb_cmd_wmask  (agu_icb_cmd_wmask)
+        .agu_icb_cmd_wmask  (agu_icb_cmd_wmask),
+
+        .agu_icb_rsp_rdata  (agu_icb_rsp_rdata)
     );
 
     wire    [`XLEN-1:0]     alu_req_alu_res;
@@ -257,6 +274,8 @@ module  exu_alu(
                       | (bjp_i_ready & bjp_op) 
                       | (agu_i_ready & agu_op)
                         ;
+
+  
 
     // Each Instruction need to commit
     assign  cmt_o_valid     =   o_valid & (o_need_wbck ? wbck_o_ready : 1'b1);

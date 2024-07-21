@@ -62,9 +62,9 @@ class Vcore_core final : public VerilatedModule {
         VL_IN8(ifu_rsp_valid,0,0);
         VL_OUT8(ifu_rsp_ready,0,0);
         CData/*0:0*/ __PVT__ifu_o_ready;
-        CData/*0:0*/ __PVT__lsu_o_valid;
         CData/*0:0*/ __PVT__lsu_o_cmt_ld;
         CData/*0:0*/ __PVT__lsu_o_cmt_st;
+        CData/*0:0*/ __PVT__agu_icb_cmd_valid;
         CData/*3:0*/ __PVT__agu_icb_cmd_wmask;
         CData/*0:0*/ __Vtogcov__clk;
         CData/*0:0*/ __Vtogcov__rst;
@@ -79,15 +79,16 @@ class Vcore_core final : public VerilatedModule {
         CData/*0:0*/ __Vtogcov__ifu_o_prdt_taken;
         CData/*0:0*/ __Vtogcov__ifu_o_pc_vld;
         CData/*0:0*/ __Vtogcov__lsu_o_valid;
-        CData/*0:0*/ __Vtogcov__lsu_o_ready;
         CData/*0:0*/ __Vtogcov__lsu_o_cmt_ld;
         CData/*0:0*/ __Vtogcov__lsu_o_cmt_st;
+        CData/*0:0*/ __Vtogcov__agu_icb_cmd_valid;
         CData/*0:0*/ __Vtogcov__agu_icb_cmd_read;
         CData/*3:0*/ __Vtogcov__agu_icb_cmd_wmask;
         CData/*0:0*/ __PVT__inst_exu__DOT__commit_trap;
         CData/*0:0*/ __PVT__inst_exu__DOT__rf_wbck_ena;
         CData/*4:0*/ __PVT__inst_exu__DOT__rf_wbck_rdidx;
-        CData/*0:0*/ __PVT__inst_exu__DOT__oitf_ret_rdwen;
+        CData/*0:0*/ __PVT__inst_exu__DOT__disp_alu_longpipe;
+        CData/*0:0*/ __PVT__inst_exu__DOT__disp_oitf_ena;
         CData/*4:0*/ __PVT__inst_exu__DOT__oitf_ret_rdidx;
         CData/*0:0*/ __PVT__inst_exu__DOT__alu_wbck_o_valid;
         CData/*0:0*/ __PVT__inst_exu__DOT__alu_cmt_bjp;
@@ -95,11 +96,8 @@ class Vcore_core final : public VerilatedModule {
         CData/*0:0*/ __PVT__inst_exu__DOT__alu_cmt_ld;
         CData/*0:0*/ __PVT__inst_exu__DOT__alu_cmt_stamo;
         CData/*0:0*/ __PVT__inst_exu__DOT__alu_cmt_bjp_prdt;
-        CData/*0:0*/ __PVT__inst_exu__DOT__longp_wbck_o_valid;
         CData/*0:0*/ __PVT__inst_exu__DOT__longp_excp_o_ready;
         CData/*0:0*/ __PVT__inst_exu__DOT__longp_excp_o_valid;
-        CData/*0:0*/ __PVT__inst_exu__DOT__longp_excp_o_ld;
-        CData/*0:0*/ __PVT__inst_exu__DOT__longp_excp_o_st;
         CData/*0:0*/ inst_exu__DOT____Vtogcov__commit_trap;
         CData/*0:0*/ inst_exu__DOT____Vtogcov__rf_wbck_ena;
         CData/*4:0*/ inst_exu__DOT____Vtogcov__rf_wbck_rdidx;
@@ -108,7 +106,8 @@ class Vcore_core final : public VerilatedModule {
         CData/*0:0*/ inst_exu__DOT____Vtogcov__dec_rs1en;
         CData/*0:0*/ inst_exu__DOT____Vtogcov__dec_rs2en;
         CData/*0:0*/ inst_exu__DOT____Vtogcov__dec_rdwen;
-        CData/*0:0*/ inst_exu__DOT____Vtogcov__oitf_ret_rdwen;
+        CData/*0:0*/ inst_exu__DOT____Vtogcov__disp_alu_longpipe;
+        CData/*0:0*/ inst_exu__DOT____Vtogcov__disp_oitf_ena;
         CData/*4:0*/ inst_exu__DOT____Vtogcov__oitf_ret_rdidx;
         CData/*0:0*/ inst_exu__DOT____Vtogcov__alu_wbck_o_valid;
         CData/*0:0*/ inst_exu__DOT____Vtogcov__alu_cmt_bjp;
@@ -117,13 +116,10 @@ class Vcore_core final : public VerilatedModule {
         CData/*0:0*/ inst_exu__DOT____Vtogcov__alu_cmt_stamo;
         CData/*0:0*/ inst_exu__DOT____Vtogcov__alu_cmt_valid;
         CData/*0:0*/ inst_exu__DOT____Vtogcov__alu_cmt_bjp_prdt;
-        CData/*0:0*/ inst_exu__DOT____Vtogcov__longp_wbck_o_valid;
-    };
-    struct {
         CData/*0:0*/ inst_exu__DOT____Vtogcov__longp_excp_o_ready;
         CData/*0:0*/ inst_exu__DOT____Vtogcov__longp_excp_o_valid;
-        CData/*0:0*/ inst_exu__DOT____Vtogcov__longp_excp_o_ld;
-        CData/*0:0*/ inst_exu__DOT____Vtogcov__longp_excp_o_st;
+    };
+    struct {
         CData/*0:0*/ inst_exu__DOT__inst_RegisterFile__DOT____Vcellinp__regfile__BRA__1__KET____DOT__rfno0__DOT__rf_dffl____pinNumber1;
         CData/*0:0*/ inst_exu__DOT__inst_RegisterFile__DOT____Vcellinp__regfile__BRA__2__KET____DOT__rfno0__DOT__rf_dffl____pinNumber1;
         CData/*0:0*/ inst_exu__DOT__inst_RegisterFile__DOT____Vcellinp__regfile__BRA__3__KET____DOT__rfno0__DOT__rf_dffl____pinNumber1;
@@ -158,6 +154,9 @@ class Vcore_core final : public VerilatedModule {
         CData/*0:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__alu_i_valid;
         CData/*0:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__bjp_i_valid;
         CData/*0:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__agu_i_valid;
+        CData/*0:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__agu_i_ready;
+        CData/*0:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__agu_i_longpipe;
+        CData/*0:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__agu_o_valid;
         CData/*0:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__alu_req_alu_add;
         CData/*0:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__alu_req_alu;
         CData/*0:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__o_valid;
@@ -167,8 +166,11 @@ class Vcore_core final : public VerilatedModule {
         CData/*0:0*/ inst_exu__DOT__inst_exu_alu__DOT____Vtogcov__alu_i_valid;
         CData/*0:0*/ inst_exu__DOT__inst_exu_alu__DOT____Vtogcov__bjp_i_valid;
         CData/*0:0*/ inst_exu__DOT__inst_exu_alu__DOT____Vtogcov__agu_i_valid;
+        CData/*0:0*/ inst_exu__DOT__inst_exu_alu__DOT____Vtogcov__agu_i_ready;
         CData/*0:0*/ inst_exu__DOT__inst_exu_alu__DOT____Vtogcov__bjp_o_cmt_bjp;
         CData/*0:0*/ inst_exu__DOT__inst_exu_alu__DOT____Vtogcov__bjp_o_cmt_prdt;
+        CData/*0:0*/ inst_exu__DOT__inst_exu_alu__DOT____Vtogcov__agu_i_longpipe;
+        CData/*0:0*/ inst_exu__DOT__inst_exu_alu__DOT____Vtogcov__agu_o_valid;
         CData/*0:0*/ inst_exu__DOT__inst_exu_alu__DOT____Vtogcov__agu_o_cmt_stamo;
         CData/*0:0*/ inst_exu__DOT__inst_exu_alu__DOT____Vtogcov__alu_req_alu_add;
         CData/*0:0*/ inst_exu__DOT__inst_exu_alu__DOT____Vtogcov__alu_req_alu_xor;
@@ -176,16 +178,29 @@ class Vcore_core final : public VerilatedModule {
         CData/*0:0*/ inst_exu__DOT__inst_exu_alu__DOT____Vtogcov__alu_req_alu_sltu;
         CData/*0:0*/ inst_exu__DOT__inst_exu_alu__DOT____Vtogcov__alu_req_alu_lui;
         CData/*0:0*/ inst_exu__DOT__inst_exu_alu__DOT____Vtogcov__alu_req_alu;
+        CData/*0:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_lsuagu__DOT__agu_i_addr_unalgn;
+        CData/*0:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_lsuagu__DOT__agu_addr_unalgn;
+        CData/*0:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_lsuagu__DOT__agu_i_unalgnld;
+        CData/*0:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_lsuagu__DOT__agu_i_unalgnst;
+        CData/*0:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_lsuagu__DOT__agu_i_algnld;
+        CData/*0:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_lsuagu__DOT__agu_i_algnst;
+    };
+    struct {
         CData/*0:0*/ inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_lsuagu__DOT____Vtogcov__agu_i_size_b;
         CData/*0:0*/ inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_lsuagu__DOT____Vtogcov__agu_i_size_hw;
         CData/*0:0*/ inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_lsuagu__DOT____Vtogcov__agu_i_size_w;
+        CData/*0:0*/ inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_lsuagu__DOT____Vtogcov__agu_i_addr_unalgn;
+        CData/*0:0*/ inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_lsuagu__DOT____Vtogcov__agu_addr_unalgn;
+        CData/*0:0*/ inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_lsuagu__DOT____Vtogcov__agu_i_unalgnld;
+        CData/*0:0*/ inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_lsuagu__DOT____Vtogcov__agu_i_unalgnst;
+        CData/*0:0*/ inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_lsuagu__DOT____Vtogcov__agu_i_unalgnldst;
+        CData/*0:0*/ inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_lsuagu__DOT____Vtogcov__agu_i_algnld;
+        CData/*0:0*/ inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_lsuagu__DOT____Vtogcov__agu_i_algnst;
         CData/*0:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_dpath__DOT__op_add;
         CData/*0:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_dpath__DOT__op_or;
         CData/*0:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_dpath__DOT__op_xor;
         CData/*0:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_dpath__DOT__op_sltu;
         CData/*0:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_dpath__DOT__op_mvop2;
-    };
-    struct {
         CData/*0:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_dpath__DOT__adder_cin;
         CData/*0:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_dpath__DOT__adder_addsub;
         CData/*0:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_dpath__DOT__slttu_cmp_lt;
@@ -198,6 +213,9 @@ class Vcore_core final : public VerilatedModule {
         CData/*0:0*/ inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_dpath__DOT____Vtogcov__adder_addsub;
         CData/*0:0*/ inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_dpath__DOT____Vtogcov__slttu_cmp_lt;
         CData/*4:0*/ inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_dpath__DOT____VdfgTmp_hdf482e26__0;
+        CData/*1:0*/ inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_dpath__DOT____VdfgTmp_h6d5f8c0a__0;
+        CData/*2:0*/ inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_dpath__DOT____VdfgTmp_he3438b4d__0;
+        CData/*3:0*/ inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_dpath__DOT____VdfgTmp_h6c6c7f6c__0;
         CData/*0:0*/ __PVT__inst_exu__DOT__inst_exu_wbck__DOT__wbck_sel_alu;
         CData/*0:0*/ inst_exu__DOT__inst_exu_wbck__DOT____Vtogcov__wbck_ready4alu;
         CData/*0:0*/ inst_exu__DOT__inst_exu_wbck__DOT____Vtogcov__wbck_sel_alu;
@@ -210,6 +228,7 @@ class Vcore_core final : public VerilatedModule {
         IData/*31:0*/ __PVT__lsu_o_wbck_wdat;
         IData/*31:0*/ __PVT__agu_icb_cmd_addr;
         IData/*31:0*/ __PVT__agu_icb_cmd_wdata;
+        IData/*31:0*/ __PVT__agu_icb_rsp_rdata;
         IData/*31:0*/ __Vtogcov__inspect_pc;
         IData/*31:0*/ __Vtogcov__pc_rtvec;
         IData/*31:0*/ __Vtogcov__ifu_req_pc;
@@ -221,22 +240,23 @@ class Vcore_core final : public VerilatedModule {
         IData/*31:0*/ __Vtogcov__lsu_o_wbck_wdat;
         IData/*31:0*/ __Vtogcov__agu_icb_cmd_addr;
         IData/*31:0*/ __Vtogcov__agu_icb_cmd_wdata;
+        IData/*31:0*/ __Vtogcov__agu_icb_rsp_rdata;
         IData/*31:0*/ __PVT__inst_exu__DOT__rf_rs2;
         IData/*31:0*/ __PVT__inst_exu__DOT__rf_wbck_wdat;
         IData/*31:0*/ __PVT__inst_exu__DOT__disp_alu_rs1;
         IData/*31:0*/ __PVT__inst_exu__DOT__disp_alu_rs2;
         IData/*31:0*/ __PVT__inst_exu__DOT__alu_wbck_o_wdat;
-        IData/*31:0*/ __PVT__inst_exu__DOT__longp_wbck_o_wdat;
         IData/*31:0*/ __PVT__inst_exu__DOT__longp_excp_o_pc;
         IData/*31:0*/ inst_exu__DOT____Vtogcov__rf_rs2;
         IData/*31:0*/ inst_exu__DOT____Vtogcov__rf_wbck_wdat;
         IData/*31:0*/ inst_exu__DOT____Vtogcov__endcode;
+    };
+    struct {
         IData/*31:0*/ inst_exu__DOT____Vtogcov__dec_imm;
         IData/*31:0*/ inst_exu__DOT____Vtogcov__disp_alu_rs1;
         IData/*31:0*/ inst_exu__DOT____Vtogcov__disp_alu_rs2;
         IData/*31:0*/ inst_exu__DOT____Vtogcov__alu_wbck_o_wdat;
         IData/*31:0*/ inst_exu__DOT____Vtogcov__cmt_cause;
-        IData/*31:0*/ inst_exu__DOT____Vtogcov__longp_wbck_o_wdat;
         IData/*31:0*/ inst_exu__DOT____Vtogcov__longp_excp_o_pc;
         IData/*31:0*/ __PVT__inst_exu__DOT__inst_RegisterFile__DOT__rf_wen;
         IData/*31:0*/ inst_exu__DOT__inst_RegisterFile__DOT____Vtogcov__rf_wen;
@@ -250,8 +270,6 @@ class Vcore_core final : public VerilatedModule {
         IData/*31:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__agu_req_alu_op2;
         IData/*31:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__agu_i_rs2;
         IData/*31:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__alu_req_alu_op1;
-    };
-    struct {
         IData/*31:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__alu_req_alu_op2;
         IData/*31:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__alu_i_rs1;
         IData/*31:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__alu_i_rs2;
@@ -284,6 +302,7 @@ class Vcore_core final : public VerilatedModule {
         IData/*31:0*/ inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_dpath__DOT____Vtogcov__orer_res;
         IData/*31:0*/ inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_dpath__DOT____Vtogcov__slttu_res;
         VlWide<3>/*68:0*/ inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_dpath__DOT____VdfgTmp_h0c37650e__0;
+        IData/*31:0*/ __Vfunc_inst_lsu__DOT__pmem_read__2__Vfuncout;
         QData/*32:0*/ inst_exu__DOT____Vtogcov__dec_info;
         QData/*32:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__bjp_i_info;
         QData/*32:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__agu_i_info;
@@ -297,6 +316,8 @@ class Vcore_core final : public VerilatedModule {
         QData/*32:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_dpath__DOT__adder_in2;
         QData/*32:0*/ __PVT__inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_dpath__DOT__adder_res;
         QData/*32:0*/ inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_dpath__DOT____Vtogcov__misc_adder_op1;
+    };
+    struct {
         QData/*32:0*/ inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_dpath__DOT____Vtogcov__misc_adder_op2;
         QData/*32:0*/ inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_dpath__DOT____Vtogcov__adder_in1;
         QData/*32:0*/ inst_exu__DOT__inst_exu_alu__DOT__inst_exu_alu_dpath__DOT____Vtogcov__adder_in2;

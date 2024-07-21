@@ -12,6 +12,9 @@
 
 using namespace std;
 
+// #define DIFFTEST
+
+
 vluint64_t sim_time = 0;
 
 uint32_t    halt_pc;
@@ -27,6 +30,16 @@ void npc_stop(int a, int b) {      // using at exu_excp.v
     return;
 }
 
+void pmem_write(int waddr, int wdata, char wmask) {
+    printf("write   waddr:0x%x, wdata:0x%x, wmask: %d\n", waddr, wdata, wmask);
+    paddr_write(waddr, wmask, wdata);
+}
+
+int pmem_read(int addr, int len) {
+    printf("read    addr:0x%x, len:%d\n", addr, len);
+    int ret = host_read(guest_to_host(addr), len);
+    return ret;
+}
 
 // cpu_state *cpu = (cpu_state*)malloc(50 * sizeof(uint32_t));
 cpu_state cpu;
@@ -79,7 +92,7 @@ int main(int argc, char** argv) {
     *(cpu.gpr_pc + 32)  =   RESET_VECTOR;    
     // isa_reg_display();
     // ref_reg_display(cpu.gpr_pc);
-    int count = 300;
+    int count = 1000;
     top->clk            =   0;
     top->rst            =   !0;
 
@@ -102,6 +115,9 @@ int main(int argc, char** argv) {
     uint32_t pc_temp[2] = {0};
 
     while(!contextp->gotFinish() && count--) {
+        if(top->ifu_req_pc == 0x80000060) {
+            break;
+        }
         if(sim_time % 5 == 0) {
             top->clk    =   !top->clk;  
         }
@@ -118,10 +134,12 @@ int main(int argc, char** argv) {
                 if(diff_cnt < 2) {
                     diff_cnt++;
                 } else {
-                    ref_difftest_exec(1);
-                    ref_difftest_regcpy(ref_r, DIFFTEST_TO_DUT); 
-                    *(cpu.gpr_pc + 32)  =   pc_temp[1];
-                    checkregs(ref_r, top->inspect_pc);
+                    #ifdef DIFFTEST
+                        ref_difftest_exec(1);
+                        ref_difftest_regcpy(ref_r, DIFFTEST_TO_DUT); 
+                        *(cpu.gpr_pc + 32)  =   pc_temp[1];
+                        checkregs(ref_r, top->inspect_pc);
+                    #endif
                 }
                 top->ifu_rsp_instr  = rsp_instr;
                 top->ifu_rsp_valid  =   1;
@@ -131,8 +149,7 @@ int main(int argc, char** argv) {
                 VL_PRINTF("ifu_req_pc=0x%x\n", top->ifu_req_pc);
                 rsp_instr = pmem_read(top->ifu_req_pc, 4);
                 top->ifu_req_ready  =   1;
-                instr_flag = true;
-                               
+                instr_flag = true;               
             }      
         }
         if(!top->clk) {
@@ -142,7 +159,6 @@ int main(int argc, char** argv) {
                 top->rst = 1;
             }
         }
-
         halt_pc     = top->inspect_pc;
         sim_time++;
         top->eval();

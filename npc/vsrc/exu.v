@@ -26,11 +26,14 @@ module exu(
     input                       lsu_o_cmt_ld,
     input                       lsu_o_cmt_st,
 
-
+    output                      agu_icb_cmd_valid,
+    input                       agu_icb_cmd_ready,
     output  [`ADDR_SIZE-1:0]    agu_icb_cmd_addr,
     output                      agu_icb_cmd_read,
     output  [`XLEN-1:0]         agu_icb_cmd_wdata,
-    output  [`XLEN/8-1:0]       agu_icb_cmd_wmask
+    output  [`XLEN/8-1:0]       agu_icb_cmd_wmask,
+
+    input   [`XLEN-1:0]         agu_icb_rsp_rdata
 );
 
 
@@ -98,6 +101,7 @@ module exu(
 
     wire    disp_alu_valid;
     wire    disp_alu_ready;
+    wire    disp_alu_longpipe;
     wire    [`XLEN-1:0] disp_alu_rs1;
     wire    [`XLEN-1:0] disp_alu_rs2;
     wire    [`XLEN-1:0] disp_alu_imm;
@@ -106,6 +110,8 @@ module exu(
     wire    [`RFIDX_WIDTH-1:0]      disp_alu_rdidx;
     wire                            disp_alu_rdwen;
     wire    [`PC_SIZE-1:0]          disp_alu_pc;
+
+    wire                            disp_oitf_ena;
 
     exu_disp    inst_exu_disp(
         .disp_i_valid   (i_valid),
@@ -128,14 +134,20 @@ module exu(
         .disp_o_alu_valid   (disp_alu_valid),
         .disp_o_alu_ready   (disp_alu_ready),
 
+        .disp_o_alu_longpipe    (disp_alu_longpipe),
+
         .disp_o_alu_rs1     (disp_alu_rs1),
         .disp_o_alu_rs2     (disp_alu_rs2),
         .disp_o_alu_rdwen   (disp_alu_rdwen),
         .disp_o_alu_rdidx   (disp_alu_rdidx),
         .disp_o_alu_info    (disp_alu_info),
         .disp_o_alu_imm     (disp_alu_imm),
-        .disp_o_alu_pc      (disp_alu_pc)
+        .disp_o_alu_pc      (disp_alu_pc),
+
+        .disp_oitf_ena      (disp_oitf_ena)         //e203 use ret_rdwen in OITF(have latency)
     );
+
+    assign  oitf_ret_rdwen = disp_oitf_ena;
 
     //----------------OITF--------------//
     wire                        oitf_ret_ena;
@@ -170,6 +182,8 @@ module exu(
         .i_valid        (disp_alu_valid),
         .i_ready        (disp_alu_ready),
 
+        .i_longpipe     (disp_alu_longpipe),
+
         .i_rs1          (disp_alu_rs1),
         .i_rs2          (disp_alu_rs2),
         .i_imm          (disp_alu_imm),
@@ -199,10 +213,14 @@ module exu(
         .wbck_o_wdat    (alu_wbck_o_wdat),
         .wbck_o_rdidx   (alu_wbck_o_rdidx),
 
+        .agu_icb_cmd_valid  (agu_icb_cmd_valid),
+        .agu_icb_cmd_ready  (agu_icb_cmd_ready),
         .agu_icb_cmd_addr   (agu_icb_cmd_addr),
         .agu_icb_cmd_read   (agu_icb_cmd_read),
         .agu_icb_cmd_wdata  (agu_icb_cmd_wdata),
-        .agu_icb_cmd_wmask  (agu_icb_cmd_wmask)
+        .agu_icb_cmd_wmask  (agu_icb_cmd_wmask),
+
+        .agu_icb_rsp_rdata  (agu_icb_rsp_rdata)
     );
 
     wire                        longp_wbck_o_valid;
@@ -235,7 +253,7 @@ module exu(
         .longp_excp_o_pc    (longp_excp_o_pc),
         
         .oitf_ret_ena       (oitf_ret_ena),
-        .oitf_ret_rdwen     (oitf_ret_rdwen),       //output
+        .oitf_ret_rdwen     (oitf_ret_rdwen),       //input
         .oitf_ret_rdidx     (oitf_ret_rdidx)
     );
 

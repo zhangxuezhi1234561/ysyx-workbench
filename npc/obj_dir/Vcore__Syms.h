@@ -81,7 +81,7 @@ class Vcore__Syms final : public VerilatedSyms {
     Vcore_sirv_gnrl_dfflr          TOP__core__inst_ifu__inst_ifu_ifetch__pc_dfflr;
 
     // COVERAGE
-    std::atomic<uint32_t> __Vcoverage[2270];
+    std::atomic<uint32_t> __Vcoverage[2283];
 
     // SCOPE NAMES
     VerilatedScope __Vscope_core__inst_ifu__inst_ifu_ifetch;

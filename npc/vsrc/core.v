@@ -62,10 +62,13 @@ module  core(
     wire                        lsu_o_cmt_ld;
     wire                        lsu_o_cmt_st;
 
+    wire                        agu_icb_cmd_valid;
+    wire                        agu_icb_cmd_ready;
     wire    [`ADDR_SIZE-1:0]    agu_icb_cmd_addr;
     wire                        agu_icb_cmd_read;
     wire    [`XLEN-1:0]         agu_icb_cmd_wdata;
     wire    [`XLEN/8-1:0]       agu_icb_cmd_wmask;
+    wire    [`XLEN-1:0]         agu_icb_rsp_rdata;
 
     exu inst_exu(
         .clk    (clk),                  //input
@@ -92,23 +95,31 @@ module  core(
         .lsu_o_cmt_ld           (lsu_o_cmt_ld),
         .lsu_o_cmt_st           (lsu_o_cmt_st),
 
+        .agu_icb_cmd_valid      (agu_icb_cmd_valid),
+        .agu_icb_cmd_ready      (agu_icb_cmd_ready),
         .agu_icb_cmd_addr       (agu_icb_cmd_addr),
         .agu_icb_cmd_read       (agu_icb_cmd_read),
         .agu_icb_cmd_wdata      (agu_icb_cmd_wdata),
-        .agu_icb_cmd_wmask      (agu_icb_cmd_wmask)
+        .agu_icb_cmd_wmask      (agu_icb_cmd_wmask),
+
+        .agu_icb_rsp_rdata      (agu_icb_rsp_rdata)
     );
 
     lsu     inst_lsu(
         .lsu_o_valid            (lsu_o_valid),
-        .lsu_o_ready            (lsu_o_ready),
+        .lsu_o_ready            (lsu_o_ready),          //input
         .lsu_o_wbck_wdat        (lsu_o_wbck_wdat),
         .lsu_o_cmt_ld           (lsu_o_cmt_ld),
         .lsu_o_cmt_st           (lsu_o_cmt_st),
 
+        .agu_icb_cmd_valid      (agu_icb_cmd_valid),
+        .agu_icb_cmd_ready      (agu_icb_cmd_ready),
         .agu_icb_cmd_addr       (agu_icb_cmd_addr),
         .agu_icb_cmd_read       (agu_icb_cmd_read),
         .agu_icb_cmd_wdata      (agu_icb_cmd_wdata),
-        .agu_icb_cmd_wmask      (agu_icb_cmd_wmask)
+        .agu_icb_cmd_wmask      (agu_icb_cmd_wmask),
+
+        .agu_icb_rsp_rdata      (agu_icb_rsp_rdata)
     );
     
 	initial begin
